@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assortment Management — Data, Schema & BI · Janmesh Jha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F1E8D8;--bone-2:#E9DDC8;--card:#F6EFE2;--ink:#1E1411;--oxblood:#5A201D;--oxblood-2:#4A1815;--sienna:#C25A2E;--sienna-2:#D9713F;--gold:#C79A3E;--muted:#8A7A66;--line:rgba(30,20,17,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y proximity}
+body{background:var(--bone);color:var(--ink);font-family:'Archivo',sans-serif;overflow-x:hidden;cursor:none}
+::selection{background:var(--sienna);color:var(--bone)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Space Mono',monospace}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--sienna)}
+.reveal{opacity:0;transform:translateY(36px)}
+.rhero,.chapter,.outro{scroll-snap-align:start}
+.chapter{min-height:100vh}
+
+.cursor{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid var(--oxblood);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:62px;height:62px;background:rgba(194,90,46,.12)}
+@media (hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+.bar{position:fixed;top:0;left:0;width:100%;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);mix-blend-mode:difference;color:#fff;pointer-events:none}
+.bar .back,.bar .id,.bar .mono{pointer-events:auto}
+.bar a.back{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:inline-flex;gap:8px;align-items:center;position:relative;z-index:5;padding:8px 12px;margin:-8px -12px}
+.bar .id{font-family:'Anton',sans-serif;font-size:20px}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--sienna);width:0;z-index:401}
+
+.rhero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+.rhero .kick{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.rhero .kick .dot{width:8px;height:8px;border-radius:50%;background:var(--sienna)}
+.rhero h1{font-family:'Anton',sans-serif;font-size:clamp(52px,11vw,180px);line-height:.84;text-transform:uppercase;letter-spacing:-.02em}
+.rhero h1 .o{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.rhero .tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2.4vw,30px);margin-top:24px;max-width:660px;line-height:1.4}
+.meta-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:38px}
+.meta-row div{font-family:'Space Mono',monospace;font-size:12px}
+.meta-row span{display:block;color:var(--sienna);margin-bottom:6px;font-size:10px;letter-spacing:.16em}
+
+.privacy{margin-top:34px;max-width:720px;border:1px solid var(--line);border-left:3px solid var(--sienna);border-radius:12px;background:var(--card);padding:20px 24px}
+.privacy .h{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sienna);margin-bottom:10px}
+.privacy p{font-size:14.5px;line-height:1.6;color:#3a2a20}
+.privacy b{color:var(--oxblood)}
+.herocta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--bone);border-radius:100px;padding:16px 26px;transition:transform .3s,background .3s}
+.herocta:hover{background:var(--sienna);transform:translateY(-3px)}
+
+.chapter{padding:clamp(110px,15vh,190px) 0;border-top:1px solid var(--line);position:relative;display:flex;flex-direction:column;justify-content:center}
+.ch-head{display:flex;align-items:baseline;gap:20px;margin-bottom:18px}
+.ch-num{font-family:'Anton',sans-serif;font-size:clamp(40px,7vw,90px);color:var(--sienna);opacity:.28;line-height:.8}
+.ch-title{font-family:'Anton',sans-serif;font-size:clamp(28px,5vw,64px);text-transform:uppercase;line-height:.9}
+.ch-lead{font-family:'Fraunces',serif;font-size:clamp(18px,2.1vw,25px);line-height:1.55;max-width:760px;margin:24px 0 40px;color:#3a2a20}
+.body-txt{font-size:16px;line-height:1.75;max-width:700px;color:#4a3b30}
+.body-txt+.body-txt{margin-top:16px}
+.body-txt b{color:var(--oxblood)}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.step .n{font-family:'Space Mono',monospace;font-size:11px;color:var(--sienna);letter-spacing:.1em}
+.step h4{font-family:'Fraunces',serif;font-size:20px;margin:12px 0 8px;line-height:1.1}
+.step p{font-size:13px;line-height:1.55;color:#4a3b30}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+/* schema */
+.erd{width:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px;margin-top:10px}
+.erd svg{width:100%;height:auto;display:block}
+.tables{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tbl .th{background:var(--oxblood);color:var(--bone);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;padding:11px 14px;display:flex;justify-content:space-between}
+.tbl .th b{color:var(--sienna-2);font-weight:400}
+.tbl ul{list-style:none;padding:10px 14px 14px}
+.tbl li{font-family:'Space Mono',monospace;font-size:11.5px;padding:4px 0;color:#4a3b30;display:flex;justify-content:space-between;gap:8px}
+.tbl li .k{font-size:8.5px;letter-spacing:.06em;padding:2px 6px;border-radius:100px}
+.tbl li .pk{background:var(--sienna);color:var(--bone)}
+.tbl li .fk{background:var(--gold);color:var(--oxblood-2)}
+@media(max-width:900px){.tables{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.tables{grid-template-columns:1fr}}
+
+/* SQL cards */
+.sqlq{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:14px;background:var(--card)}
+.sqlq .top{padding:20px 22px;display:flex;gap:16px;align-items:flex-start;cursor:none;transition:background .3s}
+.sqlq .top:hover{background:var(--bone-2)}
+.sqlq .qn{font-family:'Anton',sans-serif;font-size:26px;color:var(--sienna);opacity:.5;line-height:.8;min-width:40px}
+.sqlq .qq{font-family:'Fraunces',serif;font-size:clamp(16px,1.9vw,21px);line-height:1.25}
+.sqlq .qi{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.5}
+.sqlq .qi b{color:var(--oxblood)}
+.sqlq .chev{margin-left:auto;font-family:'Space Mono',monospace;color:var(--sienna);transition:transform .3s;font-size:18px}
+.sqlq.open .chev{transform:rotate(90deg)}
+.sqlq .code{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.sqlq.open .code{max-height:680px}
+.sqlq pre{background:var(--oxblood-2);color:#f0e2d0;padding:20px 22px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.65;overflow-x:auto;white-space:pre}
+.sqlq .kw{color:var(--sienna-2)}
+
+.outro{background:var(--ink);color:var(--bone);text-align:center;padding:clamp(90px,15vh,170px) 0}
+.outro h2{font-family:'Anton',sans-serif;font-size:clamp(38px,7vw,96px);text-transform:uppercase;line-height:.9}
+.outro p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,2.2vw,24px);opacity:.8;max-width:600px;margin:24px auto 40px;line-height:1.5}
+.outro .cta{display:inline-flex;gap:12px;align-items:center;font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.14em;text-transform:uppercase;background:var(--sienna);color:var(--bone);border-radius:100px;padding:18px 30px;transition:transform .3s,background .3s}
+.outro .cta:hover{transform:translateY(-3px);background:var(--sienna-2)}
+.outro .back2{display:block;margin-top:26px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.outro .back2:hover{color:var(--bone)}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div>
+<div class="progress" id="progress"></div>
+
+<div class="bar">
+  <a href="index.html" class="back" data-hov>← Back</a>
+  <span class="id">Assortment</span>
+  <span class="mono" style="font-size:11px;letter-spacing:.14em">CASE STUDY · 02</span>
+</div>
+
+<header class="rhero">
+  <div class="wrap">
+    <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.22em">BOSCH REXROTH AG · SALES &amp; DISTRIBUTION MGMT</span></div>
+    <h1 class="reveal">ASSORTMENT<br><span class="o">MANAGEMENT</span></h1>
+    <p class="tag reveal">Turning a messy product portfolio into data-driven decisions: what to stock, what to promote, and how to price it — market by market.</p>
+    <a href="dashboard.html" class="herocta reveal" data-hov>▶ Jump straight to the live dashboard</a>
+    <div class="meta-row reveal">
+      <div><span>ROLE</span>Data &amp; BI · Assortment</div>
+      <div><span>ORG</span>Bosch Rexroth AG</div>
+      <div><span>STACK</span>SQL · Power BI · SAP</div>
+      <div><span>SCOPE</span>Schema → Queries → Dashboard</div>
+    </div>
+    <div class="privacy reveal">
+      <div class="h">◆ A note on the data</div>
+      <p>This case study reflects real work I did on <b>assortment management at Bosch Rexroth</b>. The original figures are confidential and cannot be shown for <b>data-privacy reasons</b>. So I rebuilt the entire analytical approach on a <b>synthetic "drone enterprise" dataset</b> — same schema logic, same business questions, same dashboards — using data I generated myself. Every number you see here is fictional; the thinking is real.</p>
+    </div>
+  </div>
+</header>
+
+<!-- 01 WHY -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">Why it matters</h2></div>
+    <p class="ch-lead reveal">Assortment management is the quiet lever behind a hardware business: decide which products to actively stock, promote and price — for each region — and margin follows.</p>
+    <p class="body-txt reveal">At HQ, those decisions were being made on <b>manual Excel reporting</b> stitched together from a live SAP backend. It was slow, error-prone, and blind to patterns — nobody could quickly answer "which series actually earns its shelf space in the Netherlands?" or "is our discounting in one market quietly eroding margin?"</p>
+    <p class="body-txt reveal">The goal was to replace guesswork with a <b>queryable, visual system</b>: a clean data model, a library of the questions the business keeps asking, and dashboards that answer them in seconds.</p>
+  </div>
+</section>
+
+<!-- 02 WHAT I DID -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">What I did</h2></div>
+    <p class="ch-lead reveal">I owned the full pipeline — from raw tables to the dashboard a sales lead actually opens on a Monday morning.</p>
+    <div class="steps">
+      <div class="step reveal"><div class="n">STEP 01</div><h4>Modelled the data</h4><p>Designed a clean relational schema from scratch — customers, products, orders — with proper keys and relationships.</p></div>
+      <div class="step reveal"><div class="n">STEP 02</div><h4>Framed the questions</h4><p>Distilled the business's recurring decisions into 12 concrete questions worth querying.</p></div>
+      <div class="step reveal"><div class="n">STEP 03</div><h4>Wrote the SQL</h4><p>Joins, window functions, CASE segmentation and HAVING filters to answer each question precisely.</p></div>
+      <div class="step reveal"><div class="n">STEP 04</div><h4>Built the dashboard</h4><p>A multi-view BI dashboard — geography, products, customers, pricing and per-model margins.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 DATA STRUCTURE -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Data structure</h2></div>
+    <p class="ch-lead reveal">Three source tables joined on clean keys, plus one denormalised reporting view that powers the dashboard.</p>
+    <div class="erd reveal">
+      <svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" font-family="'Space Mono', monospace">
+        <!-- connectors -->
+        <g stroke="#5A201D" stroke-width="1.6" fill="none">
+          <path d="M300 150 C 345 150, 345 175, 388 175"/>
+          <path d="M700 140 C 655 140, 655 175, 612 175"/>
+          <path d="M500 360 L 500 405" stroke-dasharray="6 5"/>
+        </g>
+        <g font-size="13" fill="#5A201D">
+          <text x="312" y="142">1</text><text x="366" y="170">∞</text>
+          <text x="678" y="132">1</text><text x="624" y="170">∞</text>
+        </g>
+        <g font-size="11" fill="#8A7A66">
+          <text x="315" y="128">customer_id</text>
+          <text x="620" y="118">drone_id</text>
+          <text x="512" y="388">materialised join</text>
+        </g>
+        <!-- customer_data -->
+        <g>
+          <rect x="40" y="70" width="260" height="150" rx="10" fill="#F1E8D8" stroke="#d8c9b0"/>
+          <rect x="40" y="70" width="260" height="30" rx="10" fill="#5A201D"/>
+          <text x="54" y="90" fill="#F1E8D8" font-size="13">customer_data</text>
+          <text x="286" y="90" fill="#D9713F" font-size="10" text-anchor="end">400 rows</text>
+          <text x="54" y="122" fill="#1E1411" font-size="12">customer_id</text><text x="286" y="122" text-anchor="end" fill="#C25A2E" font-size="9">PK</text>
+          <text x="54" y="146" fill="#4a3b30" font-size="12">customer_name</text>
+          <text x="54" y="170" fill="#4a3b30" font-size="12">customer_country</text>
+          <text x="54" y="194" fill="#4a3b30" font-size="12">registration_date</text>
+        </g>
+        <!-- master_data -->
+        <g>
+          <rect x="700" y="55" width="260" height="220" rx="10" fill="#F1E8D8" stroke="#d8c9b0"/>
+          <rect x="700" y="55" width="260" height="30" rx="10" fill="#5A201D"/>
+          <text x="714" y="75" fill="#F1E8D8" font-size="13">master_data</text>
+          <text x="946" y="75" fill="#D9713F" font-size="10" text-anchor="end">80 rows</text>
+          <text x="714" y="107" fill="#1E1411" font-size="12">drone_id</text><text x="946" y="107" text-anchor="end" fill="#C25A2E" font-size="9">PK</text>
+          <text x="714" y="129" fill="#4a3b30" font-size="12">drone_name · series · size</text>
+          <text x="714" y="151" fill="#4a3b30" font-size="12">number_of_propellers</text>
+          <text x="714" y="173" fill="#4a3b30" font-size="12">motor_power_watts</text>
+          <text x="714" y="195" fill="#4a3b30" font-size="12">number_of_cameras · camera_mp</text>
+          <text x="714" y="217" fill="#4a3b30" font-size="12">colour</text>
+          <text x="714" y="239" fill="#1E1411" font-size="12">price_euro</text><text x="946" y="239" text-anchor="end" fill="#8A7A66" font-size="9">list price</text>
+        </g>
+        <!-- order_book -->
+        <g>
+          <rect x="388" y="70" width="224" height="270" rx="10" fill="#F1E8D8" stroke="#C25A2E" stroke-width="1.6"/>
+          <rect x="388" y="70" width="224" height="30" rx="10" fill="#C25A2E"/>
+          <text x="402" y="90" fill="#F1E8D8" font-size="13">order_book</text>
+          <text x="598" y="90" fill="#F1E8D8" font-size="10" text-anchor="end">900 rows</text>
+          <text x="402" y="122" fill="#1E1411" font-size="12">order_id</text><text x="598" y="122" text-anchor="end" fill="#C25A2E" font-size="9">PK</text>
+          <text x="402" y="146" fill="#1E1411" font-size="12">customer_id</text><text x="598" y="146" text-anchor="end" fill="#C79A3E" font-size="9">FK</text>
+          <text x="402" y="170" fill="#1E1411" font-size="12">drone_id</text><text x="598" y="170" text-anchor="end" fill="#C79A3E" font-size="9">FK</text>
+          <text x="402" y="194" fill="#4a3b30" font-size="12">order_date · delivery_date</text>
+          <text x="402" y="218" fill="#4a3b30" font-size="12">order_status</text>
+          <text x="402" y="242" fill="#4a3b30" font-size="12">list_price_euro</text>
+          <text x="402" y="266" fill="#4a3b30" font-size="12">discount_percent</text>
+          <text x="402" y="290" fill="#1E1411" font-size="12">final_price_euro</text><text x="598" y="290" text-anchor="end" fill="#8A7A66" font-size="9">sold</text>
+        </g>
+        <!-- sales_data -->
+        <g>
+          <rect x="250" y="405" width="500" height="120" rx="10" fill="#EFE0CF" stroke="#d8c9b0"/>
+          <rect x="250" y="405" width="500" height="30" rx="10" fill="#4A1815"/>
+          <text x="264" y="425" fill="#F1E8D8" font-size="13">sales_data — denormalised reporting view</text>
+          <text x="736" y="425" fill="#D9713F" font-size="10" text-anchor="end">900 rows</text>
+          <text x="264" y="457" fill="#4a3b30" font-size="12">sale_id + every joined attribute (order ⋈ product ⋈ customer)</text>
+          <text x="264" y="479" fill="#4a3b30" font-size="12">one flat row per sale — the fact table the dashboard reads from</text>
+          <text x="264" y="505" fill="#8A7A66" font-size="11">no runtime joins → fast, chart-ready</text>
+        </g>
+      </svg>
+    </div>
+    <div class="tables">
+      <div class="tbl reveal"><div class="th">customer_data <b>400</b></div><ul><li>customer_id <span class="k pk">PK</span></li><li>customer_name</li><li>customer_country</li><li>registration_date</li></ul></div>
+      <div class="tbl reveal"><div class="th">master_data <b>80</b></div><ul><li>drone_id <span class="k pk">PK</span></li><li>series · size</li><li>propellers · motor_w</li><li>cameras · camera_mp</li><li>price_euro</li></ul></div>
+      <div class="tbl reveal"><div class="th">order_book <b>900</b></div><ul><li>order_id <span class="k pk">PK</span></li><li>customer_id <span class="k fk">FK</span></li><li>drone_id <span class="k fk">FK</span></li><li>order_status · dates</li><li>list · discount · final</li></ul></div>
+      <div class="tbl reveal"><div class="th">sales_data <b>900</b></div><ul><li>sale_id</li><li>+ product attrs</li><li>+ customer attrs</li><li>+ pricing</li><li>flat fact view</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 QUERIES -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">Questions &amp; SQL</h2></div>
+    <p class="ch-lead reveal">The 12 questions the business kept asking — each mapped to a decision, each answered by one query. Tap to expand.</p>
+    <div id="sqlList"></div>
+  </div>
+</section>
+
+<!-- OUTRO / CTA -->
+<section class="outro">
+  <div class="wrap">
+    <h2>See it<br>in motion.</h2>
+    <p>The queries above become a live, multi-view dashboard — geography, products, customers, pricing, and a per-model margin explorer.</p>
+    <a href="dashboard.html" class="cta" data-hov>Launch the live dashboard →</a>
+    <a href="index.html" class="back2" data-hov>← Back to the portfolio</a>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href');const t=id.length>1&&document.querySelector(id);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+document.querySelectorAll('a.back').forEach(b=>b.addEventListener('click',()=>{window.location.href='index.html';}));
+const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function r(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+document.addEventListener('mouseover',e=>{if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});});
+ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{document.getElementById('progress').style.width=(s.progress*100)+'%';}});
+
+const Q=[
+ {q:"How many drones were sold in Germany?",i:"Market penetration and revenue from a key market.",sql:`SELECT customer_country, COUNT(*) AS total_orders,
+       COUNT(DISTINCT customer_id) AS unique_customers,
+       SUM(final_price_euro) AS total_revenue_euro
+FROM order_book
+WHERE customer_country = 'Germany'
+  AND order_status = 'Delivered'
+GROUP BY customer_country;`},
+ {q:"Total order value for drones with 4 propellers?",i:"Commercial performance of a product segment.",sql:`SELECT m.number_of_propellers, COUNT(o.order_id) AS total_orders,
+       SUM(o.final_price_euro) AS total_value_euro,
+       AVG(o.final_price_euro) AS avg_order_value_euro
+FROM order_book o
+JOIN master_data m ON o.drone_id = m.drone_id
+WHERE m.number_of_propellers = 4
+  AND o.order_status IN ('Delivered','Shipped')
+GROUP BY m.number_of_propellers;`},
+ {q:"Which Netherlands customers ordered above €2000?",i:"High-value segment for targeted marketing.",sql:`SELECT c.customer_id, c.customer_name, COUNT(o.order_id) AS order_count,
+       SUM(o.final_price_euro) AS total_spent_euro,
+       MAX(o.final_price_euro) AS highest_order_euro
+FROM customer_data c
+JOIN order_book o ON c.customer_id = o.customer_id
+WHERE c.customer_country = 'Netherlands'
+  AND o.final_price_euro > 2000
+  AND o.order_status = 'Delivered'
+GROUP BY c.customer_id, c.customer_name
+ORDER BY total_spent_euro DESC;`},
+ {q:"Which customers placed multiple orders — and their spend?",i:"Repeat customers for loyalty and lifetime value.",sql:`SELECT c.customer_id, c.customer_name, c.customer_country,
+       COUNT(o.order_id) AS order_count,
+       SUM(o.final_price_euro) AS total_spent_euro,
+       AVG(o.final_price_euro) AS avg_order_value_euro,
+       MIN(o.order_date) AS first_order, MAX(o.order_date) AS last_order
+FROM customer_data c
+JOIN order_book o ON c.customer_id = o.customer_id
+WHERE o.order_status IN ('Delivered','Shipped')
+GROUP BY c.customer_id, c.customer_name, c.customer_country
+HAVING COUNT(o.order_id) > 1
+ORDER BY order_count DESC, total_spent_euro DESC
+LIMIT 20;`},
+ {q:"What are the current orders from existing customers?",i:"Pipeline monitoring — repeat vs new.",sql:`SELECT o.order_id, o.customer_name, o.customer_country, o.drone_name,
+       o.final_price_euro, o.order_date, o.order_status,
+       CASE WHEN prev.order_count > 1 THEN 'Repeat Customer'
+            ELSE 'New Customer' END AS customer_type
+FROM order_book o
+LEFT JOIN (
+   SELECT customer_id, COUNT(*) AS order_count
+   FROM order_book WHERE order_status = 'Delivered'
+   GROUP BY customer_id
+) prev ON o.customer_id = prev.customer_id
+WHERE o.order_status IN ('Pending','Confirmed')
+ORDER BY o.order_date DESC;`},
+ {q:"Which drone series generates the most revenue?",i:"Portfolio decisions and inventory prioritisation.",sql:`SELECT m.series, COUNT(o.order_id) AS units_sold,
+       SUM(o.final_price_euro) AS total_revenue_euro,
+       AVG(o.final_price_euro) AS avg_selling_price_euro,
+       AVG(o.discount_percent) AS avg_discount_percent
+FROM order_book o
+JOIN master_data m ON o.drone_id = m.drone_id
+WHERE o.order_status IN ('Delivered','Shipped')
+GROUP BY m.series
+ORDER BY total_revenue_euro DESC;`},
+ {q:"What are sales and revenue by country?",i:"Geographic performance and pricing effectiveness.",sql:`SELECT customer_country, COUNT(*) AS total_orders,
+       COUNT(DISTINCT customer_id) AS unique_customers,
+       SUM(final_price_euro) AS total_revenue_euro,
+       AVG(final_price_euro) AS avg_order_value_euro,
+       ROUND(AVG(discount_percent),1) AS avg_discount_percent
+FROM order_book
+WHERE order_status IN ('Delivered','Shipped')
+GROUP BY customer_country
+ORDER BY total_revenue_euro DESC;`},
+ {q:"What is the order conversion rate by status?",i:"Fulfilment efficiency and drop-off points.",sql:`SELECT order_status, COUNT(*) AS order_count,
+       ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (),1) AS percentage,
+       SUM(final_price_euro) AS value_euro
+FROM order_book
+GROUP BY order_status
+ORDER BY CASE order_status
+    WHEN 'Pending' THEN 1 WHEN 'Confirmed' THEN 2
+    WHEN 'Shipped' THEN 3 WHEN 'Delivered' THEN 4
+    WHEN 'Cancelled' THEN 5 END;`},
+ {q:"Which product configurations are most popular?",i:"Product development and stocking decisions.",sql:`SELECT m.size, m.series, m.number_of_propellers, m.number_of_cameras,
+       COUNT(o.order_id) AS order_count,
+       SUM(o.final_price_euro) AS revenue_euro,
+       ROUND(AVG(m.price_euro),0) AS avg_list_price_euro
+FROM order_book o
+JOIN master_data m ON o.drone_id = m.drone_id
+WHERE o.order_status IN ('Delivered','Shipped')
+GROUP BY m.size, m.series, m.number_of_propellers, m.number_of_cameras
+HAVING COUNT(o.order_id) >= 5
+ORDER BY order_count DESC
+LIMIT 15;`},
+ {q:"What is the customer lifetime value distribution?",i:"Segment customers by value for retention/upsell.",sql:`SELECT CASE
+         WHEN total_spent < 5000 THEN '< €5K'
+         WHEN total_spent < 10000 THEN '€5K-€10K'
+         WHEN total_spent < 20000 THEN '€10K-€20K'
+         ELSE '> €20K' END AS spending_tier,
+       COUNT(*) AS customer_count,
+       ROUND(AVG(total_spent),0) AS avg_clv_euro,
+       ROUND(AVG(order_count),1) AS avg_orders_per_customer
+FROM (
+   SELECT customer_id, SUM(final_price_euro) AS total_spent,
+          COUNT(*) AS order_count
+   FROM order_book WHERE order_status = 'Delivered'
+   GROUP BY customer_id
+) customer_summary
+GROUP BY spending_tier ORDER BY avg_clv_euro;`},
+ {q:"What are the monthly sales trends?",i:"Seasonality and growth for forecasting.",sql:`SELECT strftime('%Y-%m', order_date) AS month,
+       COUNT(*) AS orders, SUM(final_price_euro) AS revenue_euro,
+       AVG(final_price_euro) AS avg_order_value_euro,
+       COUNT(DISTINCT customer_id) AS unique_customers
+FROM order_book
+WHERE order_status IN ('Delivered','Shipped')
+GROUP BY strftime('%Y-%m', order_date)
+ORDER BY month;`},
+ {q:"How does discount affect order value and volume?",i:"ROI of discount strategy and optimal pricing.",sql:`SELECT CASE
+         WHEN discount_percent = 0 THEN 'No Discount'
+         WHEN discount_percent <= 10 THEN '1-10%'
+         WHEN discount_percent <= 20 THEN '11-20%'
+         ELSE '> 20%' END AS discount_range,
+       COUNT(*) AS order_count,
+       SUM(final_price_euro) AS total_revenue_euro,
+       AVG(final_price_euro) AS avg_order_value_euro,
+       SUM(list_price_euro - final_price_euro) AS total_discount_given_euro
+FROM order_book
+WHERE order_status IN ('Delivered','Shipped')
+GROUP BY discount_range
+ORDER BY avg_order_value_euro DESC;`}
+];
+const KW=/\b(SELECT|FROM|WHERE|GROUP BY|ORDER BY|LEFT JOIN|JOIN|ON|AND|OR|AS|COUNT|SUM|AVG|MIN|MAX|ROUND|CASE|WHEN|THEN|ELSE|END|HAVING|LIMIT|IN|DISTINCT|OVER|strftime)\b/g;
+document.getElementById('sqlList').innerHTML=Q.map((x,i)=>{
+  const code=x.sql.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(KW,'<span class="kw">$1</span>');
+  return `<div class="sqlq"><div class="top" data-hov><div class="qn">${String(i+1).padStart(2,'0')}</div><div><div class="qq">${x.q}</div><div class="qi"><b>Answers:</b> ${x.i}</div></div><div class="chev">›</div></div><div class="code"><pre>${code}</pre></div></div>`;
+}).join('');
+document.querySelectorAll('.sqlq .top').forEach(t=>t.addEventListener('click',()=>t.parentElement.classList.toggle('open')));
+</script>
+</body>
+</html>

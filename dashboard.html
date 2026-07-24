@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assortment Management — Live Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F1E8D8;--bone-2:#E9DDC8;--card:#F6EFE2;--ink:#1E1411;--oxblood:#5A201D;--oxblood-2:#4A1815;--sienna:#C25A2E;--sienna-2:#D9713F;--gold:#C79A3E;--muted:#8A7A66;--line:rgba(30,20,17,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bone);color:var(--ink);font-family:'Archivo',sans-serif;overflow:hidden;cursor:none}
+::selection{background:var(--sienna);color:var(--bone)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Space Mono',monospace}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border:1px solid var(--oxblood);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:52px;height:52px;background:rgba(194,90,46,.12)}
+@media (hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.appbar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,3vw,40px);border-bottom:1px solid var(--line)}
+.appbar .l{display:flex;align-items:center;gap:16px}
+.appbar .back{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .3s}
+.appbar .back:hover{color:var(--ink)}
+.appbar .ttl{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.02em}
+.appbar .ttl small{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--sienna);text-transform:uppercase;margin-left:8px}
+.appbar .r{display:flex;gap:18px}
+.appbar .r .k{text-align:right}
+.appbar .r .k b{font-family:'Anton',sans-serif;font-size:18px;color:var(--oxblood);display:block;line-height:1}
+.appbar .r .k span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+@media(max-width:760px){.appbar .r{display:none}}
+
+.tabbar{flex:0 0 auto;display:flex;gap:2px;padding:0 clamp(16px,3vw,40px);border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:12px 16px;white-space:nowrap;color:var(--muted);border-bottom:2px solid transparent;transition:color .3s,border-color .3s;cursor:none;background:none}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--oxblood);border-color:var(--sienna)}
+
+.content{flex:1;min-height:0;padding:12px clamp(16px,3vw,40px) 14px;overflow:hidden}
+.face{height:100%;display:none}
+.face.active{display:block;height:100%}
+.fgrid{height:100%;display:grid;gap:10px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.panel h3{font-family:'Fraunces',serif;font-size:15px;font-weight:600;line-height:1}
+.panel .sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin:5px 0 10px}
+.cbox{position:relative;flex:1;min-height:0}
+.tbox{flex:1;min-height:0;overflow:auto}
+
+table.dt{width:100%;border-collapse:collapse;font-size:12px}
+table.dt th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card)}
+table.dt td{padding:8px 9px;border-bottom:1px solid var(--line)}
+table.dt td.num{font-family:'Space Mono',monospace;text-align:right}
+table.dt .name{font-family:'Fraunces',serif;font-size:13px}
+table.dt tr:hover td{background:var(--bone-2)}
+
+.spotrow{display:flex;gap:18px;margin-bottom:10px}
+.spotrow .big{font-family:'Anton',sans-serif;font-size:30px;color:var(--oxblood);line-height:.9}
+.spotrow .lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+/* margins face */
+.mcontrol{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:2px}
+.mcontrol select{font-family:'Space Mono',monospace;font-size:13px;background:var(--card);border:1px solid var(--line);border-radius:100px;padding:10px 16px;color:var(--ink);cursor:none;outline:none}
+.mstats{display:flex;gap:10px;flex-wrap:wrap}
+.mstat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:96px}
+.mstat b{font-family:'Anton',sans-serif;font-size:22px;color:var(--oxblood);display:block;line-height:1}
+.mstat.pos b{color:#3f7a3a}
+.mstat span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+.mnote{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto}
+
+@media(max-height:620px),(max-width:680px){body{overflow:auto}.app{height:auto;min-height:100vh}.content{overflow:visible}.face .fgrid{height:auto;grid-template-columns:1fr!important;grid-template-rows:none!important}.cbox{height:230px}}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div>
+
+<div class="app">
+  <div class="appbar">
+    <div class="l">
+      <a href="assortment.html" class="back" data-hov>← Case study</a>
+      <span class="ttl">Assortment<small>Live BI · synthetic data</small></span>
+    </div>
+    <div class="r" id="miniKpis"></div>
+  </div>
+
+  <nav class="tabbar">
+    <button class="tab active" data-face="overview" data-hov>Overview</button>
+    <button class="tab" data-face="geography" data-hov>Geography</button>
+    <button class="tab" data-face="products" data-hov>Products</button>
+    <button class="tab" data-face="customers" data-hov>Customers</button>
+    <button class="tab" data-face="pricing" data-hov>Pricing</button>
+    <button class="tab" data-face="margins" data-hov>Margins ✦</button>
+  </nav>
+
+  <div class="content">
+    <!-- OVERVIEW -->
+    <section class="face active" id="face-overview">
+      <div class="fgrid" style="grid-template-columns:1.5fr 1fr;grid-template-rows:1fr 1fr">
+        <div class="panel"><h3>Monthly revenue &amp; orders</h3><div class="sub">Q11 · seasonality</div><div class="cbox"><canvas id="c_monthly"></canvas></div></div>
+        <div class="panel"><h3>Order pipeline</h3><div class="sub">Q8 · status funnel</div><div class="cbox"><canvas id="c_status"></canvas></div></div>
+        <div class="panel"><h3>Revenue by series</h3><div class="sub">Q6</div><div class="cbox"><canvas id="c_series_o"></canvas></div></div>
+        <div class="panel"><h3>Revenue by market</h3><div class="sub">Q7 · top 8</div><div class="cbox"><canvas id="c_country_o"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- GEOGRAPHY -->
+    <section class="face" id="face-geography">
+      <div class="fgrid" style="grid-template-columns:1.3fr 1fr;grid-template-rows:1fr 1fr">
+        <div class="panel" style="grid-row:span 2"><h3>Revenue by country</h3><div class="sub">Q7 · geographic performance</div><div class="cbox"><canvas id="c_country"></canvas></div></div>
+        <div class="panel"><h3>Avg discount by market</h3><div class="sub">pricing pressure</div><div class="cbox"><canvas id="c_disc_geo"></canvas></div></div>
+        <div class="panel"><h3>Market detail</h3><div class="sub">orders · customers · revenue</div><div class="tbox"><table class="dt" id="t_country"></table></div></div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="face" id="face-products">
+      <div class="fgrid" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+        <div class="panel"><h3>Revenue by series</h3><div class="sub">Q6</div><div class="cbox"><canvas id="c_series"></canvas></div></div>
+        <div class="panel"><h3>Revenue by size class</h3><div class="sub">form-factor demand</div><div class="cbox"><canvas id="c_size"></canvas></div></div>
+        <div class="panel"><h3>Revenue by propeller count</h3><div class="sub">Q2</div><div class="cbox"><canvas id="c_prop"></canvas></div></div>
+        <div class="panel"><h3>Popular configurations</h3><div class="sub">Q9 · ≥5 orders</div><div class="tbox"><table class="dt" id="t_config"></table></div></div>
+      </div>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="face" id="face-customers">
+      <div class="fgrid" style="grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+        <div class="panel"><h3>Lifetime value tiers</h3><div class="sub">Q10</div><div class="cbox"><canvas id="c_clv"></canvas></div></div>
+        <div class="panel"><h3>Repeat vs one-time</h3><div class="sub">Q4 · loyalty base</div><div class="cbox"><canvas id="c_repeat"></canvas></div></div>
+        <div class="panel"><h3>Top repeat customers</h3><div class="sub">Q4 · highest spend</div><div class="tbox"><table class="dt" id="t_customers"></table></div></div>
+        <div class="panel">
+          <h3>Market spotlights</h3><div class="sub">Q1 Germany · Q3 Netherlands &gt;€2K</div>
+          <div class="spotrow"><div><div class="big" id="de_rev"></div><div class="lbl">DE revenue · <span id="de_orders"></span> orders</div></div><div><div class="big" id="nl_count"></div><div class="lbl">NL high-value customers</div></div></div>
+          <div class="tbox"><table class="dt" id="t_nl"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="face" id="face-pricing">
+      <div class="fgrid" style="grid-template-columns:1fr 1fr;grid-template-rows:1.35fr 1fr">
+        <div class="panel"><h3>Avg order value by discount band</h3><div class="sub">Q12</div><div class="cbox"><canvas id="c_disc"></canvas></div></div>
+        <div class="panel"><h3>Orders by discount band</h3><div class="sub">Q12 · volume</div><div class="cbox"><canvas id="c_disc2"></canvas></div></div>
+        <div class="panel" style="grid-column:span 2"><h3>Discount bands detail</h3><div class="sub">orders · revenue · avg order · discount given</div><div class="tbox"><table class="dt" id="t_disc"></table></div></div>
+      </div>
+    </section>
+
+    <!-- MARGINS (model compare) -->
+    <section class="face" id="face-margins">
+      <div class="fgrid" style="grid-template-rows:auto 1fr;gap:12px">
+        <div class="mcontrol">
+          <span class="mono" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sienna)">Select model</span>
+          <select id="modelSel" data-hov></select>
+          <div class="mstats" id="mstats"></div>
+          <span class="mnote" id="mnote"></span>
+        </div>
+        <div class="fgrid" style="grid-template-columns:1fr 1fr;gap:10px;min-height:0">
+          <div class="panel"><h3>Avg selling price by region</h3><div class="sub">price realisation across markets · margin vs illustrative COGS</div><div class="cbox"><canvas id="c_mregion"></canvas></div></div>
+          <div class="panel"><h3>Avg selling price over time</h3><div class="sub">monthly price trend for this model</div><div class="cbox"><canvas id="c_mtime"></canvas></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="drone-data.js"></script>
+<script>
+const D=window.DRONE_DATA;
+const C={ink:'#1E1411',oxblood:'#5A201D',sienna:'#C25A2E',sienna2:'#D9713F',gold:'#C79A3E',muted:'#8A7A66',bone:'#F1E8D8',green:'#3f7a3a'};
+const PAL=['#5A201D','#C25A2E','#D9713F','#C79A3E','#8A7A66','#7A3B2E','#E0A060','#9C4A2A','#B8862F','#6B4A3A','#D98C55','#4A1815'];
+const eur=n=>'€'+Math.round(n).toLocaleString('en-US');
+const eurS=n=>n>=1e6?'€'+(n/1e6).toFixed(2)+'M':n>=1e3?'€'+(n/1e3).toFixed(0)+'K':'€'+n;
+Chart.defaults.font.family="'Space Mono', monospace";Chart.defaults.font.size=10;Chart.defaults.color=C.muted;
+Chart.defaults.plugins.legend.labels.boxWidth=10;Chart.defaults.plugins.legend.labels.font={size:9};
+
+document.getElementById('miniKpis').innerHTML=[[eurS(D.kpis.total_revenue),'Revenue'],[D.kpis.realized_orders,'Orders'],[D.kpis.unique_customers,'Customers'],[eur(D.kpis.avg_order_value),'Avg order']].map(k=>`<div class="k"><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+
+const gridX={grid:{display:false},ticks:{maxRotation:0,autoSkip:true,font:{size:9}}};
+const gridY={grid:{color:'rgba(30,20,17,.06)'},ticks:{callback:v=>v>=1000?(v/1000)+'k':v,font:{size:9}}};
+function bar(id,labels,data,o={}){return new Chart(document.getElementById(id),{type:'bar',data:{labels,datasets:[{data,backgroundColor:o.colors||C.oxblood,borderRadius:5,maxBarThickness:40}]},options:{indexAxis:o.h?'y':'x',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>o.money?eur(c.raw):(o.pct?c.raw+'%':c.raw.toLocaleString())}}},scales:o.h?{x:gridY,y:{grid:{display:false},ticks:{font:{size:9}}}}:{x:gridX,y:gridY}}});}
+function doughnut(id,labels,data){return new Chart(document.getElementById(id),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:PAL,borderColor:C.bone,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'56%',plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+': '+eur(c.raw)}}}}});}
+
+const built={};
+function initFace(f){
+  if(built[f])return;built[f]=true;
+  if(f==='overview'){
+    const m=D.monthly;
+    new Chart(document.getElementById('c_monthly'),{type:'line',data:{labels:m.map(x=>x.month),datasets:[{label:'Revenue',data:m.map(x=>x.revenue),borderColor:C.sienna,backgroundColor:'rgba(194,90,46,.12)',fill:true,tension:.35,pointRadius:0,borderWidth:2,yAxisID:'y'},{label:'Orders',data:m.map(x=>x.orders),borderColor:C.oxblood,borderDash:[4,3],tension:.35,pointRadius:0,borderWidth:1.5,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true},tooltip:{callbacks:{label:c=>c.dataset.label==='Revenue'?'Revenue '+eur(c.raw):'Orders '+c.raw}}},scales:{x:gridX,y:{position:'left',grid:{color:'rgba(30,20,17,.06)'},ticks:{callback:v=>(v/1000)+'k',font:{size:9}}},y1:{position:'right',grid:{display:false},ticks:{font:{size:9}}}}}});
+    bar('c_status',D.status.map(x=>x.status),D.status.map(x=>x.count),{h:true,colors:D.status.map((x,i)=>PAL[i])});
+    bar('c_series_o',D.by_series.map(x=>x.series),D.by_series.map(x=>x.revenue),{money:true,colors:PAL});
+    bar('c_country_o',D.by_country.slice(0,8).map(x=>x.country),D.by_country.slice(0,8).map(x=>x.revenue),{money:true,colors:C.oxblood});
+  }
+  if(f==='geography'){
+    bar('c_country',D.by_country.map(x=>x.country),D.by_country.map(x=>x.revenue),{h:true,money:true,colors:C.oxblood});
+    bar('c_disc_geo',D.by_country.map(x=>x.country),D.by_country.map(x=>x.avg_discount),{h:true,pct:true,colors:C.gold});
+    document.getElementById('t_country').innerHTML='<thead><tr><th>Country</th><th class="num">Ord</th><th class="num">Cust</th><th class="num">Revenue</th><th class="num">Avg</th><th class="num">Disc</th></tr></thead><tbody>'+D.by_country.map(x=>`<tr><td class="name">${x.country}</td><td class="num">${x.orders}</td><td class="num">${x.customers}</td><td class="num">${eur(x.revenue)}</td><td class="num">${eur(x.avg)}</td><td class="num">${x.avg_discount}%</td></tr>`).join('')+'</tbody>';
+  }
+  if(f==='products'){
+    doughnut('c_series',D.by_series.map(x=>x.series),D.by_series.map(x=>x.revenue));
+    doughnut('c_size',D.by_size.map(x=>x.size),D.by_size.map(x=>x.revenue));
+    bar('c_prop',D.by_propellers.map(x=>x.propellers+'p'),D.by_propellers.map(x=>x.revenue),{money:true,colors:PAL});
+    document.getElementById('t_config').innerHTML='<thead><tr><th>Configuration</th><th class="num">Ord</th><th class="num">Revenue</th></tr></thead><tbody>'+D.configs.map(x=>`<tr><td class="name">${x.config}</td><td class="num">${x.orders}</td><td class="num">${eur(x.revenue)}</td></tr>`).join('')+'</tbody>';
+  }
+  if(f==='customers'){
+    bar('c_clv',D.clv_tiers.map(x=>x.tier),D.clv_tiers.map(x=>x.customers),{colors:PAL});
+    doughnut('c_repeat',['Repeat','One-time'],[D.new_vs_repeat.repeat,D.new_vs_repeat.one_time]);
+    document.getElementById('t_customers').innerHTML='<thead><tr><th>Customer</th><th>Country</th><th class="num">Ord</th><th class="num">Spent</th></tr></thead><tbody>'+D.top_customers.map(x=>`<tr><td class="name">${x.name}</td><td>${x.country}</td><td class="num">${x.orders}</td><td class="num">${eur(x.spent)}</td></tr>`).join('')+'</tbody>';
+    document.getElementById('de_rev').textContent=eurS(D.germany.revenue);
+    document.getElementById('de_orders').textContent=D.germany.orders;
+    document.getElementById('nl_count').textContent=D.netherlands.length;
+    document.getElementById('t_nl').innerHTML='<thead><tr><th>Netherlands &gt;€2K</th><th class="num">Ord</th><th class="num">Spent</th></tr></thead><tbody>'+D.netherlands.map(x=>`<tr><td class="name">${x.name}</td><td class="num">${x.orders}</td><td class="num">${eur(x.spent)}</td></tr>`).join('')+'</tbody>';
+  }
+  if(f==='pricing'){
+    bar('c_disc',D.discount_impact.map(x=>x.range),D.discount_impact.map(x=>x.avg),{money:true,colors:C.sienna});
+    bar('c_disc2',D.discount_impact.map(x=>x.range),D.discount_impact.map(x=>x.orders),{colors:C.oxblood});
+    document.getElementById('t_disc').innerHTML='<thead><tr><th>Discount band</th><th class="num">Orders</th><th class="num">Revenue</th><th class="num">Avg order</th><th class="num">Discount given</th></tr></thead><tbody>'+D.discount_impact.map(x=>`<tr><td class="name">${x.range}</td><td class="num">${x.orders}</td><td class="num">${eur(x.revenue)}</td><td class="num">${eur(x.avg)}</td><td class="num">${eur(x.given)}</td></tr>`).join('')+'</tbody>';
+  }
+  if(f==='margins')initMargins();
+}
+
+/* ---- Margins / model comparison ---- */
+let mRegion,mTime;
+function initMargins(){
+  const sel=document.getElementById('modelSel');
+  sel.innerHTML=D.models.map((m,i)=>`<option value="${i}">${m.name} · ${m.series}/${m.size} · list ${eur(m.list_price)}</option>`).join('');
+  document.getElementById('mnote').textContent='Illustrative COGS = '+D.cogs_pct+'% of list price';
+  sel.addEventListener('change',()=>renderModel(+sel.value));
+  renderModel(0);
+}
+function renderModel(idx){
+  const m=D.models[idx];
+  document.getElementById('mstats').innerHTML=[
+    [eur(m.list_price),'List price'],[eur(m.cost),'COGS ('+D.cogs_pct+'%)'],[eur(m.avg_final),'Avg sold'],
+    [eur(m.margin),'Margin/unit','pos'],[m.margin_pct+'%','Margin %','pos'],[m.units,'Units']
+  ].map(s=>`<div class="mstat ${s[2]||''}"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('');
+  const reg=m.by_region, cost=m.cost;
+  const rlabels=reg.map(r=>r.region), rprice=reg.map(r=>r.avg_final), rmarg=reg.map(r=>r.margin);
+  if(mRegion)mRegion.destroy();
+  mRegion=new Chart(document.getElementById('c_mregion'),{type:'bar',data:{labels:rlabels,datasets:[
+    {label:'Avg selling price',data:rprice,backgroundColor:C.oxblood,borderRadius:4,stack:'s'},
+    {label:'Margin over COGS',data:rmarg,backgroundColor:C.sienna,borderRadius:4}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true},tooltip:{callbacks:{label:c=>c.dataset.label+': '+eur(c.raw)}},annotation:false},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'rgba(30,20,17,.06)'},ticks:{callback:v=>(v/1000).toFixed(1)+'k',font:{size:9}}}}}});
+  const tl=m.by_month;
+  if(mTime)mTime.destroy();
+  mTime=new Chart(document.getElementById('c_mtime'),{type:'line',data:{labels:tl.map(x=>x.month),datasets:[
+    {label:'Avg selling price',data:tl.map(x=>x.avg_final),borderColor:C.sienna,backgroundColor:'rgba(194,90,46,.12)',fill:true,tension:.3,pointRadius:2,borderWidth:2},
+    {label:'List price',data:tl.map(()=>m.list_price),borderColor:C.muted,borderDash:[5,4],pointRadius:0,borderWidth:1},
+    {label:'COGS',data:tl.map(()=>m.cost),borderColor:C.gold,borderDash:[3,3],pointRadius:0,borderWidth:1}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true},tooltip:{callbacks:{label:c=>c.dataset.label+': '+eur(c.raw)}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'rgba(30,20,17,.06)'},ticks:{callback:v=>(v/1000).toFixed(1)+'k',font:{size:9}}}}}});
+}
+
+/* tabs */
+const tabs=[...document.querySelectorAll('.tab')];const faces={};
+document.querySelectorAll('.face').forEach(el=>faces[el.id.replace('face-','')]=el);
+function show(f){tabs.forEach(t=>t.classList.toggle('active',t.dataset.face===f));Object.entries(faces).forEach(([k,el])=>el.classList.toggle('active',k===f));initFace(f);}
+tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.face)));
+initFace('overview');
+
+/* cursor */
+const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function r(){rx+=(mx-rx)*0.2;ry+=(my-ry)*0.2;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+document.addEventListener('mouseover',e=>{if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+</script>
+</body>
+</html>

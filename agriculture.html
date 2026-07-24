@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Future of Sustainable Agriculture · Janmesh Jha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F1E8D8;--bone-2:#E9DDC8;--card:#F6EFE2;--ink:#1E1411;--oxblood:#5A201D;--oxblood-2:#4A1815;--sienna:#C25A2E;--sienna-2:#D9713F;--gold:#C79A3E;--leaf:#5f7a3a;--muted:#8A7A66;--line:rgba(30,20,17,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;scroll-snap-type:y proximity}
+body{background:var(--bone);color:var(--ink);font-family:'Archivo',sans-serif;overflow-x:hidden;cursor:none}
+::selection{background:var(--sienna);color:var(--bone)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Space Mono',monospace}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--sienna)}
+.reveal{opacity:0;transform:translateY(36px)}
+.rhero,.chapter,.outro{scroll-snap-align:start}.chapter{min-height:100vh}
+.cursor{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+.cursor-ring{position:fixed;top:0;left:0;width:40px;height:40px;border:1px solid var(--oxblood);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:62px;height:62px;background:rgba(194,90,46,.12)}
+@media (hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+.bar{position:fixed;top:0;left:0;width:100%;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);mix-blend-mode:difference;color:#fff;pointer-events:none}
+.bar .back,.bar .id,.bar .mono{pointer-events:auto}
+.bar a.back{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;position:relative;z-index:5;padding:8px 12px;margin:-8px -12px}
+.bar .id{font-family:'Anton',sans-serif;font-size:20px}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--sienna);width:0;z-index:401}
+.rhero{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.rhero .kick{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.rhero .kick .dot{width:8px;height:8px;border-radius:50%;background:var(--leaf)}
+.rhero h1{font-family:'Anton',sans-serif;font-size:clamp(44px,9.5vw,150px);line-height:.86;text-transform:uppercase;letter-spacing:-.01em}
+.rhero h1 .o{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.rhero .tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2.4vw,30px);margin-top:24px;max-width:680px;line-height:1.4}
+.meta-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:38px}
+.meta-row div{font-family:'Space Mono',monospace;font-size:12px}.meta-row span{display:block;color:var(--sienna);margin-bottom:6px;font-size:10px;letter-spacing:.16em}
+.chapter{padding:clamp(110px,15vh,190px) 0;border-top:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.ch-head{display:flex;align-items:baseline;gap:20px;margin-bottom:18px}
+.ch-num{font-family:'Anton',sans-serif;font-size:clamp(40px,7vw,90px);color:var(--sienna);opacity:.28;line-height:.8}
+.ch-title{font-family:'Anton',sans-serif;font-size:clamp(26px,5vw,60px);text-transform:uppercase;line-height:.9}
+.ch-lead{font-family:'Fraunces',serif;font-size:clamp(18px,2.1vw,25px);line-height:1.55;max-width:760px;margin:24px 0 34px;color:#3a2a20}
+.body-txt{font-size:16px;line-height:1.75;max-width:700px;color:#4a3b30}.body-txt b{color:var(--oxblood)}
+.purpose{font-size:16px;line-height:1.65;max-width:660px;margin-top:20px;color:#4a3b30}.purpose b{color:var(--oxblood)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.fact b{font-family:'Anton',sans-serif;font-size:clamp(30px,4vw,48px);color:var(--sienna);line-height:.9;display:block}
+.fact span{font-size:13px;line-height:1.4;color:#4a3b30;display:block;margin-top:8px}
+@media(max-width:760px){.facts{grid-template-columns:1fr 1fr}}
+
+/* PESTEL */
+.pestel{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;cursor:none;transition:transform .3s,box-shadow .3s;overflow:hidden}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 24px 50px -30px rgba(90,32,29,.4)}
+.pcard .ltr{font-family:'Anton',sans-serif;font-size:40px;color:var(--sienna);line-height:.8}
+.pcard h4{font-family:'Fraunces',serif;font-size:20px;margin:10px 0}
+.pcard .body{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.pcard.open .body{max-height:260px}
+.pcard ul{list-style:none;padding-top:8px}
+.pcard li{font-size:13px;line-height:1.5;color:#4a3b30;padding:5px 0;border-top:1px solid var(--line)}
+.pcard .cue{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:10px}
+@media(max-width:860px){.pestel{grid-template-columns:1fr 1fr}}@media(max-width:520px){.pestel{grid-template-columns:1fr}}
+
+/* radar */
+.radar-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;margin-top:6px}
+@media(max-width:860px){.radar-wrap{grid-template-columns:1fr}}
+.radar{width:100%;max-width:520px;margin:0 auto}
+.radar svg{width:100%;height:auto;display:block}
+.blip{cursor:none;transition:r .2s}
+.blip circle{transition:transform .2s}
+.blip:hover circle,.blip.sel circle{stroke:var(--ink);stroke-width:2}
+.blip text{font-family:'Space Mono',monospace;font-size:9px;fill:#3a2a20;pointer-events:none}
+.detail{background:var(--ink);color:var(--bone);border-radius:18px;padding:28px;min-height:250px}
+.detail .rings{display:flex;gap:6px;margin-bottom:18px}
+.detail .rings span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:100px;border:1px solid rgba(241,232,216,.25);color:rgba(241,232,216,.6)}
+.detail .rings span.on{background:var(--sienna);border-color:var(--sienna);color:var(--bone)}
+.detail h4{font-family:'Fraunces',serif;font-size:26px;margin-bottom:6px}
+.detail .cat{font-family:'Space Mono',monospace;font-size:11px;color:var(--sienna-2);letter-spacing:.08em;text-transform:uppercase}
+.detail p{font-size:14px;line-height:1.65;color:rgba(241,232,216,.82);margin:14px 0}
+.detail .sdg{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.detail .sdg b{font-family:'Space Mono',monospace;font-size:10px;background:var(--leaf);color:#eafae6;padding:5px 10px;border-radius:100px;font-weight:400}
+.radar-hint{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:12px;text-align:center}
+
+/* solutions */
+.sol-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;margin-top:6px;align-items:center}
+@media(max-width:860px){.sol-wrap{grid-template-columns:1fr}}
+.matrix{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.matrix svg{width:100%;height:auto;display:block}
+.matrix .pt{cursor:none}
+.matrix .pt circle{transition:transform .2s}
+.matrix .pt:hover circle,.matrix .pt.sel circle{stroke:var(--ink);stroke-width:2}
+.sol-list{display:flex;flex-direction:column;gap:10px}
+.sol{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--leaf);border-radius:12px;padding:16px 20px;cursor:none;transition:background .3s,transform .3s}
+.sol:hover,.sol.sel{background:var(--bone-2);transform:translateX(4px)}
+.sol .r{font-family:'Space Mono',monospace;font-size:11px;color:var(--sienna)}
+.sol h4{font-family:'Fraunces',serif;font-size:19px;margin:4px 0 6px}
+.sol p{font-size:13px;line-height:1.5;color:#4a3b30}
+.sol .sdg{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.sol .sdg b{font-family:'Space Mono',monospace;font-size:9px;background:var(--leaf);color:#eafae6;padding:3px 8px;border-radius:100px;font-weight:400}
+
+.outro{background:var(--ink);color:var(--bone);text-align:center;padding:clamp(90px,15vh,170px) 0}
+.outro h2{font-family:'Anton',sans-serif;font-size:clamp(34px,7vw,88px);text-transform:uppercase;line-height:.9}
+.outro p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,2.2vw,24px);opacity:.8;max-width:640px;margin:24px auto 40px;line-height:1.5}
+.outro a{display:inline-flex;gap:10px;align-items:center;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--bone);border-radius:100px;padding:16px 28px;transition:.3s}
+.outro a:hover{background:var(--bone);color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div>
+<div class="progress" id="progress"></div>
+<div class="bar"><a href="index.html" class="back" data-hov>← Back</a><span class="id">Sustainable Ag</span><span class="mono" style="font-size:11px;letter-spacing:.14em">CASE STUDY · 05</span></div>
+
+<header class="rhero">
+  <div class="wrap">
+    <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.22em">TECHNOLOGY ASSESSMENT · US &amp; UK</span></div>
+    <h1 class="reveal">FUTURE OF<br><span class="o">FARMING</span></h1>
+    <p class="tag reveal">Feeding more people, on less land, with a lighter footprint. A structured technology assessment of what could actually get us there.</p>
+    <p class="purpose reveal"><b>The purpose:</b> cut through the hype and figure out which technologies can realistically make US &amp; UK food systems more sustainable — pressure-tested against external forces, global megatrends and the UN Sustainable Development Goals, then ranked into an innovation roadmap.</p>
+    <div class="meta-row reveal">
+      <div><span>METHOD</span>PESTEL · Technology Radar</div>
+      <div><span>FRAME</span>SDG alignment · megatrends</div>
+      <div><span>OUTPUT</span>Ranked innovation roadmap</div>
+    </div>
+  </div>
+</header>
+
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">The squeeze</h2></div>
+    <p class="ch-lead reveal">Food systems in the US and UK sit at the intersection of three pressures at once — and pulling one lever tightens the others.</p>
+    <p class="body-txt reveal">Demand is rising while <b>arable land and water are shrinking</b>. Agriculture is both a major <b>climate contributor and a climate victim</b>. And a food system optimised for cheap calories has quietly traded away soil health, biodiversity and resilience. The assessment started from a blunt question: which technologies actually relieve this squeeze — and which just move the problem?</p>
+    <div class="facts">
+      <div class="fact reveal"><b>70%</b><span>of the world's freshwater withdrawals go to agriculture</span></div>
+      <div class="fact reveal"><b>~⅓</b><span>of all food produced is lost or wasted</span></div>
+      <div class="fact reveal"><b>≈24%</b><span>of global greenhouse-gas emissions come from food systems</span></div>
+      <div class="fact reveal"><b>9.7B</b><span>people to feed by 2050 — with today's land</span></div>
+      <div class="fact reveal"><b>33%</b><span>of the planet's soils are already degraded</span></div>
+      <div class="fact reveal"><b>~11%</b><span>of Earth's land surface is actually arable</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PESTEL -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">PESTEL scan</h2></div>
+    <p class="ch-lead reveal">Before betting on any technology, map the forces around it. Tap each lens.</p>
+    <div class="pestel" id="pestel"></div>
+  </div>
+</section>
+
+<!-- RADAR -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Technology radar</h2></div>
+    <p class="ch-lead reveal">Eight enabling technologies, placed by maturity — from ready-to-adopt at the centre to watch-and-wait at the edge. Click a blip.</p>
+    <div class="radar-wrap">
+      <div>
+        <div class="radar"><svg id="radarSvg" viewBox="0 0 500 500"></svg></div>
+        <div class="radar-hint">◆ rings = adoption readiness · colour = category</div>
+      </div>
+      <div class="detail" id="techDetail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">Four bets</h2></div>
+    <p class="ch-lead reveal">The assessment converged on four SDG-aligned solutions, ranked by feasibility against impact. Hover the map or the cards.</p>
+    <div class="sol-wrap">
+      <div class="matrix"><svg id="matrixSvg" viewBox="0 0 420 380"></svg></div>
+      <div class="sol-list" id="solList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="outro">
+  <div class="wrap">
+    <h2>Grow<br>forward.</h2>
+    <p>Sustainability isn't one breakthrough — it's a portfolio of bets, sequenced by what's ready and what matters most.</p>
+    <a href="index.html" data-hov>← Back to the portfolio</a>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('a.back').forEach(b=>b.addEventListener('click',()=>{window.location.href='index.html';}));
+const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function r(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+document.addEventListener('mouseover',e=>{if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});});
+ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{document.getElementById('progress').style.width=(s.progress*100)+'%';}});
+
+/* PESTEL */
+const PESTEL=[
+ ['P','Political','Farm subsidies & post-Brexit trade deals','Food-security agendas','Carbon & land-use policy'],
+ ['E','Economic','Input-cost & fuel volatility','Labour shortages','Premiums for sustainable produce'],
+ ['S','Social','Plant-forward & provenance demand','Distrust of "lab" food','Rural community & farm succession'],
+ ['T','Technological','Precision ag & IoT sensing','AI/ML crop models','Gene editing & robotics'],
+ ['E','Environmental','Soil degradation & water stress','Biodiversity loss','Climate volatility & extremes'],
+ ['L','Legal','Gene-editing & novel-food rules','Data ownership on-farm','Emissions reporting & MRV']
+];
+document.getElementById('pestel').innerHTML=PESTEL.map((p,i)=>`<div class="pcard reveal" data-hov data-i="${i}"><div class="ltr">${p[0]}</div><h4>${p[1]}</h4><div class="body"><ul>${p.slice(2).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="cue">tap to expand →</div></div>`).join('');
+document.querySelectorAll('.pcard').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('open')));
+
+/* TECHNOLOGY RADAR */
+const CAT={Field:'#C25A2E',Data:'#5A201D',Bio:'#5f7a3a',Machine:'#C79A3E'};
+const RINGS=['Adopt','Trial','Assess','Hold'];
+const RR=[72,120,168,214];
+const TECH=[
+ {n:'Precision farming',ring:0,ang:-30,cat:'Field',d:'GPS-guided, variable-rate application of seed, water and nutrients. Mature and ROI-positive at scale today.',sdg:['SDG 2','SDG 12']},
+ {n:'Drone remote sensing',ring:0,ang:40,cat:'Data',d:'UAV multispectral imagery for crop-health, stress and yield mapping — cheap, fast, field-ready.',sdg:['SDG 2','SDG 15']},
+ {n:'Regenerative practices',ring:0,ang:150,cat:'Bio',d:'Cover crops, no-till and rotation that rebuild soil carbon. Low-tech, high-impact, adoptable now.',sdg:['SDG 13','SDG 15']},
+ {n:'AgriTech IoT sensors',ring:1,ang:10,cat:'Data',d:'In-field soil-moisture, micro-climate and tank telemetry feeding real-time decisions. Scaling fast.',sdg:['SDG 6','SDG 12']},
+ {n:'AI crop optimisation',ring:1,ang:95,cat:'Data',d:'ML models for irrigation, disease forecasting and yield. Proven in pilots; integration is the hurdle.',sdg:['SDG 2','SDG 13']},
+ {n:'Autonomous machinery',ring:2,ang:-70,cat:'Machine',d:'Self-driving tractors and weeding robots. Real, but capital-heavy and still maturing operationally.',sdg:['SDG 8','SDG 12']},
+ {n:'Vertical agriculture',ring:2,ang:120,cat:'Field',d:'Controlled-environment growing near cities. High impact on land & water, still fighting energy economics.',sdg:['SDG 11','SDG 12']},
+ {n:'Gene-edited crops',ring:3,ang:60,cat:'Bio',d:'CRISPR traits for drought and disease resistance. Powerful upside gated by regulation and trust.',sdg:['SDG 2','SDG 13']}
+];
+const svg=document.getElementById('radarSvg');const NS='http://www.w3.org/2000/svg';const cx=250,cy=250;
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+[214,168,120,72].forEach((r,i)=>{svg.appendChild(el('circle',{cx,cy,r,fill:i%2?'#EFE6D6':'#F6EFE2',stroke:'#d8c9b0','stroke-width':1}));});
+RINGS.forEach((name,i)=>{const t=el('text',{x:cx,y:cy-RR[i]+13,'text-anchor':'middle','font-family':'Space Mono, monospace','font-size':9,fill:'#8A7A66','letter-spacing':1});t.textContent=name.toUpperCase();svg.appendChild(t);});
+TECH.forEach((t,i)=>{
+  const a=t.ang*Math.PI/180;const x=cx+Math.cos(a)*RR[t.ring];const y=cy+Math.sin(a)*RR[t.ring];
+  const g=el('g',{class:'blip','data-hov':''});g.dataset.i=i;
+  g.appendChild(el('circle',{cx:x,cy:y,r:9,fill:CAT[t.cat]}));
+  const lbl=el('text',{x:x,y:y-14,'text-anchor':'middle'});lbl.textContent=t.n.split(' ')[0];g.appendChild(lbl);
+  g.addEventListener('click',()=>showTech(i));svg.appendChild(g);
+});
+function showTech(i){
+  document.querySelectorAll('.blip').forEach(b=>b.classList.toggle('sel',+b.dataset.i===i));
+  const t=TECH[i];
+  document.getElementById('techDetail').innerHTML=
+   `<div class="rings">${RINGS.map((r,j)=>`<span class="${j===t.ring?'on':''}">${r}</span>`).join('')}</div>
+    <div class="cat">${t.cat} · technology</div><h4>${t.n}</h4><p>${t.d}</p>
+    <div class="sdg">${t.sdg.map(s=>`<b>${s}</b>`).join('')}</div>`;
+}
+showTech(0);
+
+/* SOLUTIONS matrix */
+const SOL=[
+ {n:'Precision + IoT nutrient management',feas:.86,impact:.66,rank:1,sdg:['SDG 2','SDG 12'],d:'Sensor-guided, variable-rate inputs cut waste and runoff. Ready now, fast payback.'},
+ {n:'AI water & crop optimisation',feas:.62,impact:.84,rank:2,sdg:['SDG 6','SDG 13'],d:'Forecasting irrigation and disease to save water and yield under climate stress.'},
+ {n:'Regenerative soil + carbon markets',feas:.55,impact:.8,rank:3,sdg:['SDG 13','SDG 15'],d:'Rebuild soil carbon and monetise it — climate and biodiversity upside, behaviour-change heavy.'},
+ {n:'Peri-urban vertical farming',feas:.4,impact:.72,rank:4,sdg:['SDG 11','SDG 12'],d:'Local, land- and water-light production; still gated by energy cost and capex.'}
+];
+const ms=document.getElementById('matrixSvg');const MX=420,MY=380,P=44;
+function mx_(v){return P+v*(MX-P-16)}function my_(v){return (MY-P)-v*(MY-P-16)}
+ms.appendChild(el('line',{x1:P,y1:MY-P,x2:MX-8,y2:MY-P,stroke:'#d8c9b0','stroke-width':1.5}));
+ms.appendChild(el('line',{x1:P,y1:MY-P,x2:P,y2:8,stroke:'#d8c9b0','stroke-width':1.5}));
+let tx=el('text',{x:(MX+P)/2,y:MY-12,'text-anchor':'middle','font-family':'Space Mono, monospace','font-size':10,fill:'#8A7A66'});tx.textContent='FEASIBILITY →';ms.appendChild(tx);
+let ty=el('text',{x:16,y:20,'font-family':'Space Mono, monospace','font-size':10,fill:'#8A7A66'});ty.textContent='↑ IMPACT';ms.appendChild(ty);
+SOL.forEach((s,i)=>{
+  const g=el('g',{class:'pt','data-hov':''});g.dataset.i=i;
+  g.appendChild(el('circle',{cx:mx_(s.feas),cy:my_(s.impact),r:13,fill:'#5f7a3a','fill-opacity':.85}));
+  const n=el('text',{x:mx_(s.feas),y:my_(s.impact)+4,'text-anchor':'middle','font-family':'Anton, sans-serif','font-size':13,fill:'#F1E8D8'});n.textContent=s.rank;g.appendChild(n);
+  g.addEventListener('mouseenter',()=>selSol(i));ms.appendChild(g);
+});
+document.getElementById('solList').innerHTML=SOL.map((s,i)=>`<div class="sol" data-hov data-i="${i}"><div class="r">RANK 0${s.rank} · feasibility ${Math.round(s.feas*100)}% · impact ${Math.round(s.impact*100)}%</div><h4>${s.n}</h4><p>${s.d}</p><div class="sdg">${s.sdg.map(x=>`<b>${x}</b>`).join('')}</div></div>`).join('');
+function selSol(i){document.querySelectorAll('.sol').forEach(s=>s.classList.toggle('sel',+s.dataset.i===i));document.querySelectorAll('.matrix .pt').forEach(p=>p.classList.toggle('sel',+p.dataset.i===i));}
+document.querySelectorAll('.sol').forEach(s=>s.addEventListener('mouseenter',()=>selSol(+s.dataset.i)));
+selSol(0);
+</script>
+</body>
+</html>

@@ -58,7 +58,20 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between}
 .player.playing .rec{animation:spin 3s linear infinite}
 .player .ptxt{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:900px){.nav-links{display:none}}
+/* burger + full-screen sheet take over from .nav-links on small screens */
+.nav-burger{display:none;width:34px;height:34px;background:none;border:none;padding:0;position:relative;pointer-events:auto;cursor:none}
+.nav-burger span{position:absolute;left:6px;width:22px;height:2px;background:#fff;transition:transform .35s cubic-bezier(.7,0,.2,1),opacity .2s}
+.nav-burger span:nth-child(1){top:13px}
+.nav-burger span:nth-child(2){top:20px}
+.nav-burger.open span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}
+.nav-sheet{position:fixed;inset:0;z-index:490;background:var(--ink);color:var(--bone);display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 8vw;transform:translateY(-101%);transition:transform .55s cubic-bezier(.7,0,.2,1);pointer-events:none;visibility:hidden}
+.nav-sheet.open{transform:translateY(0);pointer-events:auto;visibility:visible}
+.nav-sheet a{font-family:'Anton',sans-serif;font-size:clamp(30px,8.5vw,54px);text-transform:uppercase;line-height:1.18;color:var(--bone);transition:color .25s}
+.nav-sheet a:active{color:var(--sienna-2)}
+.nav-sheet .sheet-foot{margin-top:34px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+body.menu-open{overflow:hidden}
+@media(max-width:900px){.nav-links{display:none}.nav-burger{display:block}}
 
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:90px}
@@ -234,6 +247,42 @@ section{position:relative}
 .btn.solid:hover{background:var(--sienna);border-color:var(--sienna);transform:translateY(-2px)}
 .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);margin-top:80px;padding:26px 0}
 @media(max-width:760px){.contact-grid{grid-template-columns:1fr;gap:40px}}
+
+/* ── phones ── */
+@media(max-width:600px){
+  /* full-viewport sections leave big dead zones on a phone — let content set the height.
+     .hero, .portal and .music override this themselves where the height is doing work. */
+  section{min-height:auto}
+  .hero{min-height:92vh;padding-top:84px}
+  .hero-kicker{flex-wrap:wrap;gap:6px 12px;margin-bottom:18px}
+  .hero-foot{flex-direction:column;align-items:flex-start;gap:20px;margin-top:34px}
+  .hero-links{flex-wrap:wrap;gap:14px 20px}
+  .scroll-cue{flex-direction:row;align-items:center;gap:10px}
+  .scroll-cue .bar{height:26px}
+  .marquee{margin-top:34px;padding:12px 0}
+  .marquee-track{gap:24px}
+  .marquee-track span{font-size:18px}
+  .marquee-track b{font-size:12px}
+
+  .pad{padding:64px 0}
+  .sec-head{margin-bottom:34px;padding-bottom:16px}
+
+  .about-grid{gap:44px}
+  .about-left .quote{padding-left:16px;margin:18px 0}
+  .resume-stage{min-height:auto;padding-top:54px;padding-bottom:8px}
+
+  .proj-grid{grid-auto-rows:minmax(152px,auto)}
+
+  .music{min-height:112vh}
+  .deck-stage{margin-top:24px}
+  .mus-enter{padding:15px 22px;font-size:12px;margin-top:26px}
+
+  .contact{padding-top:70px}
+  .contact-grid{margin-top:40px}
+  .foot-bottom{flex-direction:column;gap:8px;margin-top:50px}
+}
+/* touch devices never fire :hover — surface the deck affordance where there's room for it */
+@media(hover:none) and (min-width:821px){.deck-cta{opacity:1;transform:translate(-50%,0)}}
 </style>
 </head>
 <body>
@@ -258,8 +307,22 @@ section{position:relative}
       <a href="#music" data-hov>Music</a>
       <a href="#contact" data-hov>Contact</a>
     </div>
+    <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navSheet">
+      <span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="nav-sheet" id="navSheet">
+  <a href="#about">About</a>
+  <a href="#tree">Been There</a>
+  <a href="#projects">Projects</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="#music">Music</a>
+  <a href="music.html">Record Library</a>
+  <a href="#contact">Contact</a>
+  <div class="sheet-foot">Janmesh Jha — Creatively Innovate</div>
+</div>
 
 <!-- HERO -->
 <header id="top" class="hero">
@@ -496,6 +559,21 @@ section{position:relative}
 
 gsap.registerPlugin(ScrollTrigger);
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href');const t=id.length>1&&document.querySelector(id);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
+
+/* mobile menu */
+const burger=document.getElementById('burger'),navSheet=document.getElementById('navSheet');
+function setMenu(open){
+  burger.classList.toggle('open',open);
+  navSheet.classList.toggle('open',open);
+  document.body.classList.toggle('menu-open',open);
+  burger.setAttribute('aria-expanded',open?'true':'false');
+  burger.setAttribute('aria-label',open?'Close menu':'Open menu');
+}
+burger.addEventListener('click',()=>setMenu(!navSheet.classList.contains('open')));
+navSheet.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+window.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
+/* the sheet only exists under 900px — make sure it can't get stuck open on resize */
+matchMedia('(min-width:901px)').addEventListener('change',e=>{if(e.matches)setMenu(false);});
 
 /* cursor */
 const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');

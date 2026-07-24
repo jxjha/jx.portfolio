@@ -135,7 +135,49 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:none}
   .hero-grid{grid-template-columns:1fr;gap:10px}
   .deck-scene{order:-1;padding:6px 0}
   .vol{display:none}
-  .btime{display:none}
+}
+
+/* ── phones ── */
+@media(max-width:600px){
+  body{padding-bottom:104px}
+  .topbar{padding:14px 20px}
+  .topbar .title{font-size:15px}
+  .topbar .cnt{display:none}
+  .lib-hero{padding:16px 0 30px}
+  .lib-sub{font-size:15px;margin-top:16px}
+  .lib-stats{gap:8px;margin-top:20px}
+  .lib-stats span{font-size:10px;padding:7px 11px}
+  .levels{height:26px;margin-top:20px}
+  .deck{width:min(460px,82vw);height:min(306px,56vw)}
+  .deck-scene{height:auto}
+
+  .crate{padding:34px 0 30px}
+  .crate-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .crate-head .hint{font-size:10px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:14px}
+  .meta .tn{font-size:15px}
+  .meta .tm{font-size:9px}
+  .art .cnum{font-size:22px;left:10px;bottom:9px}
+  .art .cmark{display:none}
+  .art .play{width:42px;height:42px;font-size:12px}
+
+  .bar-in{flex-wrap:wrap;gap:10px 14px;padding:12px 20px}
+  .ctrl{order:2}
+  .ctrl button{width:34px;height:34px}
+  .ctrl .big{width:46px;height:46px}
+  .bnow{order:1;flex:1 0 100%}
+  .btime{order:3;margin-left:auto;font-size:10px}
+}
+@media(max-width:330px){.grid{grid-template-columns:1fr}}
+
+/* touch devices never fire :hover — the disc peek and play badge must not depend on it */
+@media(hover:none){
+  .art .play{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .art .disc{transform:translate(22%,-50%)}
+  .art .cover{transform:translateX(-3%) rotate(-.8deg)}
+  .sleeve:hover{transform:none}
+  .seek b{transform:translateY(-50%) scale(1)}
+  .seek{height:7px}
 }
 </style>
 </head>
@@ -298,6 +340,17 @@ let dragging=false;
 seek.addEventListener('mousedown',()=>{dragging=true;});
 window.addEventListener('mouseup',()=>{dragging=false;});
 window.addEventListener('mousemove',e=>{if(dragging)seekTo(e);});
+/* touch drag — Touch objects carry clientX, so seekTo takes them as-is */
+seek.addEventListener('touchstart',e=>{dragging=true;seekTo(e.touches[0]);},{passive:true});
+seek.addEventListener('touchmove',e=>{if(dragging)seekTo(e.touches[0]);},{passive:true});
+window.addEventListener('touchend',()=>{dragging=false;});
+
+/* the bar wraps to two rows on narrow screens — reserve exactly its height */
+const barEl=document.querySelector('.bar');
+function fitBar(){document.body.style.paddingBottom=(barEl.offsetHeight+18)+'px';}
+addEventListener('resize',fitBar);
+addEventListener('load',fitBar);
+fitBar();
 /* volume */
 const vol=document.getElementById('vol');
 audio.volume=parseFloat(vol.value);

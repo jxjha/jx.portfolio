@@ -234,19 +234,17 @@ section{position:relative}
 .contact{background:var(--bone);color:var(--ink);padding-top:clamp(90px,13vh,160px)}
 .contact-big{font-family:'Anton',sans-serif;font-size:clamp(52px,12vw,180px);line-height:.86;text-transform:uppercase;letter-spacing:-.01em}
 .contact-big a:hover{color:var(--sienna)}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:64px}
-.cform{display:flex;flex-direction:column;gap:18px}
-.cform input,.cform textarea{background:transparent;border:none;border-bottom:1px solid var(--line);padding:14px 0;font-family:'Space Mono',monospace;font-size:14px;color:var(--ink);outline:none;transition:border-color .3s}
-.cform input:focus,.cform textarea:focus{border-color:var(--oxblood)}
-.cform textarea{resize:vertical;min-height:90px}
-.socials{display:flex;flex-direction:column;gap:16px}
-.socials a{font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.06em;display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px;transition:color .3s,padding .3s}
-.socials a:hover{color:var(--sienna);padding-left:8px}
+.contact-lines{display:flex;flex-direction:column;margin-top:64px;max-width:820px}
+.contact-lines a{font-family:'Space Mono',monospace;font-size:clamp(15px,1.7vw,20px);letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:22px 0;transition:color .3s,padding .3s}
+.contact-lines a:last-child{border-bottom:1px solid var(--line)}
+.contact-lines a:hover{color:var(--sienna);padding-left:10px}
+.contact-lines a span:last-child{opacity:.5;transition:opacity .3s,transform .3s}
+.contact-lines a:hover span:last-child{opacity:1;transform:translate(4px,-4px)}
 .btn{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:14px 22px;border:1px solid var(--ink);border-radius:100px;display:inline-flex;align-items:center;gap:8px;transition:background .3s,color .3s,transform .3s;background:transparent;cursor:none}
 .btn.solid{background:var(--ink);color:var(--bone)}
 .btn.solid:hover{background:var(--sienna);border-color:var(--sienna);transform:translateY(-2px)}
 .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);margin-top:80px;padding:26px 0}
-@media(max-width:760px){.contact-grid{grid-template-columns:1fr;gap:40px}}
+@media(max-width:760px){.contact-lines a{padding:18px 0}}
 
 /* ── phones ── */
 @media(max-width:600px){
@@ -278,7 +276,7 @@ section{position:relative}
   .mus-enter{padding:15px 22px;font-size:12px;margin-top:26px}
 
   .contact{padding-top:70px}
-  .contact-grid{margin-top:40px}
+  .contact-lines{margin-top:40px}
   .foot-bottom{flex-direction:column;gap:8px;margin-top:50px}
 }
 /* touch devices never fire :hover — surface the deck affordance where there's room for it */
@@ -516,19 +514,10 @@ section{position:relative}
     <div class="contact-big reveal" style="margin-top:20px">
       <a href="mailto:work.jxjha@gmail.com" data-hov>Say<br>Hello ↗</a>
     </div>
-    <div class="contact-grid">
-      <form class="cform" onsubmit="event.preventDefault();this.querySelector('.form-note').textContent='Thanks — connect this to an email service on launch.';">
-        <input type="text" placeholder="YOUR NAME" required />
-        <input type="email" placeholder="YOUR EMAIL" required />
-        <textarea placeholder="YOUR MESSAGE"></textarea>
-        <button type="submit" class="btn solid" style="align-self:flex-start" data-hov>Send →</button>
-        <span class="form-note mono" style="font-size:11px;color:var(--muted)"></span>
-      </form>
-      <div class="socials">
-        <a href="https://instagram.com/jxjha" target="_blank" data-hov><span>Instagram · @jxjha</span><span>↗</span></a>
-        <a href="https://linkedin.com/in/janmesh-jha" target="_blank" data-hov><span>LinkedIn</span><span>↗</span></a>
-        <a href="mailto:work.jxjha@gmail.com" data-hov><span>work.jxjha@gmail.com</span><span>↗</span></a>
-      </div>
+    <div class="contact-lines reveal">
+      <a href="mailto:work.jxjha@gmail.com" data-hov><span>work.jxjha@gmail.com</span><span>↗</span></a>
+      <a href="https://linkedin.com/in/janmesh-jha" target="_blank" rel="noopener" data-hov><span>LinkedIn · Janmesh Jha</span><span>↗</span></a>
+      <a href="https://instagram.com/jxjha" target="_blank" rel="noopener" data-hov><span>Instagram · @jxjha</span><span>↗</span></a>
     </div>
     <div class="foot-bottom">
       <span>© 2026 Janmesh Jha</span>

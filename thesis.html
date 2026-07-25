@@ -411,5 +411,6 @@ const flows=[...document.querySelectorAll('.flow')];
 function showFlow(i){flows.forEach((f,j)=>f.classList.toggle('sel',j===i));const F=FLOWS[i];document.getElementById('fk').textContent=F.k;document.getElementById('fh').textContent=F.h;document.getElementById('fp').textContent=F.p;}
 flows.forEach((f,i)=>{f.addEventListener('mouseenter',()=>showFlow(i));f.addEventListener('click',()=>showFlow(i));});
 </script>
+<script src="casenav.js"></script>
 </body>
 </html>

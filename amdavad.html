@@ -363,5 +363,6 @@ document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))docum
 gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});});
 ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{document.getElementById('progress').style.width=(s.progress*100)+'%';}});
 </script>
+<script src="casenav.js"></script>
 </body>
 </html>

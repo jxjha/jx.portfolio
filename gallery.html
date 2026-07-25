@@ -79,6 +79,18 @@ a{color:inherit;text-decoration:none}
 .end-cta .et{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--muted);margin-bottom:12px}
 .end-cta a{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--bone);border-radius:100px;padding:14px 24px;color:var(--bone);transition:background .3s,color .3s}
 .end-cta a:hover{background:var(--bone);color:var(--ink)}
+@media(max-width:600px){
+  .topbar{padding:16px 18px}
+  .topbar .title{font-size:14px;letter-spacing:.06em}
+  .topbar span:last-child{display:none}
+  .counter .now{font-size:38px}
+  .caption{max-width:70vw;bottom:52px;right:18px}
+  .caption .t{font-size:14px}
+  .gtip{display:none}
+  .hint{font-size:10px;letter-spacing:.16em;bottom:56px}
+  .end-cta{bottom:74px}
+  .end-cta a{padding:12px 20px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -127,7 +139,9 @@ const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x0d0908);
 scene.fog=new THREE.FogExp2(0x0d0908,0.013);
 
-const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,0.1,600);
+/* narrower viewports = wider FOV so the images and the path both fit at once */
+function fovFor(){const a=innerWidth/innerHeight;return a<0.75?92:a<1?82:68;}
+const camera=new THREE.PerspectiveCamera(fovFor(),innerWidth/innerHeight,0.1,600);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('scene'),antialias:true});
 renderer.setSize(innerWidth,innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -181,6 +195,8 @@ const loader=new THREE.TextureLoader(manager);
 const items=[]; // {group, img, ti}
 const up=new THREE.Vector3(0,1,0);
 
+const NARROW=innerWidth/innerHeight<0.85;
+const LAT=NARROW?5.2:7.6;   // pull planes closer to the path on narrow screens so they read at phone size
 for(let i=0;i<TOTAL;i++){
   const ti=0.16+(i/(TOTAL-1))*(0.93-0.16); // spread out, starting after the lead-in runway
   const base=curve.getPointAt(ti);
@@ -188,7 +204,7 @@ for(let i=0;i<TOTAL;i++){
   const side=new THREE.Vector3().crossVectors(tan,up).normalize();
 
   // strictly alternate on either side of the path, at a fixed distance
-  const lateral=(i%2===0? 1 : -1) * 7.6;
+  const lateral=(i%2===0? 1 : -1) * LAT;
   const pos=base.clone().add(side.clone().multiplyScalar(lateral)).add(up.clone().multiplyScalar(1.4));
 
   const group=new THREE.Group();
@@ -326,7 +342,7 @@ function animate(){
 animate();
 
 /* ---------- resize ---------- */
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=fovFor();camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 
 /* ---------- loader ---------- */
 const lfill=document.getElementById('lfill'),lp=document.getElementById('lp'),enterBtn=document.getElementById('enter'),loaderEl=document.getElementById('loader');

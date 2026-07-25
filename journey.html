@@ -57,8 +57,22 @@ a{color:inherit;text-decoration:none}
 .endcta a{display:inline-flex;gap:10px;align-items:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);border-radius:100px;padding:13px 22px;color:var(--ink);transition:.3s}
 .endcta a:hover{background:var(--ink);color:var(--bone)}
 /* project panel */
+.pp-backdrop{position:fixed;inset:0;z-index:15;background:rgba(20,10,8,0);pointer-events:none;transition:background .5s cubic-bezier(.4,0,.1,1)}
+.pp-backdrop.on{background:rgba(20,10,8,.55);pointer-events:auto}
 .projpanel{position:fixed;top:0;right:0;height:100%;width:min(420px,90vw);z-index:20;background:#20130f;color:var(--bone);padding:34px clamp(24px,3vw,40px);transform:translateX(105%);transition:transform .5s cubic-bezier(.4,0,.1,1);pointer-events:auto;overflow-y:auto;box-shadow:-30px 0 60px rgba(0,0,0,.4)}
 .projpanel.open{transform:translateX(0)}
+@media(max-width:600px){
+  .projpanel{width:100vw;padding:24px 22px 34px}
+  .topbar .t{font-size:14px}
+  .topbar span:last-child{display:none}
+  .cap{top:60px;max-width:88vw}
+  .cap h2{font-size:22px;line-height:1.05}
+  .cap-cta{padding:10px 16px;font-size:11px}
+  .hint{bottom:32px;font-size:10px;letter-spacing:.18em}
+  .pline{bottom:20px}
+  .stages{right:14px}
+  .endcta{bottom:70px}
+}
 .projpanel .pp-close{position:absolute;top:20px;right:22px;background:none;border:1px solid rgba(241,232,216,.3);color:var(--bone);width:34px;height:34px;border-radius:50%;cursor:none;font-size:14px}
 .projpanel .pp-close:hover{background:var(--sienna);border-color:var(--sienna)}
 .projpanel .pp-k{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--sienna-2);margin-bottom:10px}
@@ -102,6 +116,7 @@ a{color:inherit;text-decoration:none}
   <div class="pline"><i id="pfill"></i></div>
 </div>
 
+<div class="pp-backdrop" id="ppBack"></div>
 <div class="projpanel" id="projpanel">
   <button class="pp-close" id="ppClose" data-hov>✕</button>
   <div class="pp-k" id="ppK"></div>
@@ -116,7 +131,9 @@ a{color:inherit;text-decoration:none}
 <script>
 const scene=new THREE.Scene();
 scene.fog=new THREE.Fog(0xEBCB9E,80,300);
-const camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,600);
+/* wider FOV + pull-back on narrow / portrait screens so buildings actually read on a phone */
+function fovFor(){const a=innerWidth/innerHeight;return a<0.75?76:a<1?66:52;}
+const camera=new THREE.PerspectiveCamera(fovFor(),innerWidth/innerHeight,0.1,600);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('scene'),antialias:true,alpha:true});
 renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.outputEncoding=THREE.sRGBEncoding;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -191,15 +208,15 @@ function bUniversity(){const g=new THREE.Group();
 /* ---- hero buildings + their projects ---- */
 const HERO=[
  {build:bOpen,x:-16,z:-12,k:'2018 — 2021',h:'Media, Magazine\n& Mischief',role:'Amazing Amdavad · LFA · Freelance',p:'A city-media brand to 200k, a university magazine across six editions, and a freelance camera. Loud, open, creative.',
-  projects:[{n:'Amazing Amdavad — 7k → 200k followers'},{n:'LFA Magazine — 6 editions, Creative Head'},{n:'Freelance photography',link:'gallery.html'},{n:'Founded Chess & Photography clubs'}]},
+  projects:[{n:'Amazing Amdavad — 7k → 200k followers',link:'amdavad.html'},{n:'LFA Magazine — 6 editions, Creative Head'},{n:'Freelance photography',link:'gallery.html'},{n:'Founded Chess & Photography clubs'}]},
  {build:bGarage,x:16,z:-56,k:'2021 — 2022',h:"Founder's\nAssociate",role:'Hello Skate Mobility · seed-stage startup',p:'A shared-scooter startup where I wore every hat — roadmap, operations, launches, fundraising. Scrappy and all-in.',
-  projects:[{n:'Product roadmap — JTBD & cohort analysis'},{n:'95%+ fleet uptime operations'},{n:'GTM & new campus launches'},{n:'Fundraising decks · 2 B2B partnerships'}]},
+  projects:[{n:'The full year — product, ops, GTM, fundraising',link:'skate.html'},{n:'95%+ fleet uptime operations'},{n:'GTM & new campus launches'},{n:'Fundraising decks · 2 B2B partnerships'}]},
  {build:bStudio,x:-16,z:-100,k:'2024',h:'Multimedia\n& UX',role:'Bosch Rexroth AG · Ulm',p:'AI video pipelines, learning content in seven languages, and UX that lifted usability 17%. A production studio.',
   projects:[{n:'AI video pipeline — Synthesia + OBS'},{n:'7-language learning paths'},{n:'UX/UI — +17% usability'},{n:'Aftermarket tool wireframes'}]},
  {build:bOffice,x:16,z:-144,k:'2025',h:'Data &\nDigitalisation',role:'Bosch Rexroth AG · Sales & Distribution',p:'SAP and Power BI across 20 markets — dashboards, surveys, tool analytics. Structured and data-lit.',
   projects:[{n:'Assortment Management dashboard',link:'assortment.html'},{n:'Distributor dashboards — 20 markets'},{n:'Customer surveys — +10% response'},{n:'Tool-adoption analytics → 4 UX recs'}]},
  {build:bUniversity,x:-16,z:-190,k:'2022 — 2025',h:'Hochschule\nHarz',role:'M.Sc. · thesis + academic projects',p:'Where the case studies were born — a 1.3 thesis and a stack of projects, from smart wardrobes to solar drones.',
-  projects:[{n:"Master's Thesis — Expectation Exchange (1.3)"},{n:'ReVamp — Smart Wardrobe',link:'revamp.html'},{n:'Drone Enterprise — SQL & BI',link:'assortment.html'},{n:'UAV Photogrammetry → Solar',link:'uav.html'},{n:'Bias & Artificial Intelligence',link:'bias.html'},{n:'Future of Sustainable Agriculture',link:'agriculture.html'}]}
+  projects:[{n:"Master's Thesis — Expectation Exchange (1.3)",link:'thesis.html'},{n:'ReVamp — Smart Wardrobe',link:'revamp.html'},{n:'Drone Enterprise — SQL & BI',link:'assortment.html'},{n:'UAV Photogrammetry → Solar',link:'uav.html'},{n:'Bias & Artificial Intelligence',link:'bias.html'},{n:'Future of Sustainable Agriculture',link:'agriculture.html'}]}
 ];
 const heroGroups=[];
 HERO.forEach((b,i)=>{const g=b.build();g.position.set(b.x,0,b.z);g.rotation.y=b.x>0?-0.5:0.5;g.scale.y=0.02;g.userData.z=b.z;g.userData.idx=i;scene.add(g);heroGroups.push(g);
@@ -237,15 +254,20 @@ function setStage(i){if(i===curStage)return;curStage=i;const b=HERO[i];
 
 /* project panel */
 const panel=document.getElementById('projpanel');
+const backdrop=document.getElementById('ppBack');
 function openPanel(i){if(i<0)return;const b=HERO[i];
   document.getElementById('ppK').textContent=b.k;
   document.getElementById('ppH').innerHTML=b.h.replace('\n',' ');
   document.getElementById('ppRole').textContent=b.role;
   document.getElementById('ppList').innerHTML=b.projects.map(pr=>pr.link?`<a class="pp-item link" href="${pr.link}" data-hov><span class="d"></span><span class="n">${pr.n}</span><span class="go">Open →</span></a>`:`<div class="pp-item"><span class="d"></span><span class="n">${pr.n}</span></div>`).join('');
-  panel.classList.add('open');lenis.stop();}
-function closePanel(){panel.classList.remove('open');lenis.start();}
+  panel.classList.add('open');backdrop.classList.add('on');lenis.stop();}
+function closePanel(){panel.classList.remove('open');backdrop.classList.remove('on');lenis.start();}
 document.getElementById('ppClose').addEventListener('click',closePanel);
 document.getElementById('capCta').addEventListener('click',()=>openPanel(curStage));
+backdrop.addEventListener('click',closePanel);
+/* also close on Escape or a click anywhere outside the panel (canvas, buttons that aren't in the panel) */
+addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closePanel();});
+addEventListener('pointerdown',e=>{if(!panel.classList.contains('open'))return;if(panel.contains(e.target))return;/* the caption CTA re-opens on click, so ignore it */if(e.target.closest('#capCta'))return;closePanel();},true);
 
 /* raycast building click/hover */
 const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
@@ -266,9 +288,12 @@ function frame(){
   const topDown=1-smooth(0.02,0.15,p);
   const tz=lerp(Z0+26,Z1-16,travel);
   const sway=Math.sin(p*6)*4;
-  const cruise=new THREE.Vector3(sway*0.5,13,tz+46);        // lower camera
-  const cruiseLook=new THREE.Vector3(0,17,tz-38);           // look a little above the horizon → clean sky for the caption
-  const tdPos=new THREE.Vector3(0,130,tz+10);
+  /* portrait/narrow → pull the camera back and lift it so buildings on either side of the road stay in frame */
+  const narrow=innerWidth/innerHeight<0.85;
+  const camZoff=narrow?68:46, camY=narrow?16:13, tdY=narrow?170:130;
+  const cruise=new THREE.Vector3(sway*0.5,camY,tz+camZoff);
+  const cruiseLook=new THREE.Vector3(0,narrow?15:17,tz-38);
+  const tdPos=new THREE.Vector3(0,tdY,tz+10);
   const tdLook=new THREE.Vector3(0,0,tz);
   camPos.copy(cruise).lerp(tdPos,topDown);
   look.copy(cruiseLook).lerp(tdLook,topDown);
@@ -287,7 +312,7 @@ function frame(){
   renderer.render(scene,camera);
 }
 frame();
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=fovFor();camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 
 const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
 addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});

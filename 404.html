@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lost the trail — Janmesh Jha</title>
+<meta name="description" content="This page took a wrong turn. Let's get you back to the map.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Lost the trail — Janmesh Jha">
+<meta property="og:description" content="404 — this page took a wrong turn.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#F1E8D8;--ink:#1E1411;--oxblood:#5A201D;--sienna:#C25A2E;--sienna-2:#D9713F;--muted:#8A7A66}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:radial-gradient(ellipse at 50% 30%,#2b100c,#0d0806);color:var(--bone);font-family:'Space Mono',monospace;overflow:hidden;cursor:none;display:flex;align-items:center;justify-content:center;padding:24px}
+::selection{background:var(--sienna);color:var(--bone)}
+a{color:inherit;text-decoration:none}
+.cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;top:0;left:0;width:38px;height:38px;border:1px solid rgba(241,232,216,.5);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:58px;height:58px}
+@media(hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+.stage{position:relative;text-align:center;max-width:600px;z-index:2}
+.mark{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--sienna-2);margin-bottom:26px;text-transform:uppercase}
+h1{font-family:'Anton',sans-serif;font-size:clamp(120px,32vw,320px);line-height:.82;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:2px var(--bone);margin-bottom:8px}
+.msg{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(19px,2.5vw,28px);line-height:1.35;margin:0 auto 34px;max-width:32ch;color:rgba(241,232,216,.9)}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.actions a{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:16px 24px;border-radius:100px;border:1px solid rgba(241,232,216,.4);transition:background .3s,color .3s,transform .3s}
+.actions a:hover{background:var(--bone);color:var(--ink);transform:translateY(-3px);border-color:var(--bone)}
+.actions a.solid{background:var(--sienna);border-color:var(--sienna)}
+.actions a.solid:hover{background:var(--sienna-2);color:var(--bone);border-color:var(--sienna-2)}
+.foot{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+
+/* wandering compass */
+.compass{position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:96px;height:96px;border:1px solid rgba(241,232,216,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:sway 4s ease-in-out infinite}
+.compass::before,.compass::after{content:'';position:absolute;background:var(--sienna)}
+.compass::before{width:2px;height:34px;top:14px;border-radius:2px 2px 0 0}
+.compass::after{width:2px;height:34px;bottom:14px;background:rgba(241,232,216,.4);border-radius:0 0 2px 2px}
+.compass i{position:absolute;font-family:'Space Mono',monospace;font-size:9px;color:rgba(241,232,216,.35);letter-spacing:.1em;font-style:normal}
+.compass i.n{top:-14px}.compass i.s{bottom:-14px}.compass i.e{right:-14px}.compass i.w{left:-14px}
+@keyframes sway{0%,100%{transform:translateX(-50%) rotate(-20deg)}50%{transform:translateX(-50%) rotate(20deg)}}
+
+/* faint drifting dust */
+.dust{position:absolute;inset:0;overflow:hidden;z-index:1;pointer-events:none}
+.dust span{position:absolute;width:2px;height:2px;background:rgba(241,232,216,.35);border-radius:50%;animation:drift 14s linear infinite}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(120px,-160px)}}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div>
+<div class="dust" id="dust"></div>
+
+<div class="stage">
+  <div class="compass"><i class="n">N</i><i class="s">S</i><i class="e">E</i><i class="w">W</i></div>
+  <span class="mark">◆ 404 · off the map</span>
+  <h1>Lost.</h1>
+  <p class="msg">This page took a wrong turn. Every one on this site tells a story — this one just doesn't exist. Yet.</p>
+  <div class="actions">
+    <a href="/" class="solid" data-hov>← Back to the showcase</a>
+    <a href="/gallery.html" data-hov>Wander the gallery ↗</a>
+    <a href="/music.html" data-hov>Try the record library ↗</a>
+  </div>
+</div>
+
+<div class="foot">Janmesh Jha · Creatively Innovate</div>
+
+<script>
+const dust=document.getElementById('dust');
+for(let i=0;i<26;i++){const s=document.createElement('span');s.style.left=Math.random()*100+'%';s.style.top=(60+Math.random()*40)+'%';s.style.animationDelay=-Math.random()*14+'s';s.style.opacity=(0.15+Math.random()*0.5).toFixed(2);dust.appendChild(s);}
+const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function r(){rx+=(mx-rx)*0.2;ry+=(my-ry)*0.2;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+document.addEventListener('mouseover',e=>{if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
+document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+</script>
+</body>
+</html>

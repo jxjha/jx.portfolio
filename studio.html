@@ -92,7 +92,7 @@ a{color:inherit;text-decoration:none}
 .pipe-stage-wrap .lbl{color:var(--sienna-2);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .pipe-stage-wrap h3{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(22px,3vw,32px);margin:8px 0 26px}
 .pipe-track{display:flex;align-items:stretch;gap:8px;overflow-x:auto;padding-bottom:6px}
-.pstage{flex:1 1 0;min-width:112px;background:rgba(241,232,216,.05);border:1px solid rgba(241,232,216,.14);border-radius:12px;padding:16px 14px;cursor:none;text-align:left;color:var(--bone);transition:background .3s,border-color .3s,transform .3s;position:relative}
+.pstage{flex:1 1 0;min-width:100px;background:rgba(241,232,216,.05);border:1px solid rgba(241,232,216,.14);border-radius:12px;padding:16px 12px;cursor:none;text-align:left;color:var(--bone);transition:background .3s,border-color .3s,transform .3s;position:relative}
 .pstage:hover,.pstage.on{background:rgba(226,112,58,.16);border-color:var(--sienna-2);transform:translateY(-3px)}
 .pstage .pnum{font-family:'Space Mono',monospace;font-size:10px;color:var(--sienna-2);letter-spacing:.1em}
 .pstage .pico{width:26px;height:26px;margin:10px 0 8px;color:var(--gold-2)}
@@ -207,10 +207,10 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">The AI video pipeline</h2></div>
-    <p class="ch-lead reveal">My most significant build: a production line for AI-generated training video that let <em>one</em> person produce multilingual content — no native speakers, no physical studio, a fraction of the cost and time.</p>
+    <p class="ch-lead reveal">My most significant build: an end-to-end production line for training video — from surfacing what the network actually needed, all the way to a signed-off, multilingual video live in the LMS — that let <em>one</em> person do what used to take a studio and a crew.</p>
     <div class="pipe-stage-wrap reveal">
       <span class="lbl">Interactive · the production line</span>
-      <h3>Script to LMS — click a stage.</h3>
+      <h3>Requirements to deployment — click a stage.</h3>
       <div class="pipe-track" id="pipeTrack"></div>
       <div class="pipe-detail" id="pipeDetail"></div>
     </div>
@@ -310,18 +310,22 @@ ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{document.getElementById('pr
 
 /* interactive pipeline */
 const STAGES=[
- {k:'Script',tool:'Brief + copy',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>',
-  d:'Every video starts as a structured script — the message, the sequence, the on-screen beats — written once so it can be produced many times, in many languages.'},
- {k:'AI avatar',tool:'Synthesia',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
-  d:'Synthesia turns the script into a presenter-led video with an AI avatar — no camera, no studio booking, no native speaker required for each market. This is what made multilingual production affordable.'},
- {k:'Capture',tool:'OBS · Green Room',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>',
-  d:'For human-recorded sessions I ran the Green Room — lighting, audio and setup — and OBS Studio for capture and post-processing, so the live pipeline matched the AI one in quality.'},
- {k:'Edit',tool:'Premiere Pro',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h4v6H3zM17 9h4v6h-4zM7 12h10"/></svg>',
-  d:'Assembly, trims, captions and brand-consistent polish in Adobe Premiere Pro — the step where AI-generated and live-recorded footage converge into one house style.'},
- {k:'Localise',tool:'AI + QA workflow',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>',
-  d:'The same module rebuilt across seven languages — AI-accelerated translation held to a quality-assurance workflow I designed from scratch, so terminology and brand voice stayed consistent everywhere.'},
- {k:'Publish',tool:'LMS',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/></svg>',
-  d:'Straight into the Learning Management System as structured learning paths — so a distributor anywhere in the network onboards to the same standard, on demand.'}
+ {k:'Requirements',tool:'Survey · Google Analytics',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L21 21"/><path d="M8 11v-1.5M10 11V8M12 11V9.5"/></svg>',
+  d:'The pipeline started with demand, not guesswork. Surveys across the distributor network and Google Analytics on the existing tools surfaced exactly which topics were missing and where users struggled — so every video answered a real, evidenced need.'},
+ {k:'Source',tool:'Product & application managers',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3.5 20c0-3 2.4-5 5.5-5s5.5 2 5.5 5M15 20c0-2 1.2-3.6 3-3.6s3 1.6 3 3.6"/></svg>',
+  d:'Technical accuracy has to come from the people who own the product. I gathered the underlying technical product data and existing presentations directly from the product and application managers responsible for each area.'},
+ {k:'Script',tool:'Training-format script',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>',
+  d:'The raw technical material — data and slides — reshaped into a training-format script: sequenced and paced for how a distributor learns, not how an engineer documents.'},
+ {k:'AI video',tool:'Synthesia',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="10" r="2.3"/><path d="M8 16.5c0-2 1.8-3.3 4-3.3s4 1.3 4 3.3"/></svg>',
+  d:'Synthesia turned the script and its presentation into a presenter-led video with an AI avatar — no camera, no studio booking, and no reshoot needed to add another language later.'},
+ {k:'Approval',tool:'PMs + Director sign-off',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v5c0 5-3 8-7 9-4-1-7-4-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  d:'Nothing shipped unreviewed. Each video went through final approval from the Product Managers who owned the content and the Director who owned the standard.'},
+ {k:'Translate',tool:'Multiple languages',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>',
+  d:'The signed-off master localised into multiple languages — the same module delivered to every market at the same standard.'},
+ {k:'Verify',tool:'Native-speaker QA · pilot',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M8.5 10l2 2 4-4"/></svg>',
+  d:'During the pilot programmes, a native speaker verified every translation before release. As the workflow proved itself and confidence grew, that manual check was dialled back — the process had earned the trust.'},
+ {k:'Deploy',tool:'LMS',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/></svg>',
+  d:'Published into the Learning Management System as structured learning paths — available on demand to the whole distributor network, at a single standard.'}
 ];
 (function(){
   const track=document.getElementById('pipeTrack'),detail=document.getElementById('pipeDetail');

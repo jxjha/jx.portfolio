@@ -194,7 +194,10 @@ const stagesEl=document.getElementById('stages');STAGES.forEach(()=>{const d=doc
 const dots=[...stagesEl.children];
 const capEl=document.getElementById('cap'),capK=document.getElementById('capK'),capH=document.getElementById('capH'),capP=document.getElementById('capP');
 let stage=-1;
-function setStage(i){if(i===stage)return;stage=i;capEl.style.opacity=0;setTimeout(()=>{const s=STAGES[i];capK.textContent=s.k;capH.innerHTML=s.h;capP.textContent=s.p;capEl.style.opacity=1;},170);dots.forEach((d,j)=>d.classList.toggle('on',j===i));}
+/* update text immediately and keep the caption visible — the old setTimeout
+   fade-swap reset opacity to 0 on every stage change, so stages scrolled
+   through faster than the timeout never became visible. CSS handles the fade. */
+function setStage(i){if(i===stage)return;stage=i;const s=STAGES[i];capK.textContent=s.k;capH.innerHTML=s.h;capP.textContent=s.p;capEl.style.opacity=1;dots.forEach((d,j)=>d.classList.toggle('on',j===i));}
 
 const smooth=(a,b,x)=>{const t=Math.min(Math.max((x-a)/(b-a),0),1);return t*t*(3-2*t);};
 const lerp=(a,b,t)=>a+(b-a)*t;const tmp=new THREE.Vector3();

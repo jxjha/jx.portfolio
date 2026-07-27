@@ -285,9 +285,12 @@ const stagesEl=document.getElementById('stages');HERO.forEach(()=>{const d=docum
 const dots=[...stagesEl.children];
 const cap=document.getElementById('cap'),capK=document.getElementById('capK'),capH=document.getElementById('capH');
 let curStage=-1;
+/* update text immediately and keep the caption up — the old fade-out +
+   setTimeout swap reset opacity to 0 on every stage change, so buildings
+   scrolled past faster than the timeout never showed their caption. */
 function setStage(i){if(i===curStage)return;curStage=i;const b=HERO[i];
-  cap.style.opacity=0;cap.style.transform='translateX(-50%) translateY(10px)';
-  setTimeout(()=>{capK.textContent=b.k;capH.innerHTML=b.h.replace('\n','<br>');cap.style.opacity=1;cap.style.transform='translateX(-50%) translateY(0)';},180);
+  capK.textContent=b.k;capH.innerHTML=b.h.replace('\n','<br>');
+  cap.style.opacity=1;cap.style.transform='translateX(-50%) translateY(0)';
   dots.forEach((d,j)=>d.classList.toggle('on',j===i));}
 
 /* project panel */

@@ -33,9 +33,11 @@ body::before{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23m)'/%3E%3C/svg%3E");
   background-size:600px 600px;
 }
-/* the 3D pages paint to a fixed canvas; keep the grain above it but
-   never let it swallow the scene */
-#scene ~ *{position:relative}
+/* NOTE: never force position on #scene siblings here — the 3D pages
+   (journey/uav/gallery) rely on position:fixed for the cursor and the
+   .ui overlay, and a `#scene ~ *` rule silently clobbers it. The grain
+   pseudo-elements are already fixed at a high z-index, so they layer
+   above the canvas without any help. */
 
 @media print{body::after,body::before{display:none}}
 

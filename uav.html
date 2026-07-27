@@ -4,248 +4,298 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>UAV Photogrammetry → Solar Yield · Janmesh Jha</title>
-<meta name="description" content="A UAV maps a rooftop, photogrammetry rebuilds it in 3D, and radiation modelling turns it into 155 MWh/yr of potential solar.">
+<meta name="description" content="A UAV maps a rooftop, photogrammetry rebuilds it in 3D, and radiation modelling turns it into a real solar-yield estimate — shown through the actual survey deliverables.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#D8C5A8">
+<meta name="theme-color" content="#0f0d0c">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Janmesh Jha">
 <meta property="og:title" content="UAV Photogrammetry → Solar Yield">
-<meta property="og:description" content="A drone, a 3D model, and a rooftop that could produce 155 MWh a year. Scroll to fly.">
+<meta property="og:description" content="A drone, a 3D model, and a rooftop's solar potential — from 100 aerial photos to a yield estimate.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bone:#F1E8D8;--ink:#1E1411;--oxblood:#5A201D;--sienna:#C25A2E;--sienna-2:#D9713F;--gold:#C79A3E;--muted:#9a8b78;--sky1:#EAE0CF;--sky2:#D8C5A8}
+:root{
+  --ink:#0f0d0c;--panel:#181310;--panel-2:#221a15;--bone:#F1E8D8;
+  --sienna:#C25A2E;--sienna-2:#E2703A;--gold:#E0A93B;--cool:#4f93b8;
+  --muted:#928472;--line:rgba(241,232,216,.14)
+}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{background:linear-gradient(180deg,var(--sky1),var(--sky2));color:var(--ink);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:none}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;overflow-x:hidden;cursor:none}
 ::selection{background:var(--sienna);color:var(--bone)}
 a{color:inherit;text-decoration:none}
-#scene{position:fixed;inset:0;z-index:1}
-.scroller{position:relative;z-index:2;height:780vh;pointer-events:none}
-.cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
-.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--oxblood);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s}
-.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:54px;height:54px}
-@media (hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
-.ui{position:fixed;inset:0;z-index:5;pointer-events:none}
-.topbar{position:absolute;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(18px,4vw,48px)}
-.topbar a{pointer-events:auto;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);opacity:.8}
-.topbar a:hover{opacity:1}
-.topbar .t{font-family:'Anton',sans-serif;font-size:19px;letter-spacing:.03em}
-.tools{position:absolute;top:64px;right:clamp(18px,4vw,48px);display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:60vw}
-.tools span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(30,20,17,.25);border-radius:100px;padding:5px 10px;color:#5a4a3a}
-.cap{position:absolute;left:clamp(18px,4vw,48px);bottom:60px;max-width:min(440px,80vw);transition:opacity .35s ease}
-.cap .k{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sienna);margin-bottom:12px}
-.cap h2{font-family:'Anton',sans-serif;font-size:clamp(28px,4.6vw,54px);line-height:.94;text-transform:uppercase;color:var(--ink)}
-.cap p{font-family:'Fraunces',serif;font-size:clamp(15px,1.8vw,19px);line-height:1.5;margin-top:14px;color:#3a2a20}
-.metrics{position:absolute;right:clamp(18px,4vw,48px);bottom:60px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;max-width:54vw;opacity:0;transform:translateY(10px);transition:opacity .6s,transform .6s}
-.metrics.show{opacity:1;transform:translateY(0)}
-.metrics .m{background:rgba(241,232,216,.78);backdrop-filter:blur(4px);border:1px solid rgba(30,20,17,.15);border-radius:12px;padding:12px 16px;text-align:right}
-.metrics .m b{font-family:'Anton',sans-serif;font-size:26px;color:var(--oxblood);display:block;line-height:1}
-.metrics .m span{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.pline{position:absolute;left:clamp(18px,4vw,48px);right:clamp(18px,4vw,48px);bottom:26px;height:2px;background:rgba(30,20,17,.14)}
-.pline i{position:absolute;left:0;top:0;height:100%;width:0;background:var(--sienna)}
-.stages{position:absolute;left:clamp(18px,4vw,48px);bottom:34px;display:flex;gap:7px}
-.stages .d{width:7px;height:7px;border-radius:50%;background:rgba(30,20,17,.2);transition:background .3s,transform .3s}
-.stages .d.on{background:var(--sienna);transform:scale(1.4)}
-.hint{position:absolute;left:50%;bottom:56px;transform:translateX(-50%);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);animation:pulse 2s infinite;transition:opacity .5s}
-.hint.gone{opacity:0}
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
-.endcta{position:absolute;left:50%;bottom:120px;transform:translate(-50%,10px);opacity:0;pointer-events:none;transition:.5s;text-align:center}
-.endcta.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.endcta a{display:inline-flex;gap:10px;align-items:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);border-radius:100px;padding:13px 22px;color:var(--ink);transition:.3s}
-.endcta a:hover{background:var(--ink);color:var(--bone)}
-@media(max-width:720px){.metrics{display:none}}
+img{display:block;max-width:100%}
+.mono{font-family:'Space Mono',monospace}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--sienna-2)}
+.reveal{opacity:0;transform:translateY(36px)}
+
+.cursor{position:fixed;top:0;left:0;width:11px;height:11px;border-radius:50%;background:var(--sienna);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:38px;height:38px;border:1px solid var(--sienna);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:difference}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:58px;height:58px}
+@media(hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+.bar{position:fixed;top:0;left:0;width:100%;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);background:linear-gradient(180deg,rgba(15,13,12,.92),rgba(15,13,12,0));pointer-events:none}
+.bar .back,.bar .id,.bar .mono{pointer-events:auto}
+.bar a.back{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;margin:-8px -12px;opacity:.85}
+.bar a.back:hover{opacity:1}
+.bar .id{font-family:'Anton',sans-serif;font-size:20px}
+.bar .mono{font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--sienna);width:0;z-index:401}
+
+/* HERO */
+.rhero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding:100px 0;overflow:hidden}
+.rhero .glow{position:absolute;left:60%;top:14%;width:640px;height:640px;background:radial-gradient(circle,rgba(226,112,58,.22),transparent 62%);pointer-events:none}
+.rhero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(241,232,216,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(241,232,216,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at 50% 40%,#000,transparent 78%);pointer-events:none}
+.rhero .wrap{position:relative;z-index:2}
+.rhero .kick{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.rhero .kick .dot{width:8px;height:8px;border-radius:50%;background:var(--sienna-2);box-shadow:0 0 12px var(--sienna-2)}
+.rhero h1{font-family:'Anton',sans-serif;font-size:clamp(44px,10vw,150px);line-height:.84;text-transform:uppercase;letter-spacing:-.02em}
+.rhero h1 .arrow{color:var(--sienna-2)}
+.rhero .tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2.3vw,29px);margin-top:24px;max-width:640px;line-height:1.4;color:rgba(241,232,216,.9)}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.hero-badges .b{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;padding:9px 14px;border:1px solid var(--line);border-radius:100px;color:rgba(241,232,216,.85)}
+.hero-badges .b.hot{background:var(--sienna);color:var(--bone);border-color:var(--sienna)}
+.meta-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:34px}
+.meta-row div{font-family:'Space Mono',monospace;font-size:12px;color:rgba(241,232,216,.88)}
+.meta-row span{display:block;color:var(--sienna-2);margin-bottom:6px;font-size:10px;letter-spacing:.16em}
+.scrollcue{margin-top:44px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.scrollcue .ln{width:36px;height:1px;background:var(--muted);transform-origin:left;animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%,100%{transform:scaleX(.3)}50%{transform:scaleX(1)}}
+
+/* CHAPTERS */
+.chapter{padding:clamp(80px,12vh,150px) 0;border-top:1px solid var(--line)}
+.ch-head{display:flex;align-items:baseline;gap:18px;margin-bottom:16px}
+.ch-num{font-family:'Anton',sans-serif;font-size:clamp(22px,2.6vw,34px);color:var(--sienna);opacity:.5;line-height:1}
+.ch-title{font-family:'Anton',sans-serif;font-size:clamp(24px,3.6vw,44px);text-transform:uppercase;line-height:.95}
+.ch-lead{font-family:'Fraunces',serif;font-size:clamp(16px,1.55vw,20px);line-height:1.6;max-width:64ch;margin:16px 0 30px;color:rgba(241,232,216,.82)}
+.ch-lead b{color:var(--sienna-2)}
+.body-txt{font-size:15px;line-height:1.8;max-width:66ch;color:rgba(241,232,216,.7)}
+.body-txt+.body-txt{margin-top:14px}
+.body-txt b{color:var(--gold)}
+
+/* figures — real survey deliverables, full-bleed on the near-black page */
+.fig{position:relative;margin-top:8px;border-radius:6px;overflow:hidden;background:#0a0908;min-height:220px}
+.fig img{width:100%;height:auto;display:block}
+.fig.frame{border:1px solid var(--line);background:#0a0908}
+.fig .cap{position:absolute;left:0;bottom:0;right:0;padding:26px 22px 16px;background:linear-gradient(0deg,rgba(10,9,8,.86),transparent);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;color:rgba(241,232,216,.82)}
+.fig .cap b{color:var(--sienna-2);font-weight:400}
+/* graceful placeholder if the image file isn't present yet */
+.fig.noimg{min-height:clamp(260px,42vw,520px);display:grid;place-items:center;border:1px dashed var(--line)}
+.fig.noimg img{display:none}
+.fig.noimg::before{content:attr(data-ph);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted);text-align:center;max-width:70%;line-height:1.7;padding:20px}
+.fig.noimg .cap{position:static;background:none;padding-top:0}
+
+.wide{width:min(1180px,92vw);margin:0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+
+/* before/after compare slider */
+.compare{position:relative;margin-top:8px;border-radius:6px;overflow:hidden;background:#0a0908;user-select:none;touch-action:pan-y;aspect-ratio:16/9}
+.compare .layer{position:absolute;inset:0}
+.compare .layer img{width:100%;height:100%;object-fit:cover;display:block}
+.compare .top{clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0)}
+.compare .handle{position:absolute;top:0;bottom:0;left:var(--pos,50%);width:2px;background:var(--bone);transform:translateX(-1px);box-shadow:0 0 12px rgba(0,0,0,.6);z-index:4}
+.compare .handle::after{content:'⟺';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:var(--sienna);color:var(--bone);display:grid;place-items:center;font-size:15px}
+.compare .clab{position:absolute;bottom:16px;z-index:5;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:100px;background:rgba(10,9,8,.7);border:1px solid var(--line);color:rgba(241,232,216,.85)}
+.compare .clab.l{left:16px}.compare .clab.r{right:16px}
+.compare.noimg{aspect-ratio:auto;min-height:clamp(260px,42vw,520px);display:grid;place-items:center;border:1px dashed var(--line)}
+.compare.noimg .layer,.compare.noimg .handle,.compare.noimg .clab{display:none}
+.compare.noimg::before{content:attr(data-ph);font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);text-align:center;max-width:70%;line-height:1.7;padding:20px}
+.cmp-hint{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:12px;text-align:center}
+
+/* yield stat cards */
+.yield{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.ycard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 22px}
+.ycard b{font-family:'Anton',sans-serif;font-size:clamp(34px,5vw,54px);color:var(--sienna-2);line-height:.9;display:block}
+.ycard b small{font-size:.45em;color:var(--gold)}
+.ycard span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-top:12px;line-height:1.5}
+@media(max-width:820px){.yield{grid-template-columns:1fr 1fr}}
+
+/* pipeline steps mini */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
+.stepc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stepc .n{font-family:'Space Mono',monospace;font-size:10px;color:var(--sienna-2);letter-spacing:.1em}
+.stepc h4{font-family:'Fraunces',serif;font-size:17px;margin:8px 0 6px}
+.stepc p{font-size:12.5px;line-height:1.55;color:rgba(241,232,216,.68)}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+
+/* OUTRO */
+.outro{text-align:center;padding:clamp(80px,13vh,150px) 0;border-top:1px solid var(--line);position:relative}
+.outro h2{font-family:'Anton',sans-serif;font-size:clamp(34px,5.5vw,74px);text-transform:uppercase;line-height:.92}
+.outro p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(16px,1.6vw,20px);opacity:.76;max-width:56ch;margin:22px auto 38px;line-height:1.55}
+.outro a.home{display:inline-flex;gap:10px;align-items:center;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--bone);border-radius:100px;padding:16px 28px;transition:.3s}
+.outro a.home:hover{background:var(--bone);color:var(--ink)}
+.provenance{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.06em;color:var(--muted);margin-top:40px;line-height:1.7}
 </style>
 <link rel="stylesheet" href="paper.css">
 </head>
 <body>
-<canvas id="scene"></canvas>
-<div class="scroller"></div>
 <div class="cursor"></div><div class="cursor-ring"></div>
+<div class="progress" id="progress"></div>
+<div class="bar"><a href="index.html" class="back" data-hov>← Back</a><span class="id">UAV → Solar</span><span class="mono">GEOSPATIAL · CASE STUDY</span></div>
 
-<div class="ui">
-  <div class="topbar">
-    <a href="index.html" data-hov>← Back</a>
-    <span class="t">UAV → SOLAR</span>
-    <span style="font-size:11px;letter-spacing:.14em;color:var(--muted)">CASE STUDY · 03</span>
+<header class="rhero">
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.22em">UAV PHOTOGRAMMETRY · GIS · SOLAR ENERGY · SACHSEN-ANHALT</span></div>
+    <h1 class="reveal">UAV <span class="arrow">→</span><br>SOLAR YIELD</h1>
+    <p class="tag reveal">A drone flies a rooftop, photogrammetry rebuilds it in 3D, and radiation modelling turns that surface into a real solar-energy estimate. Scroll through the actual deliverables.</p>
+    <div class="hero-badges reveal">
+      <span class="b hot">◆ ~155 MWh / yr potential</span>
+      <span class="b">100 aerial photos</span>
+      <span class="b">3D mesh + DSM</span>
+      <span class="b">QGIS radiation analysis</span>
+    </div>
+    <div class="meta-row reveal">
+      <div><span>DISCIPLINE</span>Sensor Observation · Geospatial Analysis (M.Eng.)</div>
+      <div><span>TOOLS</span>UAV photogrammetry · QGIS · DSM · solar radiation model</div>
+      <div><span>REGION</span>Harz region, Sachsen-Anhalt, Germany</div>
+      <div><span>OUTPUT</span>Per-roof energy-yield estimate</div>
+    </div>
+    <div class="scrollcue reveal"><span class="ln"></span> Scroll to fly the survey</div>
   </div>
-  <div class="tools"><span>UAV Photogrammetry</span><span>3D DSM</span><span>QGIS</span><span>Solar Radiation</span></div>
+</header>
 
-  <div class="cap" id="cap">
-    <div class="k" id="capK">01 · Site</div>
-    <h2 id="capH">Haus 9,<br>Hochschule Harz.</h2>
-    <p id="capP">Wernigerode, Germany. A long campus building and one question — how much solar energy could its roof actually generate in a year?</p>
+<!-- 01 THE QUESTION -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">The question</h2></div>
+    <p class="ch-lead reveal">Everyone knows roughly how sunny a region is. Almost nobody knows how much energy <em>one specific roof</em> could actually produce — because that depends on the roof's exact shape, tilt, orientation, and what shades it through the year.</p>
+    <div class="fig frame reveal" data-ph="[ regional-irradiance.jpg — Sachsen-Anhalt solar potential map with the kWh/kWp legend ]">
+      <img src="assets/uav/regional-irradiance.jpg" alt="Regional solar irradiance map of Sachsen-Anhalt, Germany" loading="lazy"
+           onerror="this.closest('.fig').classList.add('noimg')">
+      <div class="cap"><b>Regional context</b> — Sachsen-Anhalt sits around 1,000–1,100 kWh/kWp a year. A useful start, but a regional average can't tell you what a single building will do.</div>
+    </div>
+    <p class="body-txt reveal" style="margin-top:22px">So the project moved from the map to the building: capture one real rooftop precisely enough to model its production, not estimate it. The tool for "precisely enough" is a drone.</p>
   </div>
+</section>
 
-  <div class="metrics" id="metrics">
-    <div class="m"><b>165<span style="font-size:13px"> kWp</span></b><span>Est. capacity</span></div>
-    <div class="m"><b>155<span style="font-size:13px"> MWh</span></b><span>Annual yield</span></div>
-    <div class="m"><b>60 t</b><span>CO₂ avoided / yr</span></div>
-    <div class="m"><b>~44</b><span>Homes powered</span></div>
+<!-- 02 THE CAPTURE -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">The capture</h2></div>
+    <p class="ch-lead reveal">A UAV flew a programmed grid over the building, shooting <b>~100 overlapping photographs</b> of the roof and façades. Overlap is everything — every point on the roof has to appear in several frames from different angles for the reconstruction to triangulate it.</p>
+    <div class="steps">
+      <div class="stepc reveal"><div class="n">CAPTURE 01</div><h4>Programmed grid</h4><p>An automated flight path so coverage and overlap are consistent, not left to a pilot's judgement.</p></div>
+      <div class="stepc reveal"><div class="n">CAPTURE 02</div><h4>~100 photos</h4><p>High overlap across roof and façades — the raw material photogrammetry needs to rebuild geometry.</p></div>
+      <div class="stepc reveal"><div class="n">CAPTURE 03</div><h4>Nadir + oblique</h4><p>Straight-down and angled frames together, so vertical surfaces and roof edges reconstruct cleanly.</p></div>
+    </div>
   </div>
+</section>
 
-  <div class="endcta" id="endcta"><a href="index.html#projects" data-hov>← Back to the projects</a></div>
+<!-- 03 THE RECONSTRUCTION -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Photos → 3D model</h2></div>
+    <p class="ch-lead reveal">Photogrammetry turns those overlapping frames into a dense point cloud, then a textured 3D surface — a <b>true-to-life digital twin</b> of the building you can measure, not just look at.</p>
+    <div class="fig reveal" data-ph="[ model-textured.jpg — the photo-textured 3D reconstruction, three-quarter view ]">
+      <img src="assets/uav/model-textured.jpg" alt="Photo-textured 3D photogrammetry model of the building" loading="lazy"
+           onerror="this.closest('.fig').classList.add('noimg')">
+      <div class="cap"><b>Textured mesh</b> — the reconstructed surface with real photographic texture. Every roof plane, ledge and rooftop unit is now measurable geometry.</div>
+    </div>
+  </div>
+</section>
 
-  <div class="stages" id="stages"></div>
-  <div class="hint" id="hint">Scroll to fly</div>
-  <div class="pline"><i id="pfill"></i></div>
-</div>
+<!-- 04 HEIGHT & ELEVATION -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">Height &amp; elevation</h2></div>
+    <p class="ch-lead reveal">The same model, re-coloured by <b>elevation</b> — a Digital Surface Model. Drag the divider: on one side the photo texture, on the other the height map that drives every downstream calculation.</p>
+    <div class="compare reveal" id="compare" data-ph="[ needs model-textured.jpg + model-heatmap.jpg — same camera angle ]">
+      <div class="layer base"><img src="assets/uav/model-heatmap.jpg" alt="Elevation heatmap of the 3D model" loading="lazy" onerror="this.closest('.compare').classList.add('noimg')"></div>
+      <div class="layer top" id="cmpTop"><img src="assets/uav/model-textured.jpg" alt="Photo-textured 3D model" loading="lazy" onerror="this.closest('.compare').classList.add('noimg')"></div>
+      <span class="clab l">Photo texture</span>
+      <span class="clab r">Elevation (DSM)</span>
+      <div class="handle" id="cmpHandle"></div>
+    </div>
+    <p class="cmp-hint reveal">◆ drag to wipe between texture and elevation</p>
+    <div class="two" style="margin-top:22px">
+      <div class="fig reveal" data-ph="[ elevation-contours.jpg — contour lines with height labels ]">
+        <img src="assets/uav/elevation-contours.jpg" alt="Elevation contour lines over the model" loading="lazy" onerror="this.closest('.fig').classList.add('noimg')">
+        <div class="cap"><b>Contours</b> — height stepped into readable bands, the way a surveyor reads a roof.</div>
+      </div>
+      <div class="fig reveal" data-ph="[ model-elevation.jpg — elevation heatmap with the height histogram ]">
+        <img src="assets/uav/model-elevation.jpg" alt="Elevation heatmap with height histogram" loading="lazy" onerror="this.closest('.fig').classList.add('noimg')">
+        <div class="cap"><b>Height distribution</b> — the roof's elevation spread, isolating the flat, usable planes from everything else.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<!-- 05 ROOF & SOLAR ZONES -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">05</span><h2 class="ch-title">Roof planes &amp; solar zones</h2></div>
+    <p class="ch-lead reveal">From the model, the usable roof planes are isolated and measured — the <b>cyan zones</b> mark where panels would actually go, excluding ridges, edges and obstructions. Roughly <b>1,600 m²</b> of candidate surface.</p>
+    <div class="fig reveal" data-ph="[ roof-panels.jpg — top-down elevation map with the cyan solar-panel zones outlined ]">
+      <img src="assets/uav/roof-panels.jpg" alt="Top-down roof with solar panel zones outlined in cyan" loading="lazy"
+           onerror="this.closest('.fig').classList.add('noimg')">
+      <div class="cap"><b>Panel zones</b> — usable roof area marked in cyan, laid over the elevation map. This is the surface the yield estimate is built on.</div>
+    </div>
+    <p class="body-txt reveal" style="margin-top:22px">In QGIS, solar radiation is modelled across those planes — factoring local irradiance, panel tilt, azimuth and seasonal shading — resolving to a Harz-region figure of roughly <b>1,050 kWh/m²/yr</b> of usable input.</p>
+  </div>
+</section>
+
+<!-- 06 THE YIELD -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">06</span><h2 class="ch-title">The yield</h2></div>
+    <p class="ch-lead reveal">Usable area × panel density × modelled irradiance → a real production estimate. Not a regional guess — a number for <em>this</em> roof.</p>
+    <div class="yield">
+      <div class="ycard reveal"><b>165<small> kWp</small></b><span>Estimated installed capacity</span></div>
+      <div class="ycard reveal"><b>~155<small> MWh</small></b><span>Annual energy yield</span></div>
+      <div class="ycard reveal"><b>~60<small> t</small></b><span>CO₂ avoided per year</span></div>
+      <div class="ycard reveal"><b>~44</b><span>Households powered</span></div>
+    </div>
+    <p class="body-txt reveal" style="margin-top:26px">The point wasn't the single number — it was the <b>method</b>: a repeatable pipeline that turns a short drone flight into a defensible, per-building solar business case. Spatial data is one of the most underused business-intelligence tools there is, and this is what it looks like put to work.</p>
+  </div>
+</section>
+
+<section class="outro">
+  <div class="wrap">
+    <h2>From pixels<br>to kilowatts.</h2>
+    <p>A drone, a 3D model and a radiation analysis — the whole chain from raw aerial photos to a rooftop's solar potential, walked end to end.</p>
+    <a href="index.html#projects" class="home" data-hov>← Back to the projects</a>
+    <div class="provenance">◆ 3D model, elevation and panel-zone views are the project's own survey deliverables · regional map: solar-potential data for Sachsen-Anhalt</div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-const scene=new THREE.Scene();
-scene.fog=new THREE.Fog(0xE0CFB2,80,300);
-const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,700);
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('scene'),antialias:true,alpha:true});
-renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.outputEncoding=THREE.sRGBEncoding;renderer.shadowMap.enabled=true;
-
-const hemi=new THREE.HemisphereLight(0xfff2dd,0x8a6a4a,0.9);scene.add(hemi);
-const sun=new THREE.DirectionalLight(0xffe8c0,1.15);sun.position.set(40,60,26);sun.castShadow=true;
-sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-60;sun.shadow.camera.right=60;sun.shadow.camera.top=60;sun.shadow.camera.bottom=-60;scene.add(sun);
-
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(600,600),new THREE.MeshStandardMaterial({color:0xcdb890,roughness:1}));
-ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-const grid=new THREE.GridHelper(300,60,0x8a7457,0xb6a480);grid.position.y=0.02;grid.material.opacity=0.32;grid.material.transparent=true;scene.add(grid);
-
-/* long industrial building (Haus 9) */
-const BW=28,BD=12,BH=10;
-const bMat=new THREE.MeshStandardMaterial({color:0xEDE4D3,roughness:.85,transparent:true,opacity:1});
-const building=new THREE.Mesh(new THREE.BoxGeometry(BW,BH,BD),bMat);
-building.position.y=BH/2;building.castShadow=true;building.receiveShadow=true;scene.add(building);
-// raised monitor/clerestory ridge along the length
-const ridge=new THREE.Mesh(new THREE.BoxGeometry(BW-2,2.4,4.4),bMat.clone());
-ridge.position.set(0,BH+1.2,0);ridge.castShadow=true;scene.add(ridge);
-const RTOP=BH+2.4; // ridge top ~12.4
-const edges=new THREE.LineSegments(new THREE.EdgesGeometry(building.geometry),new THREE.LineBasicMaterial({color:0xC25A2E,transparent:true,opacity:0}));
-edges.position.copy(building.position);scene.add(edges);
-// lower wing
-const wing=new THREE.Mesh(new THREE.BoxGeometry(9,7,BD),bMat.clone());
-wing.position.set(-(BW/2+4.5),3.5,0);wing.castShadow=true;scene.add(wing);
-// neighbours
-[[30,6,-18],[-32,9,-20],[34,7,20],[-28,5,24],[6,4,-22]].forEach(([x,h,z])=>{
-  const n=new THREE.Mesh(new THREE.BoxGeometry(8,h*2,8),new THREE.MeshStandardMaterial({color:0xDAD0BE,roughness:.9}));
-  n.position.set(x,h,z);n.castShadow=true;n.receiveShadow=true;scene.add(n);
-});
-
-/* point cloud */
-const pc=(function(){
-  const pts=[];
-  function sample(cx,cy,cz,w,h,d,n){for(let i=0;i<n;i++){const f=Math.floor(Math.random()*6);let x=(Math.random()-.5)*w,y=(Math.random()-.5)*h,z=(Math.random()-.5)*d;
-    if(f===0)x=w/2;else if(f===1)x=-w/2;else if(f===2)y=h/2;else if(f===3)y=-h/2;else if(f===4)z=d/2;else z=-d/2;pts.push(cx+x,cy+y,cz+z);}}
-  sample(0,BH/2,0,BW,BH,BD,3400);sample(0,BH+1.2,0,BW-2,2.4,4.4,400);sample(-(BW/2+4.5),3.5,0,9,7,BD,800);
-  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
-  const m=new THREE.PointsMaterial({color:0xC25A2E,size:0.15,transparent:true,opacity:0});
-  const p=new THREE.Points(g,m);scene.add(p);return p;
-})();
-
-/* roof overlay */
-const roof=new THREE.Mesh(new THREE.PlaneGeometry(BW-0.6,BD-0.6),new THREE.MeshBasicMaterial({color:0xC25A2E,transparent:true,opacity:0,side:THREE.DoubleSide}));
-roof.rotation.x=-Math.PI/2;roof.position.set(0,BH+0.05,0);scene.add(roof);
-
-/* height measure */
-const measure=new THREE.Group();
-(function(){const mat=new THREE.LineBasicMaterial({color:0x5A201D,transparent:true,opacity:0});const x=-BW/2-3,z=BD/2;
-  measure.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x,0,z),new THREE.Vector3(x,RTOP,z)]),mat));
-  for(let y=0;y<=RTOP;y+=2){measure.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x-0.7,y,z),new THREE.Vector3(x+0.7,y,z)]),mat));}
-  measure.userData.mat=mat;})();
-scene.add(measure);
-
-/* solar panels — two bands either side of the ridge */
-const panels=new THREE.Group();
-const pMat=new THREE.MeshStandardMaterial({color:0x1b2a44,roughness:.35,metalness:.4});
-for(let cx=-12;cx<=12;cx+=2.3){for(let cz=-5;cz<=5;cz+=1.7){
-  if(Math.abs(cz)<2.6)continue; // leave the ridge strip clear
-  const pane=new THREE.Mesh(new THREE.BoxGeometry(2,0.08,1.4),pMat);
-  pane.position.set(cx,BH+0.16,cz);pane.rotation.x=-0.28;pane.castShadow=true;panels.add(pane);
-}}
-panels.scale.y=0.001;panels.visible=false;scene.add(panels);
-
-/* drone */
-const drone=new THREE.Group();
-(function(){const body=new THREE.Mesh(new THREE.BoxGeometry(1,0.35,1),new THREE.MeshStandardMaterial({color:0x2a2a2e,roughness:.5}));drone.add(body);
-  const arm=new THREE.MeshStandardMaterial({color:0x1a1a1e});const props=[];
-  [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([sx,sz])=>{const a=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.08,0.12),arm);a.position.set(sx*0.6,0,sz*0.6);a.rotation.y=Math.atan2(sz,sx);drone.add(a);
-    const p=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.55,0.04,18),new THREE.MeshStandardMaterial({color:0x3a3a40,transparent:true,opacity:.55}));p.position.set(sx*1.05,0.12,sz*1.05);drone.add(p);props.push(p);});
-  drone.userData.props=props;})();
-drone.visible=false;scene.add(drone);
-
-const sunBall=new THREE.Mesh(new THREE.SphereGeometry(2.4,24,24),new THREE.MeshBasicMaterial({color:0xF3C24B,transparent:true,opacity:0}));scene.add(sunBall);
-
-/* scroll */
-const lenis=new Lenis({lerp:0.08});function raf(t){lenis.raf(t);requestAnimationFrame(raf);}requestAnimationFrame(raf);
-let targetP=0,curP=0;
-function cp(){const max=document.body.scrollHeight-innerHeight;targetP=max>0?Math.min(Math.max(scrollY/max,0),1):0;}
-lenis.on('scroll',cp);addEventListener('scroll',cp);
-const hint=document.getElementById('hint');addEventListener('wheel',()=>hint.classList.add('gone'),{passive:true});addEventListener('touchmove',()=>hint.classList.add('gone'),{passive:true});
-
-const STAGES=[
- {t:0.00,k:'01 · Site',h:'Haus 9,<br>Hochschule Harz.',p:'Wernigerode, Germany. A long campus building and one question — how much solar could its roof generate in a year?'},
- {t:0.14,k:'02 · Capture',h:'A UAV<br>maps it.',p:'The drone flies a programmed grid, shooting ~100 overlapping images across the whole roof and façades.'},
- {t:0.36,k:'03 · Photogrammetry',h:'Images →<br>3D model.',p:'Overlapping frames become a dense point cloud, then a textured surface model. Ridge height ≈ 14 m.'},
- {t:0.55,k:'04 · Roof',h:'Roof area<br>extracted.',p:'The roof planes are isolated and measured in QGIS — roughly 1,600 m² of candidate surface.'},
- {t:0.70,k:'05 · Radiation',h:'Solar radiation<br>modelled.',p:'Local irradiance, tilt, azimuth and seasonal shading resolve to a Harz-region GHI ≈ 1,050 kWh/m²/yr.'},
- {t:0.86,k:'06 · Yield',h:'≈ 155 MWh<br>a year.',p:'~880 m² usable × 0.19 kWp/m² ≈ 165 kWp → about 155 MWh/yr, offsetting ~60 t of CO₂.'}
-];
-const stagesEl=document.getElementById('stages');STAGES.forEach(()=>{const d=document.createElement('div');d.className='d';stagesEl.appendChild(d);});
-const dots=[...stagesEl.children];
-const capEl=document.getElementById('cap'),capK=document.getElementById('capK'),capH=document.getElementById('capH'),capP=document.getElementById('capP');
-let stage=-1;
-/* update text immediately and keep the caption visible — the old setTimeout
-   fade-swap reset opacity to 0 on every stage change, so stages scrolled
-   through faster than the timeout never became visible. CSS handles the fade. */
-function setStage(i){if(i===stage)return;stage=i;const s=STAGES[i];capK.textContent=s.k;capH.innerHTML=s.h;capP.textContent=s.p;capEl.style.opacity=1;dots.forEach((d,j)=>d.classList.toggle('on',j===i));}
-
-const smooth=(a,b,x)=>{const t=Math.min(Math.max((x-a)/(b-a),0),1);return t*t*(3-2*t);};
-const lerp=(a,b,t)=>a+(b-a)*t;const tmp=new THREE.Vector3();
-
-function frame(){
-  requestAnimationFrame(frame);
-  curP+=(targetP-curP)*0.06;const p=curP;
-  const theta=0.7+p*4.2;
-  const phi=lerp(1.22,0.55,smooth(0.1,1,p));
-  const radius=lerp(96,54,smooth(0,1,p));
-  const ty=lerp(6,12,smooth(0.3,1,p));
-  tmp.set(0,ty,0);const sp=Math.sin(phi);
-  camera.position.set(tmp.x+radius*sp*Math.cos(theta),tmp.y+radius*Math.cos(phi),tmp.z+radius*sp*Math.sin(theta));
-  camera.lookAt(tmp);
-
-  const dv=smooth(0.10,0.16,p)*(1-smooth(0.40,0.48,p));
-  drone.visible=dv>0.01;
-  if(drone.visible){const a=performance.now()*0.0006+p*10;const dr=24+Math.sin(a*0.7)*3;
-    drone.position.set(Math.cos(a)*dr,13+Math.sin(a*1.3)*5,Math.sin(a)*dr*0.5);drone.lookAt(0,8,0);
-    drone.userData.props.forEach(pr=>pr.rotation.y+=0.9);drone.scale.setScalar(1.3*dv+0.001);}
-
-  pc.material.opacity=smooth(0.30,0.44,p)*(1-smooth(0.62,0.72,p)*0.55);
-  edges.material.opacity=smooth(0.34,0.46,p);
-  bMat.opacity=lerp(1,0.72,smooth(0.34,0.5,p));
-  measure.userData.mat.opacity=smooth(0.40,0.5,p)*(1-smooth(0.6,0.68,p));
-
-  const ext=smooth(0.52,0.6,p);roof.material.opacity=ext*0.82;
-  const heat=smooth(0.66,0.78,p);roof.material.color.setStyle(heat>0.5?'#E0912F':'#C25A2E');
-
-  const sv=smooth(0.66,0.74,p);sunBall.material.opacity=sv*(1-smooth(0.95,1,p)*0.3);
-  const sa=lerp(-0.3,Math.PI+0.3,smooth(0.66,0.9,p));sunBall.position.set(Math.cos(sa)*56,Math.max(8,Math.sin(sa)*48),24);sun.position.copy(sunBall.position).multiplyScalar(1.1);
-
-  const pv=smooth(0.85,0.96,p);panels.visible=pv>0.01;panels.scale.y=Math.max(0.001,pv);
-  document.getElementById('metrics').classList.toggle('show',p>0.9);
-  document.getElementById('endcta').classList.toggle('show',p>0.965);
-
-  let si=0;for(let i=0;i<STAGES.length;i++){if(p>=STAGES[i].t)si=i;}setStage(si);
-  document.getElementById('pfill').style.width=(p*100)+'%';
-  renderer.render(scene,camera);
-}
-frame();
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
-
+gsap.registerPlugin(ScrollTrigger);
+document.querySelectorAll('a.back').forEach(b=>b.addEventListener('click',()=>{window.location.href='index.html';}));
 const cur=document.querySelector('.cursor'),ring=document.querySelector('.cursor-ring');let mx=0,my=0,rx=0,ry=0;
 addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function r(){rx+=(mx-rx)*0.2;ry+=(my-ry)*0.2;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+(function r(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
 document.addEventListener('mouseover',e=>{if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
 document.addEventListener('mouseout',e=>{if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});});
+ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{document.getElementById('progress').style.width=(s.progress*100)+'%';}});
+
+/* before/after compare slider — pointer + touch */
+(function(){
+  const c=document.getElementById('compare');if(!c)return;
+  const handle=document.getElementById('cmpHandle');
+  let dragging=false;
+  function setPos(clientX){
+    const r=c.getBoundingClientRect();
+    let p=((clientX-r.left)/r.width)*100;
+    p=Math.min(Math.max(p,2),98);
+    c.style.setProperty('--pos',p+'%');
+  }
+  c.style.setProperty('--pos','50%');
+  c.addEventListener('pointerdown',e=>{dragging=true;setPos(e.clientX);c.setPointerCapture(e.pointerId);});
+  c.addEventListener('pointermove',e=>{if(dragging)setPos(e.clientX);});
+  c.addEventListener('pointerup',()=>{dragging=false;});
+  c.addEventListener('pointercancel',()=>{dragging=false;});
+  /* also let a plain hover scrub on desktop for discoverability */
+  c.addEventListener('mousemove',e=>{if(!dragging&&matchMedia('(hover:hover)').matches)setPos(e.clientX);});
+})();
 </script>
 <script src="casenav.js"></script>
 </body>

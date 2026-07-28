@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Gallery — Janmesh Jha</title>
-<meta name="description" content="A room in space. Float through 27 photographs on a 3D winding path.">
+<meta name="description" content="A room in space. Float through 21 photographs on a 3D winding path.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0d0908">
 <meta property="og:type" content="website">
@@ -104,9 +104,9 @@ a{color:inherit;text-decoration:none}
   <div class="topbar">
     <a href="index.html" data-hov>← Back</a>
     <span class="title">THE GALLERY</span>
-    <span style="font-size:11px;letter-spacing:.14em;color:var(--muted)">SPACE · 27</span>
+    <span id="spaceCount" style="font-size:11px;letter-spacing:.14em;color:var(--muted)">SPACE · 21</span>
   </div>
-  <div class="counter"><span class="now" id="now">01</span><span class="tot" id="tot">/ 27</span></div>
+  <div class="counter"><span class="now" id="now">01</span><span class="tot" id="tot">/ 21</span></div>
   <div class="hint" id="hint">Scroll to cruise</div>
   <div class="gtip">◆ Click a photo to enlarge</div>
   <div class="end-cta" id="endCta">
@@ -135,7 +135,9 @@ a{color:inherit;text-decoration:none}
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="gallery-images.js"></script>
 <script>
-const TOTAL=(window.GALLERY_IMAGES&&window.GALLERY_IMAGES.length)||27;
+const TOTAL=(window.GALLERY_IMAGES&&window.GALLERY_IMAGES.length)||21;
+/* keep the on-screen counts in sync with however many photos are in the set */
+(function(){const sc=document.getElementById('spaceCount');if(sc)sc.textContent='SPACE · '+TOTAL;const t=document.getElementById('tot');if(t)t.textContent='/ '+TOTAL;})();
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x0d0908);
 scene.fog=new THREE.FogExp2(0x0d0908,0.013);

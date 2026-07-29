@@ -116,7 +116,7 @@ a{color:inherit;text-decoration:none}
 
 /* customer journey */
 .cj{margin-top:30px;position:relative;overflow-x:auto;padding-bottom:10px}
-.cj-track{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:0;min-width:820px}
+.cj-track{display:grid;grid-template-columns:repeat(7,minmax(165px,1fr));gap:0;min-width:1150px}
 .cj-stage{padding:0 18px;border-left:1px solid var(--line);position:relative}
 .cj-stage:first-child{border-left:none}
 .cj-stage h5{font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:.02em}
@@ -235,12 +235,13 @@ a{color:inherit;text-decoration:none}
 <section class="chapter" id="c2">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">Customer Mapping</h2></div>
-    <p class="ch-lead reveal">We didn't design for "everyone." We designed for three people we could picture clearly — young, urban, time-poor, and quietly frustrated with their closets.</p>
+    <p class="ch-lead reveal">Not "everyone" — three segments, each hired the product for a different job.</p>
     <div class="persona-grid">
-      <div class="persona reveal"><div class="av">L</div><h4>Lena, 29</h4><div class="who">Consultant · Munich · owns 200+ items, wears ~30</div><p class="need">Mornings are chaos before a 7am flight. <b>Needs</b> a decision made for her, fast — outfit ready, weather-checked, no thinking.</p></div>
-      <div class="persona reveal"><div class="av">J</div><h4>Jonas, 34</h4><div class="who">Product designer · Berlin · sustainability-minded</div><p class="need">Hates textile waste and impulse buys. <b>Needs</b> to see what he underuses and move it on — resell, donate, rotate.</p></div>
-      <div class="persona reveal"><div class="av">A</div><h4>Aisha, 26</h4><div class="who">Marketing associate · Hamburg · style-curious</div><p class="need">Owns good pieces but lacks confidence pairing them. <b>Needs</b> a stylist in her pocket that builds looks from her own closet.</p></div>
+      <div class="persona reveal"><div class="av">T</div><h4>Time-pressed professionals</h4><div class="who">Emotional job · save time getting dressed</div><p class="need">Mornings are a decision they don't want to make. <b>Fear:</b> no time to plan outfits, decision fatigue.</p></div>
+      <div class="persona reveal"><div class="av">S</div><h4>Sustainability-minded shoppers</h4><div class="who">Emotional job · be sustainable, maximise wardrobe value</div><p class="need">They own enough — they want to use it. <b>Fear:</b> wardrobe underutilised, buying too much.</p></div>
+      <div class="persona reveal"><div class="av">F</div><h4>Fashion explorers</h4><div class="who">Emotional job · express personal style, stay trendy</div><p class="need">Good pieces, low confidence pairing them. <b>Fear:</b> feeling lost in fashion, lack of confidence.</p></div>
     </div>
+    <p class="body-txt reveal" style="margin-top:26px">Mapping their <b>emotional jobs</b> against their <b>fears</b> is what kept the feature list honest — every candidate feature had to answer a named fear, not just sound clever.</p>
   </div>
 </section>
 
@@ -248,13 +249,13 @@ a{color:inherit;text-decoration:none}
 <section class="chapter" id="c3">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">The Problems</h2></div>
-    <p class="ch-lead reveal">Across all three, the same five frictions kept surfacing. This is the pain we had to earn the right to solve.</p>
+    <p class="ch-lead reveal">The fears the canvas surfaced — the pain we had to earn the right to solve.</p>
     <div class="prob-list">
-      <div class="prob reveal"><div class="pn">01</div><div><div class="pt">Decision fatigue every single morning</div><div class="pd">The first 20 decisions of the day are spent on something that shouldn't require any.</div></div></div>
-      <div class="prob reveal"><div class="pn">02</div><div><div class="pt">"Nothing to wear" in a full closet</div><div class="pd">People actively wear only ~20% of what they own — the rest is invisible.</div></div></div>
-      <div class="prob reveal"><div class="pn">03</div><div><div class="pt">Forgotten items = wasted money & textile waste</div><div class="pd">Unworn clothes are dead capital and a sustainability problem at once.</div></div></div>
-      <div class="prob reveal"><div class="pn">04</div><div><div class="pt">No memory of what pairs well</div><div class="pd">A good outfit discovered once is rarely repeated — there's no system for it.</div></div></div>
-      <div class="prob reveal"><div class="pn">05</div><div><div class="pt">Impulse buying of duplicates</div><div class="pd">Without visibility of the closet, people re-buy what they already have.</div></div></div>
+      <div class="prob reveal"><div class="pn">01</div><div><div class="pt">Decision fatigue, every morning</div><div class="pd">No time to plan outfits — and the day's first decisions spent on something that shouldn't need any.</div></div></div>
+      <div class="prob reveal"><div class="pn">02</div><div><div class="pt">The wardrobe is underutilised</div><div class="pd">A full closet that still produces "nothing to wear." Most of what's owned is effectively invisible.</div></div></div>
+      <div class="prob reveal"><div class="pn">03</div><div><div class="pt">Buying too much</div><div class="pd">Without visibility of the closet, people re-buy what they already own — cost and textile waste at once.</div></div></div>
+      <div class="prob reveal"><div class="pn">04</div><div><div class="pt">Outfit-repeating anxiety</div><div class="pd">A good combination discovered once is rarely repeated, because nothing remembers it.</div></div></div>
+      <div class="prob reveal"><div class="pn">05</div><div><div class="pt">Trend confusion, low confidence</div><div class="pd">Feeling lost in fashion — owning good pieces but not trusting how to put them together.</div></div></div>
     </div>
   </div>
 </section>
@@ -263,17 +264,17 @@ a{color:inherit;text-decoration:none}
 <section class="chapter" id="c4">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">Business Model Canvas</h2></div>
-    <p class="ch-lead reveal">A product is only a product when it can pay for itself. We mapped the whole engine on one canvas — hover any block.</p>
+    <p class="ch-lead reveal">A product is only a product when it can pay for itself. The whole engine on one canvas.</p>
     <div class="bmc">
-      <div class="cell kp reveal"><div class="ct">Key Partners</div><ul><li>◆ Apparel & D2C brands</li><li>◆ Resale platforms (Vinted)</li><li>◆ Smart-home ecosystems</li><li>◆ Logistics & fulfilment</li></ul></div>
-      <div class="cell ka reveal"><div class="ct">Key Activities</div><ul><li>◆ Hardware R&D</li><li>◆ Outfit ML engine</li><li>◆ App development</li></ul></div>
-      <div class="cell vp reveal"><div class="ct">Value Propositions</div><ul><li>◆ Effortless mornings</li><li>◆ Wear more of what you own</li><li>◆ A more sustainable closet</li><li>◆ A stylist in your pocket</li></ul></div>
-      <div class="cell cr reveal"><div class="ct">Customer Relationships</div><ul><li>◆ Self-serve app</li><li>◆ Personalisation</li><li>◆ Community & sharing</li></ul></div>
-      <div class="cell cs reveal"><div class="ct">Customer Segments</div><ul><li>◆ Urban pros, 25–35</li><li>◆ Sustainability-minded</li><li>◆ Style-seekers</li></ul></div>
-      <div class="cell kr reveal"><div class="ct">Key Resources</div><ul><li>◆ CV / RFID tech</li><li>◆ ML taste models</li><li>◆ Design & brand data</li></ul></div>
-      <div class="cell ch reveal"><div class="ct">Channels</div><ul><li>◆ D2C web</li><li>◆ Smart-home retail</li><li>◆ Brand collaborations</li></ul></div>
-      <div class="cell cost reveal"><div class="ct">Cost Structure</div><ul><li>◆ Hardware BOM · ML infra · R&D · CAC</li></ul></div>
-      <div class="cell rev reveal"><div class="ct">Revenue Streams</div><ul><li>◆ Hardware (one-time) &nbsp; ◆ Subscription — styling & insights &nbsp; ◆ Affiliate & resale commission</li></ul></div>
+      <div class="cell kp reveal"><div class="ct">Key Partners</div><ul><li>◆ Fashion brands</li><li>◆ Retailers</li><li>◆ Interior designers</li><li>◆ Architects</li><li>◆ Housing agencies</li><li>◆ Property developers</li></ul></div>
+      <div class="cell ka reveal"><div class="ct">Key Activities</div><ul><li>◆ AI outfit recommendations</li><li>◆ Digital wardrobe management</li><li>◆ User research</li><li>◆ Testing</li></ul></div>
+      <div class="cell vp reveal"><div class="ct">Value Propositions</div><ul><li>◆ Time-saving personalised styling</li><li>◆ Sustainable wardrobe maximisation</li><li>◆ Context-aware recommendations — weather, mood, occasion</li></ul></div>
+      <div class="cell cr reveal"><div class="ct">Customer Relationships</div><ul><li>◆ AI-powered personalised assistance</li><li>◆ Hybrid online/offline consultations</li><li>◆ Community engagement — workshops &amp; events</li></ul></div>
+      <div class="cell cs reveal"><div class="ct">Customer Segments</div><ul><li>◆ Time-pressed professionals</li><li>◆ Sustainability-minded shoppers</li><li>◆ Fashion explorers</li></ul></div>
+      <div class="cell kr reveal"><div class="ct">Key Resources</div><ul><li>◆ AI technology &amp; algorithms</li><li>◆ User data &amp; wardrobe analytics</li><li>◆ Expert team — CEO, CMO, CFO, CTO</li></ul></div>
+      <div class="cell ch reveal"><div class="ct">Channels</div><ul><li>◆ Mobile app &amp; web platform</li><li>◆ Physical retail partnerships &amp; pop-ups</li><li>◆ Social media &amp; influencer marketing</li></ul></div>
+      <div class="cell cost reveal"><div class="ct">Cost Structure</div><ul><li>◆ AI &amp; tech development &nbsp; ◆ Marketing &amp; customer acquisition &nbsp; ◆ Team salaries &nbsp; ◆ Hardware production &nbsp; ◆ Partnership costs</li></ul></div>
+      <div class="cell rev reveal"><div class="ct">Revenue Streams</div><ul><li>◆ Hardware sales (€2,000 base) &nbsp; ◆ Monthly subscription &nbsp; ◆ Freemium tiers &nbsp; ◆ Event styling services &nbsp; ◆ B2B data insights for fashion brands &nbsp; ◆ Brand partnerships &amp; affiliate commissions</li></ul></div>
     </div>
   </div>
 </section>
@@ -282,23 +283,27 @@ a{color:inherit;text-decoration:none}
 <section class="chapter" id="c5">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">05</span><h2 class="ch-title">Customer Journey</h2></div>
-    <p class="ch-lead reveal">We traced Lena from "never heard of it" to "can't live without it" — and watched where the emotion dipped, because that's where products die.</p>
+    <p class="ch-lead reveal">Seven phases from "never heard of it" to advocacy — tracking jobs, pains and emotion at each, because the dips are where products die.</p>
     <div class="cj">
       <div class="cj-track">
-        <div class="cj-stage reveal"><div class="st">STAGE 01</div><h5>Awareness</h5><div class="cj-row"><b>Doing</b>Sees ReVamp in a sustainability feature / friend's closet.</div><div class="cj-row"><b>Thinking</b>"Cute idea… but do I need it?"</div></div>
-        <div class="cj-stage reveal"><div class="st">STAGE 02</div><h5>Consideration</h5><div class="cj-row"><b>Doing</b>Reads how it works, checks price vs. subscription.</div><div class="cj-row"><b>Thinking</b>"Will it actually save me time?"</div></div>
-        <div class="cj-stage reveal"><div class="st">STAGE 03</div><h5>Setup</h5><div class="cj-row"><b>Doing</b>Onboards closet — the make-or-break moment.</div><div class="cj-row"><b>Feeling</b>Friction risk. Tedious if manual.</div></div>
-        <div class="cj-stage reveal"><div class="st">STAGE 04</div><h5>Daily Use</h5><div class="cj-row"><b>Doing</b>Gets a morning outfit, weather-aware.</div><div class="cj-row"><b>Feeling</b>Relief → delight. The hook.</div></div>
-        <div class="cj-stage reveal"><div class="st">STAGE 05</div><h5>Advocacy</h5><div class="cj-row"><b>Doing</b>Resells unused items, shares looks.</div><div class="cj-row"><b>Feeling</b>Pride. Tells friends.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 01</div><h5>Discovery</h5><div class="cj-row"><b>Job</b>Realise wardrobe management is a problem; search for styling solutions.</div><div class="cj-row"><b>Pain</b>Uncertainty about effectiveness. Scepticism about AI styling.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 02</div><h5>Consideration</h5><div class="cj-row"><b>Job</b>Research features, read reviews, compare alternatives.</div><div class="cj-row"><b>Pain</b>Comparison paralysis. Fear of the wrong choice.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 03</div><h5>Onboarding</h5><div class="cj-row"><b>Job</b>Install, create profile, capture the wardrobe, set style preferences.</div><div class="cj-row"><b>Pain</b>Time-consuming setup. Photo quality. Privacy worries.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 04</div><h5>Daily Use</h5><div class="cj-row"><b>Job</b>Check recommendations, pick the outfit, rate it, save favourites.</div><div class="cj-row"><b>Pain</b>Repetitive suggestions. Inaccurate weather data.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 05</div><h5>Engagement</h5><div class="cj-row"><b>Job</b>Build the daily styling habit; explore new styles and premium features.</div><div class="cj-row"><b>Gain</b>Time saved daily. Reduced decision fatigue.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 06</div><h5>Retention</h5><div class="cj-row"><b>Job</b>Track wardrobe usage; subscribe to the premium tier.</div><div class="cj-row"><b>Pain</b>Feature overload. Learning curve. Engagement dropping.</div></div>
+        <div class="cj-stage reveal"><div class="st">PHASE 07</div><h5>Advocacy</h5><div class="cj-row"><b>Job</b>Refer friends, give testimonials, use advanced analytics.</div><div class="cj-row"><b>Gain</b>Cost-per-wear insight. Sustainability satisfaction.</div></div>
       </div>
       <div class="emo reveal">
         <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <polyline points="100,45 300,38 500,80 700,20 900,30" fill="none" stroke="#C25A2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="100" cy="45" r="6" fill="#5A201D"/><circle cx="300" cy="38" r="6" fill="#5A201D"/>
-          <circle cx="500" cy="80" r="7" fill="#C25A2E"/><circle cx="700" cy="20" r="6" fill="#5A201D"/><circle cx="900" cy="30" r="6" fill="#5A201D"/>
+          <polyline points="70,82 225,62 380,40 535,46 690,20 845,36 975,16" fill="none" stroke="#C25A2E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="70" cy="82" r="6" fill="#5A201D"/><circle cx="225" cy="62" r="6" fill="#5A201D"/>
+          <circle cx="380" cy="40" r="6" fill="#5A201D"/><circle cx="535" cy="46" r="7" fill="#C25A2E"/>
+          <circle cx="690" cy="20" r="6" fill="#5A201D"/><circle cx="845" cy="36" r="7" fill="#C25A2E"/>
+          <circle cx="975" cy="16" r="6" fill="#5A201D"/>
         </svg>
       </div>
-      <p class="rice-note reveal">↑ Emotion curve. The dip at <b>Setup</b> is the risk — so onboarding became a design priority, not an afterthought.</p>
+      <p class="rice-note reveal">↑ Emotion curve. It climbs through onboarding, then dips twice — at <b>Daily Use</b> (repetitive suggestions) and again at <b>Retention</b> (feature overload). Those two troughs are where the product would actually be lost, so they set the design priorities.</p>
     </div>
   </div>
 </section>

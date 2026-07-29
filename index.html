@@ -94,10 +94,6 @@ body.menu-open{overflow:hidden}
 .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:8px}
 .scroll-cue .bar{width:1px;height:44px;background:var(--ink);transform-origin:top;animation:cue 1.8s ease-in-out infinite}
 @keyframes cue{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
-.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;overflow:hidden;white-space:nowrap;margin-top:56px}
-.marquee-track{display:inline-flex;gap:36px;will-change:transform}
-.marquee-track span{font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--muted)}
-.marquee-track b{font-family:'Space Mono',monospace;font-style:normal;color:var(--sienna);font-size:15px}
 
 /* section */
 section{position:relative}
@@ -294,10 +290,6 @@ section{position:relative}
   .hero-links{flex-wrap:wrap;gap:14px 20px}
   .scroll-cue{flex-direction:row;align-items:center;gap:10px}
   .scroll-cue .bar{height:26px}
-  .marquee{margin-top:34px;padding:12px 0}
-  .marquee-track{gap:24px}
-  .marquee-track span{font-size:18px}
-  .marquee-track b{font-size:12px}
 
   .pad{padding:64px 0}
   .sec-head{margin-bottom:34px;padding-bottom:16px}
@@ -339,7 +331,7 @@ section{position:relative}
       <a href="#about" data-hov>About</a>
       <a href="#tree" data-hov>Been There</a>
       <a href="#projects" data-hov>Projects</a>
-      <a href="gallery.html" data-hov>Gallery</a>
+      <a href="#gallery" data-hov>Gallery</a>
       <a href="#music" data-hov>Music</a>
       <a href="#contact" data-hov>Contact</a>
     </div>
@@ -353,7 +345,7 @@ section{position:relative}
   <a href="#about">About</a>
   <a href="#tree">Been There</a>
   <a href="#projects">Projects</a>
-  <a href="gallery.html">Gallery</a>
+  <a href="#gallery">Gallery</a>
   <a href="#music">Music</a>
   <a href="music.html">Record Library</a>
   <a href="#contact">Contact</a>
@@ -382,11 +374,6 @@ section{position:relative}
         <span class="mono" style="font-size:10px;letter-spacing:.2em;color:var(--muted)">SCROLL</span>
         <span class="bar"></span>
       </div>
-    </div>
-  </div>
-  <div class="marquee">
-    <div class="marquee-track">
-      <span>Product <b>◆</b> Sound <b>◆</b> Photography <b>◆</b> Systems <b>◆</b> Design <b>◆</b> Curiosity <b>◆</b> Product <b>◆</b> Sound <b>◆</b> Photography <b>◆</b> Systems <b>◆</b> Design <b>◆</b> Curiosity <b>◆</b></span>
     </div>
   </div>
 </header>
@@ -599,8 +586,6 @@ gsap.utils.toArray('[data-parallax]').forEach(el=>{const amt=parseFloat(el.datas
 /* floaters parallax */
 gsap.utils.toArray('.float').forEach(el=>{const d=parseFloat(el.dataset.depth);gsap.to(el,{yPercent:-d*120,ease:'none',scrollTrigger:{trigger:'#gallery',start:'top bottom',end:'bottom top',scrub:true}});});
 
-/* marquee */
-gsap.to('.marquee-track',{xPercent:-50,repeat:-1,duration:24,ease:'none'});
 
 /* PROJECTS — index + specimen plate.
    Each project carries its own line-art mark; the plate swaps as you
@@ -712,9 +697,15 @@ function select(i){
   rlTitle.textContent=t.title;
   setPlaying(true);
 }
-function toggle(){if(curT<0){select(0);return;}setPlaying(!playing);}
+/* shuffle: never open on the same track twice in a row */
+function pickRandom(){
+  if(TRACKS.length<2)return 0;
+  let n;do{n=Math.floor(Math.random()*TRACKS.length);}while(n===curT);
+  return n;
+}
+function toggle(){if(curT<0){select(pickRandom());return;}setPlaying(!playing);}
 if(navPlay)navPlay.addEventListener('click',toggle);
-audio.addEventListener('ended',()=>select((curT+1)%TRACKS.length));
+audio.addEventListener('ended',()=>select(pickRandom()));
 
 /* deck 3D camera — straight-down bird's eye → 45° three-quarter as the section scrolls in */
 let musicScroll=0;

@@ -311,52 +311,25 @@ section{position:relative}
 /* touch devices never fire :hover — surface the deck affordance where there's room for it */
 @media(hover:none) and (min-width:821px){.deck-cta{opacity:1;transform:translate(-50%,0)}}
 
-/* ===== INTRO — coordinate roll call =====
-   Four places, in order, each one scrambling into focus. The whole
-   sequence runs under 2s and then the panel lifts off the hero. */
+/* ===== INTRO — coordinates only =====
+   One line of numbers, dead centre, scrambling through four fixes.
+   Nothing else on screen. Runs under 2s, then lifts off the hero. */
 .intro{position:fixed;inset:0;z-index:9000;background:var(--bone);display:grid;place-items:center;
        overflow:hidden;will-change:transform}
 .intro.up{transform:translateY(-100%);transition:transform .3s cubic-bezier(.76,0,.24,1)}
 html.intro-on,html.intro-on body{overflow:hidden;height:100%}
-/* faint survey grid + crosshair, so the numbers read as a position fix */
-.intro-grid{position:absolute;inset:-2px;opacity:.5;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:64px 64px;mask-image:radial-gradient(circle at center,#000 10%,transparent 72%);
-  -webkit-mask-image:radial-gradient(circle at center,#000 10%,transparent 72%)}
-.intro-cross{position:absolute;inset:0}
-.intro-cross span{position:absolute;background:var(--sienna);opacity:.35}
-.intro-cross .ix{left:0;right:0;top:50%;height:1px;transform:scaleX(0);animation:crossX .5s cubic-bezier(.2,.8,.2,1) forwards}
-.intro-cross .iy{top:0;bottom:0;left:50%;width:1px;transform:scaleY(0);animation:crossY .5s .06s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes crossX{to{transform:scaleX(1)}}
-@keyframes crossY{to{transform:scaleY(1)}}
-/* bottom padding lifts the block so the coordinate line lands on the crosshair */
-.intro-inner{position:relative;z-index:2;text-align:center;padding:0 20px clamp(28px,5vh,56px)}
-.intro-idx{font-size:11px;letter-spacing:.3em;color:var(--sienna);margin-bottom:16px}
-.intro-coord{font-family:'Space Mono',monospace;font-weight:700;white-space:pre;
+.intro-coord{font-family:'Space Mono',monospace;font-weight:700;white-space:pre;padding:0 16px;
              font-size:clamp(19px,4.6vw,54px);letter-spacing:.01em;line-height:1.1;color:var(--ink)}
-.intro-place{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;
-             font-size:clamp(16px,2.6vw,30px);color:var(--oxblood);margin-top:16px}
-.intro-dms{font-size:clamp(9px,1.2vw,12px);letter-spacing:.22em;color:var(--muted);margin-top:8px}
-.intro-bar{position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--line)}
-.intro-bar span{display:block;height:100%;width:0;background:var(--sienna)}
 @media(prefers-reduced-motion:reduce){.intro{display:none}}
 </style>
 <link rel="stylesheet" href="paper.css">
 </head>
 <body>
 
-<!-- INTRO — where I've been, as coordinates -->
+<!-- INTRO — coordinates, nothing else.
+     Placeholder digits so the very first painted frame is never blank. -->
 <div class="intro" id="intro" aria-hidden="true">
-  <div class="intro-grid"></div>
-  <div class="intro-cross"><span class="ix"></span><span class="iy"></span></div>
-  <div class="intro-inner">
-    <div class="intro-idx mono" id="introIdx" style="opacity:0">01 / 04</div>
-    <!-- placeholder digits so the very first painted frame is never blank -->
-    <div class="intro-coord" id="introCoord">00.0000° N   00.0000° E</div>
-    <div class="intro-place" id="introPlace"></div>
-    <div class="intro-dms mono" id="introDms"></div>
-  </div>
-  <div class="intro-bar"><span id="introFill"></span></div>
+  <div class="intro-coord" id="introCoord">00.0000° N   00.0000° E</div>
 </div>
 <script>
 /* Four fixes, one per place, each scrambling into focus. Budget: 1.52s of
@@ -376,17 +349,16 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
   const skip=!el||location.hash.length>1||matchMedia('(prefers-reduced-motion:reduce)').matches;
   if(skip){finish();return;}
 
-  /* longitudes are padded to a common width so the mono columns never jitter */
+  /* Visnagar, Ahmedabad, Wernigerode, Ulm — the places stay off screen.
+     Longitudes are padded to a common width so the mono columns never jitter. */
   const ITEMS=[
-    {coord:'23.7000° N   72.5500° E',place:'Visnagar, Gujarat',   dms:"23° 42' N · 72° 33' E",hold:360},
-    {coord:'23.0216° N   72.5797° E',place:'Ahmedabad, Gujarat',  dms:"23° 01' N · 72° 34' E",hold:360},
-    {coord:'51.8401° N   10.7891° E',place:'Wernigerode, Germany',dms:"51° 50' N · 10° 47' E",hold:360},
-    {coord:'48.4000° N    9.9830° E',place:'Ulm, Germany',        dms:"48° 24' N ·  9° 59' E",hold:440}
+    {coord:'23.7000° N   72.5500° E',hold:360},
+    {coord:'23.0216° N   72.5797° E',hold:360},
+    {coord:'51.8401° N   10.7891° E',hold:360},
+    {coord:'48.4000° N    9.9830° E',hold:440}
   ];
   const TOTAL=ITEMS.reduce((s,i)=>s+i.hold,0);
-  const coordEl=document.getElementById('introCoord'),placeEl=document.getElementById('introPlace'),
-        dmsEl=document.getElementById('introDms'),idxEl=document.getElementById('introIdx'),
-        fillEl=document.getElementById('introFill');
+  const coordEl=document.getElementById('introCoord');
 
   /* a reload halfway down the page should still open on the hero */
   if('scrollRestoration' in history){restore=history.scrollRestoration;history.scrollRestoration='manual';}
@@ -409,34 +381,19 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
     return out;
   }
   const clamp=v=>v<0?0:v>1?1:v;
-  const ease=v=>1-Math.pow(1-v,3);
 
-  let start=null,shown=-1;
+  let start=null;
   function frame(now){
     if(start===null)start=now;
     const t=now-start;
-    fillEl.style.width=(clamp(t/TOTAL)*100).toFixed(2)+'%';
 
     /* which fix are we on */
     let i=0,acc=0;
     while(i<ITEMS.length-1&&t>=acc+ITEMS[i].hold){acc+=ITEMS[i].hold;i++;}
     const item=ITEMS[i],lt=t-acc,D=item.hold;
 
-    if(i!==shown){
-      shown=i;
-      placeEl.textContent=item.place;
-      dmsEl.textContent=item.dms;
-      idxEl.textContent='0'+(i+1)+' / 0'+ITEMS.length;
-    }
-    /* the coordinate line holds its place and scrambles between values;
-       the labels flip in and out around it */
+    /* the line never moves — it just scrambles from one fix to the next */
     coordEl.textContent=scramble(item.coord,clamp(lt/(D*0.55)),Math.floor(now/40));
-    const last=i===ITEMS.length-1;
-    const inP=ease(clamp(lt/110)),outP=last?0:clamp((lt-(D-80))/80);
-    const o=inP*(1-outP),y=((1-inP)*10-outP*10).toFixed(2);
-    placeEl.style.cssText='opacity:'+o.toFixed(3)+';transform:translateY('+y+'px)';
-    dmsEl.style.cssText='opacity:'+(o*0.9).toFixed(3)+';transform:translateY('+y+'px)';
-    idxEl.style.opacity=o.toFixed(3);
 
     if(t<TOTAL){requestAnimationFrame(frame);return;}
     coordEl.textContent=ITEMS[ITEMS.length-1].coord;

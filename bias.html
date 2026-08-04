@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bias & Artificial Intelligence · Janmesh Jha</title>
-<meta name="description" content="A study of how bias enters machine learning — with a live interactive explorer for the 80% rule.">
+<meta name="description" content="A study of how bias enters machine learning, with a live interactive explorer for the 80% rule.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#F1E8D8">
 <meta property="og:type" content="article">
@@ -119,7 +119,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   <div class="wrap">
     <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.22em">TECHNOLOGY ETHICS · RESEARCH</span></div>
     <h1 class="reveal">BIAS &amp;<br><span class="o">A&nbsp;I</span></h1>
-    <p class="tag reveal">Algorithms don't invent fairness or unfairness — they inherit ours, then apply it at scale. A study of how bias enters machine learning, and what to do about it.</p>
+    <p class="tag reveal">Algorithms don't invent fairness or unfairness. They inherit ours, then apply it at scale. A study of how bias enters machine learning, and what to do about it.</p>
     <div class="meta-row reveal">
       <div><span>TYPE</span>Research · Presentation + handout</div>
       <div><span>FIELD</span>Algorithmic fairness</div>
@@ -131,11 +131,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">How bias gets in</h2></div>
-    <p class="ch-lead reveal">Bias rarely arrives as malice. It seeps in through four ordinary doors — and a model will happily walk through all of them.</p>
+    <p class="ch-lead reveal">Bias rarely arrives as malice. It seeps in through four ordinary doors, and a model will happily walk through all of them.</p>
     <div class="pipe">
-      <div class="s reveal"><div class="n">DOOR 01</div><h4>Skewed data</h4><p>If the past under-represents a group, the model learns that group as an edge case — or not at all.</p></div>
+      <div class="s reveal"><div class="n">DOOR 01</div><h4>Skewed data</h4><p>If the past under-represents a group, the model learns that group as an edge case, or not at all.</p></div>
       <div class="s reveal"><div class="n">DOOR 02</div><h4>Biased labels</h4><p>Ground truth is human judgement. "Good hire" or "risky borrower" carries the prejudices of whoever labelled it.</p></div>
-      <div class="s reveal"><div class="n">DOOR 03</div><h4>Proxy features</h4><p>Drop race or gender and the model finds a stand-in — a postcode, a name, a school — that encodes it anyway.</p></div>
+      <div class="s reveal"><div class="n">DOOR 03</div><h4>Proxy features</h4><p>Drop race or gender and the model finds a stand-in (a postcode, a name, a school) that encodes it anyway.</p></div>
       <div class="s reveal"><div class="n">DOOR 04</div><h4>Feedback loops</h4><p>Act on a biased prediction and you generate biased new data. The model confirms its own worldview.</p></div>
     </div>
   </div>
@@ -144,11 +144,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">Where it bites</h2></div>
-    <p class="ch-lead reveal">The same mechanism, four high-stakes arenas — each one a place where a wrong call changes a life.</p>
+    <p class="ch-lead reveal">The same mechanism, four high-stakes arenas, each one a place where a wrong call changes a life.</p>
     <div class="domains">
-      <div class="dom reveal"><span class="tag">Hiring</span><h4>Résumé screening</h4><p>Models trained on who got hired before learn to prefer who looked like past hires — penalising gaps, names, and women's colleges.</p></div>
+      <div class="dom reveal"><span class="tag">Hiring</span><h4>Résumé screening</h4><p>Models trained on who got hired before learn to prefer who looked like past hires, penalising gaps, names, and women's colleges.</p></div>
       <div class="dom reveal"><span class="tag">Credit</span><h4>Loan &amp; risk scoring</h4><p>Proxy variables reconstruct protected attributes, producing systematically higher rates or refusals for some communities.</p></div>
-      <div class="dom reveal"><span class="tag">Vision</span><h4>Facial recognition</h4><p>Error rates spike for darker skin tones and women when training sets skew light and male — with real consequences in policing.</p></div>
+      <div class="dom reveal"><span class="tag">Vision</span><h4>Facial recognition</h4><p>Error rates spike for darker skin tones and women when training sets skew light and male, with real consequences in policing.</p></div>
       <div class="dom reveal"><span class="tag">Speech</span><h4>Content moderation</h4><p>Dialect and reclaimed language get flagged as toxic; the people a system should protect are the ones it silences.</p></div>
     </div>
   </div>
@@ -158,11 +158,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Try it yourself</h2></div>
-    <p class="ch-lead reveal">A hiring model scores 240 candidates across two groups. You control the threshold — and whether the model gets to see a <b>proxy feature</b> correlated with group. Watch what happens to fairness.</p>
+    <p class="ch-lead reveal">A hiring model scores 240 candidates across two groups. You control the threshold, and whether the model gets to see a <b>proxy feature</b> correlated with group. Watch what happens to fairness.</p>
     <div class="lab reveal">
       <span class="label">Interactive · fairness explorer</span>
       <h3>The 80% rule, live</h3>
-      <p class="intro">Both groups are, on average, equally qualified. Any gap you see in who gets hired is the model's doing — not the candidates'.</p>
+      <p class="intro">Both groups are, on average, equally qualified. Any gap you see in who gets hired is the model's doing, not the candidates'.</p>
       <div class="controls">
         <div class="toggle on" id="proxyToggle" data-hov><span class="switch"></span><span>Model sees the proxy feature</span></div>
         <div class="ctrl">
@@ -199,20 +199,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">What to do</h2></div>
-    <p class="ch-lead reveal">Fairness isn't a switch you flip at the end — it's a discipline across the whole lifecycle.</p>
+    <p class="ch-lead reveal">Fairness isn't a switch you flip at the end. It's a discipline across the whole lifecycle.</p>
     <div class="mit">
       <div class="m reveal"><div class="n">PRE-PROCESS</div><h4>Fix the data</h4><p>Re-balance, re-weight, audit labels, and remove leaky proxies before a model ever trains.</p></div>
       <div class="m reveal"><div class="n">IN-PROCESS</div><h4>Constrain the model</h4><p>Train with fairness constraints or adversarial de-biasing so equity is an objective, not an afterthought.</p></div>
       <div class="m reveal"><div class="n">POST-PROCESS</div><h4>Adjust &amp; govern</h4><p>Calibrate thresholds per group, monitor drift, document with model cards, and keep a human in the loop.</p></div>
     </div>
-    <p class="body-txt reveal" style="margin-top:26px">No single metric captures fairness — demographic parity, equal opportunity and calibration can't all hold at once. The real work is <b>choosing, out loud, which definition matters for this decision</b> — and being accountable for it.</p>
+    <p class="body-txt reveal" style="margin-top:26px">No single metric captures fairness, demographic parity, equal opportunity and calibration can't all hold at once. The real work is <b>choosing, out loud, which definition matters for this decision</b>, and being accountable for it.</p>
   </div>
 </section>
 
 <section class="outro">
   <div class="wrap">
     <h2>Fair by<br>design.</h2>
-    <p>Bias is a systems problem, not a bug. The tools exist — what's usually missing is the decision to look.</p>
+    <p>Bias is a systems problem, not a bug. The tools exist, what's usually missing is the decision to look.</p>
     <a href="index.html#projects" data-hov>← Back to the projects</a>
   </div>
 </section>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bioscope · देखो मगर प्यार से · Janmesh Jha</title>
+<meta name="description" content="A vanishing Indian street object rebuilt as an interface, hand-cranked, with a reel of photographs inside. The origin of how this whole portfolio is built.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#150d08">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Janmesh Jha">
+<meta property="og:title" content="Bioscope · देखो मगर प्यार से">
+<meta property="og:description" content="Wind the crank, look through the brass. A street bioscope rebuilt in the browser, and the idea behind every page on this site.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Mono:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#F1E8D8;--card:#F6EFE2;--ink:#150d08;--ink-2:#241810;
+  --oxblood:#5A201D;--sienna:#C25A2E;--sienna-2:#E2703A;
+  --vermilion:#b8231d;--marigold:#E0A63C;--indigo:#1b4f9c;--leaf:#1f6b46;
+  --muted:#9a8b78;--line:rgba(241,232,216,.14)
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{background:var(--ink);color:var(--bone);font-family:'Archivo',sans-serif;overflow-x:hidden;cursor:none}
+::selection{background:var(--sienna);color:var(--bone)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.mono{font-family:'Space Mono',monospace}
+.deva{font-family:'Noto Sans Devanagari','Nirmala UI',sans-serif}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--marigold)}
+.reveal{opacity:0;transform:translateY(34px)}
+
+.cursor{position:fixed;top:0;left:0;width:11px;height:11px;border-radius:50%;background:var(--marigold);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:38px;height:38px;border:1px solid var(--marigold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s;mix-blend-mode:difference}
+.hovering .cursor{width:0;height:0}.hovering .cursor-ring{width:60px;height:60px}
+@media(hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+.bar{position:fixed;top:0;left:0;width:100%;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,64px);background:linear-gradient(180deg,rgba(21,13,8,.94),rgba(21,13,8,0));pointer-events:none}
+.bar .back,.bar .id,.bar .mono{pointer-events:auto}
+.bar a.back{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;margin:-8px -12px;opacity:.85}
+.bar a.back:hover{opacity:1}
+.bar .id{font-family:'Anton',sans-serif;font-size:20px}
+.bar .mono{font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--sienna);width:0;z-index:401}
+
+/* ── THE OBJECT — full-bleed stage ── */
+.stage{position:relative;height:100vh;min-height:560px;width:100%;overflow:hidden;
+  background:radial-gradient(ellipse 90% 70% at 50% 62%,#3a2415 0%,#1d1209 55%,#120b06 100%)}
+#scene{position:absolute;inset:0;display:block;touch-action:none}
+.stage-ui{position:absolute;inset:0;pointer-events:none;z-index:3}
+/* Title sits bottom-left over a soft scrim so it never fights the cabinet. */
+.stage::after{content:'';position:absolute;inset:auto 0 0 0;height:46%;z-index:2;pointer-events:none;
+  background:linear-gradient(0deg,rgba(12,7,4,.88) 0%,rgba(12,7,4,.55) 42%,transparent 100%)}
+.stage-title{position:absolute;left:clamp(20px,5vw,64px);bottom:clamp(84px,15vh,132px);max-width:min(520px,84vw)}
+.stage-title .deva{font-size:clamp(19px,2.6vw,30px);color:var(--marigold);line-height:1.25;
+  text-shadow:0 2px 20px rgba(0,0,0,.75)}
+.stage-title h1{font-family:'Anton',sans-serif;font-size:clamp(32px,5.6vw,72px);line-height:.9;
+  text-transform:uppercase;letter-spacing:-.02em;margin-top:6px;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.stage-title p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(14px,1.5vw,18px);
+  line-height:1.45;margin-top:12px;color:rgba(241,232,216,.8);max-width:38ch}
+.hint{position:absolute;left:50%;bottom:clamp(22px,4vh,40px);transform:translateX(-50%);z-index:4;
+  font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(241,232,216,.62);text-align:center;line-height:1.9;transition:opacity .6s;white-space:nowrap}
+.hint.gone{opacity:0}
+.hint b{color:var(--marigold);font-weight:400}
+.nowplaying{position:absolute;right:clamp(20px,5vw,64px);bottom:clamp(26px,5vh,54px);
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);opacity:0;transition:opacity .5s;text-align:right}
+.nowplaying.on{opacity:1}
+.soundbtn{position:absolute;right:clamp(20px,5vw,64px);top:clamp(74px,12vh,110px);pointer-events:auto;
+  width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(21,13,8,.6);
+  color:var(--bone);display:grid;place-items:center;cursor:none;font-size:14px;transition:background .3s,border-color .3s}
+.soundbtn:hover{background:var(--sienna);border-color:var(--sienna)}
+
+/* ── PEEP VIEW — you are inside the box ── */
+.peep{position:fixed;inset:0;z-index:600;background:#080503;display:grid;place-items:center;
+  opacity:0;pointer-events:none;transition:opacity .55s ease}
+.peep.open{opacity:1;pointer-events:auto}
+.peep-disc{position:relative;width:min(78vmin,660px);aspect-ratio:1;border-radius:50%;overflow:hidden;
+  box-shadow:0 0 0 12px #1a1006, 0 0 0 15px #6b4a10, 0 0 90px 30px rgba(0,0,0,.9) inset,
+             0 30px 90px rgba(0,0,0,.7)}
+.peep-disc img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;
+  opacity:0;transition:opacity .9s ease;filter:sepia(.28) contrast(1.08) saturate(.92)}
+.peep-disc img.on{opacity:1}
+/* vignette so the edge of the lens falls off the way real glass does */
+.peep-disc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle at 50% 46%,transparent 46%,rgba(0,0,0,.55) 78%,rgba(0,0,0,.92) 100%)}
+.peep-title{margin-top:26px;text-align:center}
+.peep-title .t{font-family:'Fraunces',serif;font-size:clamp(19px,2.4vw,28px);color:var(--bone)}
+.peep-title .n{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:8px}
+.peep-close{position:fixed;top:24px;right:26px;z-index:610;pointer-events:auto;
+  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid rgba(241,232,216,.4);border-radius:100px;padding:11px 18px;background:none;color:var(--bone);cursor:none}
+.peep-close:hover{background:var(--bone);color:var(--ink)}
+/* film grain + the uneven light of a hand-cranked lamp */
+.bioscope-grain{position:absolute;inset:0;pointer-events:none;opacity:.34;mix-blend-mode:overlay;border-radius:50%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grainshift .6s steps(3) infinite}
+@keyframes grainshift{0%{transform:translate(0,0)}33%{transform:translate(-3%,2%)}66%{transform:translate(2%,-3%)}100%{transform:translate(0,0)}}
+.bioscope-flicker{position:absolute;inset:0;pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle at 50% 45%,rgba(255,190,110,.16),transparent 70%);
+  animation:flick 2.4s ease-in-out infinite}
+@keyframes flick{0%,100%{opacity:.5}18%{opacity:.86}37%{opacity:.42}62%{opacity:.95}81%{opacity:.6}}
+@media(prefers-reduced-motion:reduce){.bioscope-grain,.bioscope-flicker{animation:none}}
+
+/* ── CHAPTERS ── */
+.chapter{padding:clamp(80px,12vh,150px) 0;border-top:1px solid var(--line)}
+.ch-head{display:flex;align-items:baseline;gap:18px;margin-bottom:16px}
+.ch-num{font-family:'Anton',sans-serif;font-size:clamp(22px,2.6vw,34px);color:var(--sienna);opacity:.55;line-height:1}
+.ch-title{font-family:'Anton',sans-serif;font-size:clamp(24px,3.6vw,44px);text-transform:uppercase;line-height:.95}
+.ch-lead{font-family:'Fraunces',serif;font-size:clamp(16px,1.55vw,20px);line-height:1.6;max-width:64ch;
+  margin:16px 0 30px;color:rgba(241,232,216,.84)}
+.ch-lead b{color:var(--marigold)}
+.body-txt{font-size:15px;line-height:1.8;max-width:66ch;color:rgba(241,232,216,.7)}
+.body-txt+.body-txt{margin-top:14px}
+.body-txt b{color:var(--marigold)}
+
+.pull{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(20px,2.8vw,34px);line-height:1.35;
+  color:var(--bone);border-left:2px solid var(--sienna);padding-left:clamp(18px,2.4vw,30px);margin:34px 0;max-width:44ch}
+
+/* the through-line strip */
+.thread{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.tcard{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:22px;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s;display:block}
+.tcard:hover{transform:translateY(-5px);border-color:var(--sienna)}
+.tcard .n{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sienna-2)}
+.tcard h4{font-family:'Fraunces',serif;font-size:17px;margin:8px 0 6px;line-height:1.2}
+.tcard p{font-size:12.5px;line-height:1.55;color:rgba(241,232,216,.62)}
+@media(max-width:860px){.thread{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.thread{grid-template-columns:1fr}}
+
+/* build notes */
+.builds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.bcard{background:var(--ink-2);border:1px solid var(--line);border-radius:12px;padding:22px}
+.bcard .n{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sienna-2)}
+.bcard h4{font-family:'Fraunces',serif;font-size:17px;margin:8px 0 6px}
+.bcard p{font-size:12.5px;line-height:1.6;color:rgba(241,232,216,.66)}
+@media(max-width:820px){.builds{grid-template-columns:1fr}}
+
+.outro{text-align:center;padding:clamp(80px,13vh,150px) 0;border-top:1px solid var(--line)}
+.outro h2{font-family:'Anton',sans-serif;font-size:clamp(32px,5.4vw,72px);text-transform:uppercase;line-height:.92}
+.outro .deva{font-size:clamp(20px,3vw,34px);color:var(--marigold);margin-bottom:14px}
+.outro p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(16px,1.6vw,20px);opacity:.76;
+  max-width:52ch;margin:20px auto 36px;line-height:1.55}
+.outro a.home{display:inline-flex;gap:10px;align-items:center;font-family:'Space Mono',monospace;font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--bone);border-radius:100px;padding:16px 28px;transition:.3s}
+.outro a.home:hover{background:var(--bone);color:var(--ink)}
+
+@media(max-width:600px){
+  .stage{height:82vh}
+  .stage-title{top:64px}
+  .hint{font-size:9.5px;letter-spacing:.14em;white-space:normal;max-width:80vw}
+  .soundbtn{top:64px;width:38px;height:38px}
+  .peep-disc{width:86vmin}
+}
+</style>
+<link rel="stylesheet" href="paper.css">
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-ring"></div>
+<div class="progress" id="progress"></div>
+<div class="bar">
+  <a href="index.html" class="back" data-hov>← Back</a>
+  <span class="id">Bioscope</span>
+  <span class="mono">INTERACTION · 2026</span>
+</div>
+
+<!-- ── THE OBJECT ── -->
+<section class="stage">
+  <canvas id="scene"></canvas>
+  <div class="stage-ui">
+    <div class="stage-title">
+      <div class="deva">देखो मगर प्यार से</div>
+      <h1>The Bioscope</h1>
+      <p>Look, but look with love: the line every bioscope-wala painted on his box.</p>
+    </div>
+    <button class="soundbtn" id="soundBtn" data-hov aria-label="Toggle sound">♪</button>
+    <div class="hint" id="hint">
+      Hold or drag the <b>crank</b> to wind the reel &nbsp;·&nbsp; click a <b>lens</b> to look inside<br>drag anywhere else to walk around the box
+    </div>
+    <div class="nowplaying" id="nowPlaying"></div>
+  </div>
+</section>
+
+<!-- ── PEEP VIEW ── -->
+<div class="peep" id="peep">
+  <button class="peep-close" id="peepClose" data-hov>Close ✕</button>
+  <div>
+    <div class="peep-disc" id="peepDisc">
+      <span class="bioscope-flicker"></span>
+      <span class="bioscope-grain"></span>
+    </div>
+    <div class="peep-title">
+      <div class="t" id="peepTitle"></div>
+      <div class="n" id="peepCount"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 THE MEMORY -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">A rupee to look</h2></div>
+    <p class="ch-lead reveal">When I was a kid in India, a man would arrive on a bicycle with a painted wooden box on the back. You paid him a rupee, he turned a crank, and you put your eye to a brass hole and watched pictures crawl past while he sang over them.</p>
+    <p class="body-txt reveal">The box was called a <b>bioscope</b>. It was vermilion and mustard, covered in hand-painted marigolds, with a gramophone horn bolted to the lid and a signboard across the front that almost always read <span class="deva" style="color:var(--marigold)">देखो मगर प्यार से</span>, <em>look, but look with love</em>.</p>
+    <p class="body-txt reveal">There was nothing inside it but a strip of paper and a light bulb. The pictures weren't special. <b>The way you were made to look at them was.</b> You had to bend down. You had to wait your turn. You had to give the man a rupee. By the time your eye reached the glass you were already paying attention.</p>
+    <div class="pull reveal">They're nearly gone now. A phone shows you more pictures in a second than a bioscope-wala showed in a career, and none of them ask anything of you.</div>
+  </div>
+</section>
+
+<!-- 02 WHY IT STUCK -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">Why it stuck</h2></div>
+    <p class="ch-lead reveal">The bioscope taught me something I've never stopped believing: <b>how you show something is part of what you're showing.</b></p>
+    <p class="body-txt reveal">The same photographs, printed in a book, would have been forgettable. Put them behind brass and a crank and they become an event. The container did the work. Not decoration on top of the content: the container <em>was</em> part of the content.</p>
+    <p class="body-txt reveal">That idea is why I keep refusing to present work as a list of bullet points. A dashboard nobody opens is a failed dashboard, however correct the SQL. Training videos nobody watches are a failed pipeline, however clever the AI. <b>The delivery is not the wrapper around the work. It's half the work.</b></p>
+  </div>
+</section>
+
+<!-- 03 THE THROUGH-LINE -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Every page here is a bioscope</h2></div>
+    <p class="ch-lead reveal">I built this whole portfolio before I noticed I'd been building bioscopes the entire time. Each one is an object you operate rather than a page you read, and each one makes you do a small piece of work before it gives you anything.</p>
+    <div class="thread">
+      <a class="tcard" href="journey.html" data-hov>
+        <div class="n">Walk it</div><h4>A city of work</h4>
+        <p>Every place I've worked, as a street you drive down. Buildings rise as you reach them.</p>
+      </a>
+      <a class="tcard" href="gallery.html" data-hov>
+        <div class="n">Fly it</div><h4>A room in space</h4>
+        <p>Photographs floating along a path. You cruise past them instead of scrolling a grid.</p>
+      </a>
+      <a class="tcard" href="music.html" data-hov>
+        <div class="n">Play it</div><h4>A record library</h4>
+        <p>Beats as a crate of vinyl. Sleeves you pull out, a needle you drop.</p>
+      </a>
+      <a class="tcard" href="uav.html" data-hov>
+        <div class="n">Fly it</div><h4>A drone survey</h4>
+        <p>A rooftop rebuilt in 3D, flown through stage by stage until it becomes an energy figure.</p>
+      </a>
+    </div>
+    <p class="body-txt reveal" style="margin-top:26px">None of that is decoration. It's the same bet the bioscope-wala made: <b>make someone participate, and they'll remember what they saw.</b></p>
+  </div>
+</section>
+
+<!-- 04 HOW IT'S BUILT -->
+<section class="chapter">
+  <div class="wrap">
+    <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">How this one is built</h2></div>
+    <p class="ch-lead reveal">There isn't a single texture file, model file or audio file in this thing. The paint, the brass, the Devanagari signboard, the ratchet and the music are all generated the moment the page loads.</p>
+    <div class="builds">
+      <div class="bcard reveal">
+        <div class="n">Painted at runtime</div><h4>No texture files</h4>
+        <p>The vermilion woodgrain, the marigolds, the pierced tin fretwork and the brushed brass are drawn onto 2D canvases in code, then wrapped onto the geometry. Seeded randomness means the paintwork looks identical every reload.</p>
+      </div>
+      <div class="bcard reveal">
+        <div class="n">Synthesised</div><h4>No audio files</h4>
+        <p>The ratchet click is filtered white noise with a wooden thunk under it; the shutter chime is three sine partials. The music is four ragas, Bhairav, Yaman, Bhupali, Bageshri, played as a tanpura drone under a plucked line that wanders rather than loops.</p>
+      </div>
+      <div class="bcard reveal">
+        <div class="n">Hand feel</div><h4>The crank has physics</h4>
+        <p>Hold it and it winds at a steady pace. Drag it and it follows your pointer around the axle. Let go mid-drag and it coasts down through friction. Twelve notches a turn, one new picture per full turn.</p>
+      </div>
+    </div>
+    <p class="body-txt reveal" style="margin-top:26px">It was originally written for React and React-Three-Fiber. This site has no build step, it's a folder of files, so the whole thing was ported to plain three.js rather than dragging a framework in behind it. <b>Keeping the site simple was worth more than the convenience of the original code.</b></p>
+  </div>
+</section>
+
+<section class="outro">
+  <div class="wrap">
+    <div class="deva">देखो मगर प्यार से</div>
+    <h2>Look, but look<br>with love.</h2>
+    <p>A vanishing street object, rebuilt so it can't vanish, and the reason every other page on this site asks you to do something before it shows you anything.</p>
+    <a href="index.html#projects" class="home" data-hov>← Back to the projects</a>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="bioscope-lib.js"></script>
+<script src="bioscope-scene.js"></script>
+<script>
+/* ── page chrome ─────────────────────────────────────────────────────────── */
+gsap.registerPlugin(ScrollTrigger);
+var curEl=document.querySelector('.cursor'),ringEl=document.querySelector('.cursor-ring');
+var mx=0,my=0,rx=0,ry=0;
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;curEl.style.left=mx+'px';curEl.style.top=my+'px';});
+(function r(){rx+=(mx-rx)*0.18;ry+=(my-ry)*0.18;ringEl.style.left=rx+'px';ringEl.style.top=ry+'px';requestAnimationFrame(r);})();
+document.addEventListener('mouseover',function(e){if(e.target.closest('[data-hov]'))document.body.classList.add('hovering');});
+document.addEventListener('mouseout',function(e){if(e.target.closest('[data-hov]'))document.body.classList.remove('hovering');});
+gsap.utils.toArray('.reveal').forEach(function(el){gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}});});
+ScrollTrigger.create({start:0,end:'max',onUpdate:function(s){document.getElementById('progress').style.width=(s.progress*100)+'%';}});
+
+/* ── the scene ───────────────────────────────────────────────────────────── */
+(function(){
+  var B=window.BIOSCOPE, S=window.BIOSCOPE_SCENE;
+  var canvas=document.getElementById('scene');
+  var stage=canvas.parentElement;
+
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.15;
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(42,1,0.05,60);
+
+  function sizeTo(){
+    var w=stage.clientWidth,h=stage.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;
+    /* the box is wide; on a narrow screen back off so it still fits */
+    camera.fov = (w/h)<0.9 ? 56 : 42;
+    camera.updateProjectionMatrix();
+  }
+
+  /* lighting — a warm key from the front-left as though from a street lamp,
+     a cool fill behind, and a dim ambient so the black side never goes flat */
+  scene.add(new THREE.HemisphereLight(0xffe0b0,0x120a04,0.55));
+  var key=new THREE.DirectionalLight(0xffd9a0,2.1);
+  key.position.set(-2.2,3.4,3.2);key.castShadow=true;
+  key.shadow.mapSize.set(1024,1024);
+  key.shadow.camera.left=-3;key.shadow.camera.right=3;
+  key.shadow.camera.top=3;key.shadow.camera.bottom=-3;key.shadow.camera.far=14;
+  key.shadow.bias=-0.0006;key.shadow.normalBias=0.02;
+  scene.add(key);
+  var fill=new THREE.DirectionalLight(0x8fb6ff,0.45);fill.position.set(3,1.6,-2.4);scene.add(fill);
+  var rim=new THREE.PointLight(0xffb060,1.1,7);rim.position.set(1.6,1.2,2.6);scene.add(rim);
+
+  var bio=S.build({});
+  scene.add(bio.root);
+
+  /* ── reel state ── */
+  var loader=new THREE.TextureLoader();
+  var frames=B.shuffle(B.reelFrames);
+  var frameIndex=0;
+  var textures={};
+  function textureFor(i,cb){
+    var src=frames[i].src;
+    if(textures[src]){cb(textures[src]);return;}
+    loader.load(src,function(t){t.encoding=THREE.sRGBEncoding;textures[src]=t;cb(t);},null,function(){cb(null);});
+  }
+  function showFrame(i,announce){
+    frameIndex=((i%frames.length)+frames.length)%frames.length;
+    textureFor(frameIndex,function(t){ if(t) bio.setLensPicture(t); });
+    updatePeep();
+    if(announce&&audio) audio.onFrame(frameIndex);
+  }
+
+  /* ── audio ── */
+  var audio=new B.BioscopeAudio();
+  var muted=false;
+  var soundBtn=document.getElementById('soundBtn');
+  var nowPlaying=document.getElementById('nowPlaying');
+  soundBtn.addEventListener('click',function(){
+    muted=!muted;audio.setMuted(muted);
+    soundBtn.textContent=muted?'✕':'♪';
+    soundBtn.setAttribute('aria-label',muted?'Unmute':'Mute');
+  });
+
+  /* ── camera orbit ── */
+  /* Framing adapts to the stage's aspect: the cabinet is wide, so a narrow or
+     squarish viewport needs the camera further back. The look-at point sits a
+     little low so the box renders above the bottom scrim that carries the
+     title and the hint. Recomputed on resize. */
+  var IDLE={theta:0.0,phi:1.30,radius:3.05,target:new THREE.Vector3(0,-0.16,0)};
+  function fitFraming(){
+    var a=stage.clientWidth/Math.max(1,stage.clientHeight);
+    IDLE.radius = a<0.85 ? 4.5 : a<1.15 ? 3.9 : a<1.5 ? 3.35 : 3.05;
+    IDLE.target.y = a<1.15 ? -0.10 : -0.16;
+  }
+  var cam={theta:IDLE.theta,phi:IDLE.phi,radius:IDLE.radius};
+  var want={theta:IDLE.theta,phi:IDLE.phi,radius:IDLE.radius};
+  var peeping=false, peepMix=0;
+
+  function applyCamera(){
+    var sp=Math.sin(cam.phi);
+    camera.position.set(
+      IDLE.target.x+cam.radius*sp*Math.sin(cam.theta),
+      IDLE.target.y+cam.radius*Math.cos(cam.phi),
+      IDLE.target.z+cam.radius*sp*Math.cos(cam.theta));
+    camera.lookAt(IDLE.target);
+  }
+
+  /* ── pointer: crank drag, lens click, orbit ── */
+  var ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+  var cs=bio.crank;
+  var orbiting=false, lastX=0, lastY=0, downX=0, downY=0, downOnCrank=false;
+
+  function pick(clientX,clientY){
+    var r=canvas.getBoundingClientRect();
+    ndc.x=((clientX-r.left)/r.width)*2-1;
+    ndc.y=-((clientY-r.top)/r.height)*2+1;
+    ray.setFromCamera(ndc,camera);
+    var hits=ray.intersectObjects(bio.pickables,false);
+    return hits.length?hits[0].object:null;
+  }
+  /* project the crank axle to pixels so pointer angles mean something */
+  function pivotScreen(){
+    var world=bio.pivot.getWorldPosition(new THREE.Vector3());
+    world.project(camera);
+    var r=canvas.getBoundingClientRect();
+    cs.pivotScreen.set((world.x+1)/2*r.width,(-world.y+1)/2*r.height);
+  }
+  function pointerAngle(clientX,clientY){
+    var r=canvas.getBoundingClientRect();
+    return Math.atan2(clientY-r.top-cs.pivotScreen.y, clientX-r.left-cs.pivotScreen.x);
+  }
+
+  canvas.addEventListener('pointerdown',function(e){
+    if(peeping)return;
+    var hit=pick(e.clientX,e.clientY);
+    downX=e.clientX;downY=e.clientY;
+    if(hit&&hit.userData.role==='crank'){
+      pivotScreen();
+      cs.grabbed=true;cs.dragging=false;cs.dragVelocity=0;
+      cs.downX=e.clientX;cs.downY=e.clientY;
+      cs.lastPointerAngle=pointerAngle(e.clientX,e.clientY);
+      downOnCrank=true;
+      audio.unlock();
+    }else{
+      orbiting=true;lastX=e.clientX;lastY=e.clientY;downOnCrank=false;
+    }
+    canvas.setPointerCapture&&canvas.setPointerCapture(e.pointerId);
+  });
+
+  addEventListener('pointermove',function(e){
+    if(cs.grabbed){
+      if(!cs.dragging){
+        if(Math.hypot(e.clientX-cs.downX,e.clientY-cs.downY)<S.DRAG_THRESHOLD)return;
+        cs.dragging=true;cs.lastPointerAngle=pointerAngle(e.clientX,e.clientY);return;
+      }
+      var a=pointerAngle(e.clientX,e.clientY);
+      var d=a-cs.lastPointerAngle;
+      if(d>Math.PI)d-=Math.PI*2;            // unwrap the ±π seam
+      if(d<-Math.PI)d+=Math.PI*2;
+      cs.lastPointerAngle=a;
+      cs.angle-=d;                           // screen-clockwise reads as forward
+      cs.dragVelocity=THREE.MathUtils.lerp(cs.dragVelocity,-d*60,0.35);
+      return;
+    }
+    if(orbiting&&!peeping){
+      var dx=e.clientX-lastX, dy=e.clientY-lastY;
+      lastX=e.clientX;lastY=e.clientY;
+      want.theta-=dx*0.006;
+      want.phi=THREE.MathUtils.clamp(want.phi-dy*0.005,0.75,1.62);
+      return;
+    }
+    /* hover feedback when not dragging anything */
+    if(!peeping){
+      var hit=pick(e.clientX,e.clientY);
+      var role=hit?hit.userData.role:null;
+      document.body.classList.toggle('hovering',!!role);
+      cs.hoveredCrank=(role==='crank');
+      bio.eyepieces.forEach(function(ep){ep.hovered=(hit===ep.hit);});
+    }
+  });
+
+  function releasePointer(){
+    if(cs.grabbed){
+      cs.grabbed=false;
+      /* a drag hands its momentum over; a plain hold keeps its wind-up */
+      if(cs.dragging)cs.velocity=THREE.MathUtils.clamp(cs.dragVelocity,-S.MAX_SPEED,S.MAX_SPEED);
+      cs.dragging=false;
+    }
+    orbiting=false;
+  }
+  addEventListener('pointerup',function(e){
+    /* a click (not a drag) on a lens takes you inside */
+    if(!peeping&&!downOnCrank&&Math.hypot(e.clientX-downX,e.clientY-downY)<4){
+      var hit=pick(e.clientX,e.clientY);
+      if(hit&&hit.userData.role==='lens')openPeep();
+    }
+    releasePointer();
+  });
+  addEventListener('pointercancel',releasePointer);
+
+  /* ── peep view ── */
+  var peep=document.getElementById('peep');
+  var peepDisc=document.getElementById('peepDisc');
+  var peepTitle=document.getElementById('peepTitle');
+  var peepCount=document.getElementById('peepCount');
+  var peepTimer=null, peepImgs=[];
+
+  function updatePeep(){
+    if(!peeping)return;
+    var f=frames[frameIndex];
+    peepTitle.textContent=f.title;
+    peepCount.textContent=String(frameIndex+1).padStart(2,'0')+' / '+String(frames.length).padStart(2,'0');
+    /* cross-fade two stacked <img> so frames dissolve rather than cut */
+    var incoming=peepImgs[0].classList.contains('on')?peepImgs[1]:peepImgs[0];
+    var outgoing=incoming===peepImgs[0]?peepImgs[1]:peepImgs[0];
+    incoming.src=f.src;
+    incoming.classList.add('on');
+    outgoing.classList.remove('on');
+    if(audio)nowPlayingTick();
+  }
+  function advance(){ showFrame(frameIndex+1,true); }
+
+  function openPeep(){
+    if(peeping)return;
+    peeping=true;
+    audio.unlock();
+    audio.chime();
+    audio.startMusic();
+    peep.classList.add('open');
+    want.radius=1.15;want.phi=1.5;want.theta=0;
+    updatePeep();
+    clearInterval(peepTimer);
+    peepTimer=setInterval(advance,S.FRAME_DURATION);
+    nowPlaying.classList.add('on');
+  }
+  function closePeep(){
+    if(!peeping)return;
+    peeping=false;
+    peep.classList.remove('open');
+    clearInterval(peepTimer);peepTimer=null;
+    audio.stopMusic();
+    want.radius=IDLE.radius;want.phi=IDLE.phi;
+    nowPlaying.classList.remove('on');
+  }
+  document.getElementById('peepClose').addEventListener('click',closePeep);
+  peep.addEventListener('click',function(e){if(e.target===peep)closePeep();});
+  addEventListener('keydown',function(e){if(e.key==='Escape')closePeep();});
+
+  function nowPlayingTick(){
+    var name=audio.nowPlaying();
+    nowPlaying.textContent=name?('♪ Raag '+name):'';
+  }
+
+  /* build the two cross-fading images inside the disc */
+  for(var i=0;i<2;i++){var im=document.createElement('img');im.alt='';peepDisc.insertBefore(im,peepDisc.firstChild);peepImgs.push(im);}
+
+  /* ── hint fades on first interaction ── */
+  var hintEl=document.getElementById('hint');
+  ['pointerdown','wheel','touchstart'].forEach(function(ev){
+    addEventListener(ev,function(){hintEl.classList.add('gone');},{passive:true,once:true});
+  });
+
+  /* ── crank handlers ── */
+  function onNotch(speed){ audio.ratchet(speed); }
+  function onTurn(){ showFrame(frameIndex+1,true); if(!peeping)audio.chime(); }
+
+  /* ── loop ── */
+  var clock=new THREE.Clock();
+  function frame(){
+    requestAnimationFrame(frame);
+    var dt=Math.min(clock.getDelta(),0.05);
+    var t=clock.elapsedTime;
+
+    /* crank physics */
+    var before=cs.angle;
+    if(cs.grabbed&&!cs.dragging){
+      cs.velocity=THREE.MathUtils.lerp(cs.velocity,S.HOLD_SPEED,dt*S.SPIN_UP);
+      cs.angle+=cs.velocity*dt;
+    }else if(!cs.grabbed){
+      cs.velocity=S.damp(cs.velocity,0,S.FRICTION,dt);
+      if(Math.abs(cs.velocity)<0.02)cs.velocity=0;
+      cs.angle+=cs.velocity*dt;
+    }else{ cs.velocity=0; }
+    bio.spinner.rotation.z=cs.angle;
+
+    var moved=cs.angle-before;
+    if(moved!==0){
+      bio.reelSpin.value=cs.angle;
+      var notchSize=(Math.PI*2)/B.CRANK.notchesPerTurn;
+      var notch=Math.floor(cs.angle/notchSize);
+      if(notch!==cs.lastNotch){
+        var crossed=Math.min(Math.abs(notch-cs.lastNotch),3);
+        var sp=Math.min(1,Math.abs(moved/dt)/S.MAX_SPEED);
+        for(var k=0;k<crossed;k++)onNotch(sp);
+        cs.lastNotch=notch;
+      }
+      var turn=Math.floor(cs.angle/B.CRANK.radiansPerFrame);
+      if(turn!==cs.lastTurn){ onTurn(); cs.lastTurn=turn; }
+    }
+
+    /* halo pulse */
+    var pulse=0.18+Math.sin(t*1.6)*0.07;
+    bio.halo.material.opacity=S.damp(bio.halo.material.opacity,(cs.hoveredCrank||cs.grabbed)?0.7:pulse,6,dt);
+
+    /* spool + tonearm follow the handle */
+    bio.spool.rotation.y=bio.reelSpin.value*0.6;
+    bio.tonearm.rotation.y=S.damp(bio.tonearm.rotation.y,-0.35+Math.sin(bio.reelSpin.value*0.2)*0.05,2,dt);
+
+    /* eyepiece glow + hover ring */
+    bio.eyepieces.forEach(function(ep){
+      var lit=ep.hovered||peeping;
+      ep.glow.intensity=S.damp(ep.glow.intensity,lit?1.6:0.35,4,dt);
+      ep.ring.visible=ep.hovered&&!peeping;
+    });
+
+    /* camera easing */
+    cam.theta=S.damp(cam.theta,want.theta,3.2,dt);
+    cam.phi=S.damp(cam.phi,want.phi,3.2,dt);
+    cam.radius=S.damp(cam.radius,want.radius,3.2,dt);
+    applyCamera();
+
+    renderer.render(scene,camera);
+  }
+
+  function refit(){
+    sizeTo();
+    fitFraming();
+    if(!peeping){ want.radius=IDLE.radius; want.phi=IDLE.phi; }
+  }
+  refit();
+  cam.radius=want.radius=IDLE.radius;   // start already framed, no opening lurch
+  applyCamera();
+  addEventListener('resize',refit);
+  showFrame(0,false);
+  frame();
+})();
+</script>
+<script src="casenav.js"></script>
+</body>
+</html>

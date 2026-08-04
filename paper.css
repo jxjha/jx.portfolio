@@ -106,6 +106,34 @@ hr,.prob,.mile{border-color:rgba(30,20,17,.09)}
 .step,.pipe .s,.mit .m,.mth,.hat,.eng,.phase,.tool,.chip,.gap-cat,
 .sol,.dom,.pcard,.fact,.tbl,.sqlq{border-radius:12px}
 
+/* ---------- 4. WIDESCREEN ----------
+   Pages were capped between 1160 and 1400px, which reads cramped on a modern
+   display. The container opens up so figures, grids and cards get real room;
+   prose keeps its own ch-based measure above, so lines never run too long.
+   The result is an editorial asymmetry: wide media, narrow text column. */
+/* width:100% is needed because some pages set width:min(...) on .wrap, which
+   would otherwise win over max-width and keep the old narrow measure */
+.wrap{width:100%;max-width:1560px;padding-left:clamp(20px,5.2vw,88px);padding-right:clamp(20px,5.2vw,88px)}
+
+/* more generous gutters between cards now that there is space for them */
+.streams,.hats,.engines,.takes,.builds,.method-grid,.steps,.pipe,.domains,
+.mit,.thread,.yield,.outcomes,.phases,.facts,.pestel,.moscow,.mvp-grid,
+.persona-grid,.hmw-grid,.tables,.gap-cats,.loop-legend,.two{gap:clamp(14px,1.5vw,22px)}
+.bmc{gap:clamp(10px,1vw,14px)}
+
+/* the split layouts get a wider centre channel */
+.split,.reel-wrap,.uplift,.moneybox,.radar-wrap,.sol-wrap,.pressure-wrap,
+.gauge-row,.about-grid{gap:clamp(26px,3.4vw,60px)}
+
+/* projects index: give the list room to breathe against its plate */
+.pindex{gap:clamp(28px,4.5vw,96px)}
+
+/* section rhythm opens up on big screens without hurting laptops */
+@media(min-width:1500px){
+  .chapter{padding:clamp(96px,10vh,150px) 0}
+  .ch-lead{margin:20px 0 38px}
+}
+
 @media(max-width:600px){
   .chapter{padding:58px 0}
   .ch-lead{margin:14px 0 24px}

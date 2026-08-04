@@ -3,6 +3,7 @@
   <url><loc>/</loc><changefreq>monthly</changefreq><priority>1.00</priority></url>
   <url><loc>/journey.html</loc><changefreq>monthly</changefreq><priority>0.80</priority></url>
   <url><loc>/revamp.html</loc><changefreq>monthly</changefreq><priority>0.90</priority></url>
+  <url><loc>/bioscope.html</loc><changefreq>monthly</changefreq><priority>0.95</priority></url>
   <url><loc>/thesis.html</loc><changefreq>monthly</changefreq><priority>0.95</priority></url>
   <url><loc>/skate.html</loc><changefreq>monthly</changefreq><priority>0.90</priority></url>
   <url><loc>/amdavad.html</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>

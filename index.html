@@ -179,7 +179,7 @@ section{position:relative}
           letter-spacing:-.005em}
 .prow .pm{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
           color:var(--muted);white-space:nowrap}
-.prow .pmark{display:none}
+.prow .pmark,.prow .psum{display:none}
 
 /* the specimen plate — a museum label, essentially */
 .pplate{position:sticky;top:clamp(90px,12vh,130px);border:1px solid var(--line);border-radius:2px;
@@ -187,16 +187,23 @@ section{position:relative}
 .pplate .ptop{display:flex;justify-content:space-between;align-items:baseline;
               font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
               color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line)}
-.pplate .pfig{position:relative;display:grid;place-items:center;padding:clamp(26px,4vw,48px) 0;min-height:190px}
+/* the mark is a signature, not the subject — keep it small so the words lead */
+.pplate .pfig{position:relative;display:grid;place-items:center;padding:clamp(16px,2.2vw,24px) 0;min-height:104px}
 .pplate .pfig .watermark{position:absolute;inset:0;display:grid;place-items:center;
-                         font-family:'Anton',sans-serif;font-size:clamp(90px,12vw,150px);color:var(--sienna);
+                         font-family:'Anton',sans-serif;font-size:clamp(58px,7vw,88px);color:var(--sienna);
                          opacity:.05;line-height:1;pointer-events:none;user-select:none}
-.pplate .pfig svg{width:clamp(120px,13vw,164px);height:auto;position:relative;z-index:2;
+.pplate .pfig svg{width:clamp(74px,7.5vw,96px);height:auto;position:relative;z-index:2;
                   animation:markIn .55s cubic-bezier(.2,.8,.2,1)}
 @keyframes markIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .pplate .pbody{border-top:1px solid var(--line);padding-top:18px}
 .pplate .pttl{font-family:'Fraunces',serif;font-size:clamp(19px,1.9vw,25px);line-height:1.2;margin-bottom:10px}
-.pplate .pdesc{font-size:13.5px;line-height:1.68;color:#54443a;margin-bottom:20px}
+.pplate .pdesc{font-size:14px;line-height:1.72;color:#4b3b31;margin-bottom:18px}
+/* what's actually in the case study — the promise, in three beats */
+.pplate .pinside{list-style:none;display:flex;flex-direction:column;gap:8px;margin:0 0 20px;
+                 padding-top:16px;border-top:1px dashed var(--line)}
+.pplate .pinside li{position:relative;padding-left:18px;font-family:'Space Mono',monospace;
+                    font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#6d5b4c;line-height:1.5}
+.pplate .pinside li::before{content:'';position:absolute;left:0;top:.52em;width:8px;height:1px;background:var(--sienna)}
 .pplate .pgo{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
              color:var(--oxblood);display:inline-flex;gap:9px;align-items:center;transition:gap .35s}
 .pplate:hover .pgo{gap:15px}
@@ -208,10 +215,12 @@ section{position:relative}
   /* no room for a plate — fold the mark and the description into each row */
   .pindex{grid-template-columns:1fr;gap:0}
   .pplate{display:none}
-  .prow{grid-template-columns:auto 1fr auto;align-items:center}
+  .prow{grid-template-columns:auto 1fr auto;align-items:start}
   .prow .pm{display:none}
-  .prow .pmark{display:block;width:34px;opacity:.5}
+  .prow .pmark{display:block;width:34px;opacity:.5;align-self:center}
   .prow .pmark svg{width:100%;height:auto}
+  /* there's no plate to read here, so the row has to carry the summary itself */
+  .prow .psum{display:block;grid-column:2;font-size:13px;line-height:1.55;color:#6d5b4c;margin-top:7px}
 }
 
 /* GALLERY PORTAL */
@@ -695,33 +704,54 @@ const MARKS={
   reel:SVG(`<rect x="18" y="34" width="84" height="52" rx="6"/><path d="M18 46h84M18 74h84"/><path d="M30 34v52M90 34v52" opacity=".5"/><path d="M52 50l20 10-20 10z" fill="currentColor" stroke="none"/>`),
   bioscope:SVG(`<path d="M26 44h68a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H26a6 6 0 0 1-6-6V50a6 6 0 0 1 6-6Z"/><circle cx="42" cy="63" r="8"/><circle cx="60" cy="63" r="8"/><circle cx="78" cy="63" r="8"/><path d="M32 44V36h56v8"/><path d="M20 58h-7M13 58v-9l-6-4"/><circle cx="7" cy="45" r="4"/><path d="M34 88l-8 16M86 88l8 16"/>`)
 };
+/* Each entry carries three levels of promise: `s` is the one-line summary the
+   narrow layout shows under the title, `d` says what the case study is, and
+   `inside` names the three things a reader actually gets out of it. */
 const PROJECTS=[
  {href:'revamp.html',    t:'ReVamp — Smart Wardrobe',  m:'Product · 2022–23',      mark:'hanger',
-  d:'An IoT wardrobe taken from a user frustration to an investable business case — ideation, personas, RICE, MoSCoW, the whole pipeline walked end to end.',
+  s:'A smart-wardrobe concept taken from blank page to business case.',
+  d:'The whole product pipeline walked end to end — how one everyday frustration became personas, a business model, a ranked backlog and a buildable MVP.',
+  inside:['How-Might-We to concept','Personas, jobs and fears','RICE · MoSCoW · MVP scope'],
   go:'Walk the journey', tags:['Product','BMC','RICE','MVP']},
  {href:'thesis.html',    t:'Expectation Exchange',      m:"Master's thesis · 1.3",  mark:'exchange',
-  d:'How HQ and 80+ country units at Bosch Rexroth actually talk to each other — 21 process gaps diagnosed, and a formal model designed to close them.',
+  s:'Why HQ and 80+ country units talk past each other, and what closes the gap.',
+  d:'Six months of mixed-methods research inside Bosch Rexroth: a survey, interviews with country sales heads, 21 process gaps named, and a model built to close them.',
+  inside:['Survey + strategic interviews','21 process gaps, categorised','Collaboration model & roadmap'],
   go:'Read the diagnosis', tags:['Research','Org design','Grade 1.3']},
  {href:'skate.html',     t:'Hello Skate Mobility',      m:"Founder's associate · 2021–22", mark:'scooter',
-  d:'Twelve months at a seed-stage e-scooter company wearing four hats — product, operations, go-to-market and fundraising. 95% fleet uptime, two B2B partnerships.',
+  s:'Twelve months wearing four hats at a seed-stage e-scooter company.',
+  d:'Product, ops, go-to-market and fundraising on a rotating clock — including what 95% fleet uptime actually takes, and how a new campus gets launched.',
+  inside:['Four roles, one year','95% uptime, and the system behind it','Campus launch playbook'],
   go:'Ride along', tags:['Startup','Ops','GTM']},
  {href:'assortment.html',t:'Assortment Management',     m:'Bosch Rexroth · Data & BI', mark:'grid',
-  d:'A messy product portfolio turned into queryable decisions: a clean relational schema, twelve business questions in SQL, and a live multi-view dashboard.',
+  s:'Excel guesswork replaced by a queryable model and a live dashboard.',
+  d:'Raw tables to a Monday-morning dashboard: a clean relational schema, the twelve questions the business kept asking, and the SQL that answers each one.',
+  inside:['Relational schema, from scratch','12 business questions in SQL','Multi-view Power BI dashboard'],
   go:'Open the case study', tags:['SQL','Power BI','Schema']},
  {href:'studio.html',    t:'Multimedia & UX',           m:'Bosch Rexroth · 2024',   mark:'reel',
-  d:'One internship run like a production studio — an AI-driven video pipeline, learning content localised into seven languages, and a measured 17% usability lift.',
+  s:'One internship run like a production studio, across three workstreams.',
+  d:'Three workstreams from one desk — an AI-driven video pipeline run solo, learning content localised into seven languages, and internal tools measurably easier to use.',
+  inside:['AI video pipeline, end to end','Seven-language rollout','+17% measured usability lift'],
   go:'Step into the studio', tags:['Synthesia','UX','+17%']},
  {href:'uav.html',       t:'UAV → Solar Yield',         m:'Geospatial · 3D',        mark:'contour',
-  d:'A drone maps a campus roof, photogrammetry rebuilds it in 3D, and radiation modelling turns that surface into 155 MWh a year of solar potential.',
+  s:'A drone survey turned into a roof’s annual solar yield.',
+  d:'One campus roof in Wernigerode: photogrammetry rebuilds it in 3D, radiation modelling turns that surface into 155 MWh a year. Fly through the result yourself.',
+  inside:['Drone survey → point cloud','3D photogrammetry model','155 MWh/year, modelled'],
   go:'Take the flight', tags:['QGIS','Photogrammetry','Energy']},
  {href:'bias.html',      t:'Bias & Artificial Intelligence', m:'Research · interactive', mark:'curves',
-  d:'How bias enters machine learning, where it bites hardest, and what to do about it — with a live fairness explorer you can push around yourself.',
+  s:'The four doors bias walks through, and a fairness explorer to test them.',
+  d:'How bias enters a model, the four high-stakes arenas where it costs people most, and what actually counters it — with a live explorer for the trade-offs.',
+  inside:['Four sources of bias','Four arenas where it bites','Interactive fairness explorer'],
   go:'Try the explorer', tags:['AI ethics','Fairness','Interactive']},
  {href:'agriculture.html',t:'The Future of Farming',    m:'Tech assessment',        mark:'radar',
-  d:'A structured assessment of what could realistically make US and UK food systems sustainable — PESTEL scan, technology radar, four ranked bets.',
+  s:'Which food-system technologies are actually ready, ranked and sequenced.',
+  d:'What could realistically make US and UK food systems sustainable: a PESTEL scan, eight technologies placed by maturity, and four SDG-aligned bets ranked by impact.',
+  inside:['PESTEL + megatrend scan','Eight technologies, by maturity','Four bets, ranked'],
   go:'Explore the radar', tags:['PESTEL','Radar','SDG']},
  {href:'amdavad.html',   t:'Amazing Amdavad',           m:'Side venture · 2018–21', mark:'growth',
-  d:'Co-founding a city-media brand in Ahmedabad and growing it 28× — from 7,000 to 200,000 followers. My earliest product-strategy education, in disguise.',
+  s:'Co-founding a city-media brand and growing it 28× in three years.',
+  d:'7,000 to 200,000 followers on a repeatable content-and-community loop, not a viral moment. My earliest product-strategy education, in disguise.',
+  inside:['Three interlocking engines','7K → 200K over three years','The growth loop, drawn'],
   go:'See the growth loop', tags:['Media','Community','28× growth']}
 ];
 (function(){
@@ -732,6 +762,7 @@ const PROJECTS=[
       <span class="pt">${p.t}</span>
       <span class="pm">${p.m}</span>
       <span class="pmark">${MARKS[p.mark]}</span>
+      <span class="psum">${p.s}</span>
     </a>`).join('');
   const rows=[...list.querySelectorAll('.prow')];
   let active=-1;
@@ -748,6 +779,7 @@ const PROJECTS=[
         <div class="pbody">
           <div class="pttl">${p.t}</div>
           <p class="pdesc">${p.d}</p>
+          <ul class="pinside">${p.inside.map(x=>`<li>${x}</li>`).join('')}</ul>
           <span class="pgo">${p.go} <span>→</span></span>
           <div class="pmeta">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div>
         </div>

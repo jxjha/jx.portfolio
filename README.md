@@ -2,6 +2,8 @@
 
 Personal portfolio site. Plain HTML, CSS, and vanilla JS — no build step.
 
+📄 **[Product Requirements Document](docs/PRD.md)** — the whole site specified: problem, audience, principles, per-surface requirements for all nine case studies, design system, and the open gaps.
+
 ## Pages
 
 - `index.html` — showcase (hero, about, been there, projects, gallery portal, music portal, contact)

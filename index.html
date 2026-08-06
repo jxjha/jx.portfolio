@@ -81,10 +81,25 @@ body.menu-open{overflow:hidden}
 @media(max-width:900px){.nav-links{display:none}.nav-burger{display:block}}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:90px}
-.hero-kicker{display:flex;gap:16px;align-items:center;margin-bottom:24px}
-.hero-kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--sienna)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:110px}
 .hero h1{font-family:'Anton',sans-serif;line-height:.84;text-transform:uppercase;font-size:clamp(58px,14vw,230px);letter-spacing:-.01em}
+/* swiss trim — a hairline specimen strip along the very top of the hero */
+.spec-strip{position:absolute;top:0;left:0;right:0;height:34px;z-index:2;background:var(--bone);
+            border-bottom:1px solid var(--line);display:flex;align-items:center;
+            font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;
+            text-transform:uppercase;color:var(--muted)}
+.spec-strip .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px}
+.spec-strip .l,.spec-strip .r{display:flex;gap:18px;align-items:center}
+.spec-strip b{font-weight:400;color:var(--ink)}
+@media(max-width:640px){.spec-strip{font-size:9px;letter-spacing:.12em}.spec-strip .r span:not(:last-child){display:none}}
+/* swiss trim — crosshair register mark tucked into the bottom-right */
+.reg-mark{position:absolute;right:clamp(20px,5vw,72px);bottom:24px;width:18px;height:18px;
+          pointer-events:none;opacity:.55;z-index:2}
+.reg-mark::before,.reg-mark::after{content:'';position:absolute;background:var(--muted)}
+.reg-mark::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-.5px)}
+.reg-mark::after{top:50%;left:0;right:0;height:1px;transform:translateY(-.5px)}
+.reg-mark span{position:absolute;left:50%;top:50%;width:8px;height:8px;border:1px solid var(--muted);
+               border-radius:50%;transform:translate(-50%,-50%)}
 .hero h1 .stroke{-webkit-text-stroke:2px var(--ink);color:transparent}
 .hero h1 .fill{color:var(--oxblood)}
 .hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:46px;flex-wrap:wrap}
@@ -125,6 +140,18 @@ section{position:relative}
 .resume-cv:hover .resume-word .resu{-webkit-text-stroke-color:var(--sienna-2)}
 .attention{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,2vw,24px);margin-top:14px;opacity:.75}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:70px}.resume-stage{min-height:44vh}.avatar-wrap{right:6%}}
+
+/* about — tagline + lede layout (post-resume-panel) */
+.about-intro{max-width:960px}
+.about-tag{font-family:'Archivo',sans-serif;font-weight:500;font-size:clamp(30px,4.8vw,64px);
+           line-height:1.14;letter-spacing:-.012em;margin:26px 0 34px;color:var(--bone)}
+.about-tag .em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--sienna-2);
+               letter-spacing:-.01em;padding-right:.04em}
+.about-lede{font-family:'Fraunces',serif;font-size:clamp(17px,1.85vw,23px);line-height:1.55;
+            color:rgba(241,232,216,.86);max-width:62ch;margin-bottom:30px}
+.about-lede .me-name{font-family:'Anton',sans-serif;font-style:normal;font-size:1.08em;
+                     letter-spacing:.01em;color:var(--bone);margin-right:.3em;text-transform:uppercase}
+@media(max-width:600px){.about-tag{margin:20px 0 26px}}
 
 /* TREE — Been there, done that */
 .tree-wrap{position:relative;padding:20px 0}
@@ -453,12 +480,21 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
 
 <!-- HERO -->
 <header id="top" class="hero">
-  <div class="wrap">
-    <div class="hero-kicker reveal">
-      <span class="dot"></span>
-      <span class="mono" style="font-size:12px;letter-spacing:.24em">JANMESH JHA</span>
-      <span class="mono" style="font-size:12px;letter-spacing:.24em;color:var(--muted)">· A PERSONAL SHOWCASE</span>
+  <!-- swiss: specimen strip -->
+  <div class="spec-strip" aria-hidden="true">
+    <div class="wrap">
+      <div class="l">
+        <span>N° <b>01</b></span>
+        <span>Specimen</span>
+        <span>MMXXVI</span>
+      </div>
+      <div class="r">
+        <span>48°24′N &nbsp; 9°59′E</span>
+        <span>Ulm / Munich</span>
+      </div>
     </div>
+  </div>
+  <div class="wrap">
     <h1 data-parallax="0.1">
       <span class="line-mask"><span class="fill h-line">Creatively</span></span>
       <span class="line-mask"><span class="stroke h-line">Innovate</span></span>
@@ -475,6 +511,8 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
       </div>
     </div>
   </div>
+  <!-- swiss: register mark -->
+  <span class="reg-mark" aria-hidden="true"><span></span></span>
 </header>
 
 <!-- ABOUT -->
@@ -484,23 +522,18 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
       <h2 style="color:var(--bone)">About</h2>
       <span class="sec-num">01</span>
     </div>
-    <div class="about-grid">
-      <div class="about-left">
-        <span class="label reveal">The person, not the paperwork</span>
-        <p class="quote reveal">"I don't build dashboards or slide decks. I build clarity."</p>
-        <div class="facts reveal">
-          <div><span>◆</span> Ulm / Munich</div>
-          <div><span>◆</span> Builder · shooter · listener</div>
-          <div><span>◆</span> Photographer since 2018</div>
-        </div>
-      </div>
-      <div class="resume-stage">
-        <a class="resume-cv reveal" href="assets/CV_JANMESHJHA.pdf" download data-hov>
-          <span class="resume-word" data-parallax="0.05">
-            <span class="resu">RESU</span><span class="me"><span class="mm">m<img class="avatar" src="assets/avatar.png" alt="Janmesh sitting on the letters" onerror="this.classList.add('missing')"></span>e</span>
-          </span>
-          <span class="cv-hint">Download CV ↓</span>
-        </a>
+    <div class="about-intro">
+      <span class="label reveal">The person, not the paperwork</span>
+      <p class="about-tag reveal">
+        I convert <span class="em">complex</span> problems into <span class="em">simplified</span> stories.
+      </p>
+      <p class="about-lede reveal">
+        <span class="me-name">Janmesh Jha</span> — a creative generalist working across tech, media, business, and everything in between. I like problems that don't fit tidily inside one discipline, and I like the moment they suddenly do.
+      </p>
+      <div class="facts reveal">
+        <div><span>◆</span> Ulm / Munich</div>
+        <div><span>◆</span> Builder · shooter · listener</div>
+        <div><span>◆</span> Photographer since 2018</div>
       </div>
     </div>
     <div class="attention reveal">…and some things where I give attention.</div>

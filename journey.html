@@ -157,24 +157,38 @@ function plateTex(base,rx,ry){const c=document.createElement('canvas');c.width=c
   for(let i=0;i<8;i++)for(let j=0;j<8;j++){x.beginPath();x.arc(8+i*16,8+j*16,3.6,0,Math.PI*2);x.fill();}
   x.fillStyle='rgba(255,255,255,0.08)';
   for(let i=0;i<8;i++)for(let j=0;j<8;j++){x.beginPath();x.arc(8+i*16-0.6,8+j*16-0.6,1.4,0,Math.PI*2);x.fill();}
-  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx||1,ry||1);t.encoding=THREE.sRGBEncoding;return t;}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx||1,ry||1);t.encoding=THREE.sRGBEncoding;
+  /* anisotropy stops the stud grid from moiré-shimmering at grazing road angles */
+  t.anisotropy=renderer.capabilities.getMaxAnisotropy();return t;}
+
+/* every flat ground decal (road, markings, sidewalks, cross-streets) sits within
+   a few hundredths of the plane under it — far past the depth buffer's precision
+   at 200+ units out, which made them z-fight and flicker on scroll. Polygon
+   offset pulls each layer forward in depth space instead of relying on the gap. */
+function decal(mat,order){mat.polygonOffset=true;mat.polygonOffsetFactor=-order;mat.polygonOffsetUnits=-order*2;return mat;}
 
 /* ground + road — matte, plate-textured */
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(800,1000),new THREE.MeshStandardMaterial({color:0x7c9c58,roughness:0.85,metalness:0.02,map:plateTex('#7c9c58',80,100)}));
 ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 const ROADW=14;
-const road=new THREE.Mesh(new THREE.PlaneGeometry(ROADW,1000),new THREE.MeshStandardMaterial({color:0x3f3b36,roughness:0.9,metalness:0.02,map:plateTex('#3f3b36',3,150)}));
+const road=new THREE.Mesh(new THREE.PlaneGeometry(ROADW,1000),decal(new THREE.MeshStandardMaterial({color:0x3f3b36,roughness:0.9,metalness:0.02,map:plateTex('#3f3b36',3,150)}),1));
 road.rotation.x=-Math.PI/2;road.position.y=0.02;road.receiveShadow=true;scene.add(road);
 /* raised curbs along the road edge — smooth lego border tile */
 [-1,1].forEach(s=>{const curb=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.36,1000),new THREE.MeshStandardMaterial({color:0xdcd2be,roughness:0.7,metalness:0.05}));curb.position.set(s*(ROADW/2+0.25),0.18,0);curb.castShadow=curb.receiveShadow=true;scene.add(curb);});
-const dashMat=new THREE.MeshStandardMaterial({color:0xE7D3A8,roughness:.9});
+const dashMat=decal(new THREE.MeshStandardMaterial({color:0xE7D3A8,roughness:.9}),3);
 for(let z=60;z>-280;z-=8){const d=new THREE.Mesh(new THREE.PlaneGeometry(0.5,3.4),dashMat);d.rotation.x=-Math.PI/2;d.position.set(0,0.04,z);scene.add(d);}
-[-1,1].forEach(s=>{const sw=new THREE.Mesh(new THREE.PlaneGeometry(4,1000),new THREE.MeshStandardMaterial({color:0xC9B89A,roughness:1}));sw.rotation.x=-Math.PI/2;sw.position.set(s*(ROADW/2+2),0.03,0);sw.receiveShadow=true;scene.add(sw);});
-for(let z=-30;z>-240;z-=42){const cr=new THREE.Mesh(new THREE.PlaneGeometry(140,10),new THREE.MeshStandardMaterial({color:0x565049,roughness:1}));cr.rotation.x=-Math.PI/2;cr.position.set(0,0.021,z);scene.add(cr);}
+[-1,1].forEach(s=>{const sw=new THREE.Mesh(new THREE.PlaneGeometry(4,1000),decal(new THREE.MeshStandardMaterial({color:0xC9B89A,roughness:1}),2));sw.rotation.x=-Math.PI/2;sw.position.set(s*(ROADW/2+2),0.03,0);sw.receiveShadow=true;scene.add(sw);});
+/* cross-streets — kept clear of the main road/sidewalk footprint. They used to
+   span the full width at y=0.021, a hair above the road at y=0.02, which
+   z-fought and flickered as horizontal bands across the tarmac on scroll. */
+const CROSSW=70-(ROADW/2+4.2);
+for(let z=-30;z>-240;z-=42){[-1,1].forEach(s=>{
+  const cr=new THREE.Mesh(new THREE.PlaneGeometry(CROSSW,10),decal(new THREE.MeshStandardMaterial({color:0x565049,roughness:1}),2));
+  cr.rotation.x=-Math.PI/2;cr.position.set(s*((ROADW/2+4.2)+CROSSW/2),0.021,z);scene.add(cr);});}
 
 /* park + pond */
-(function(){const park=new THREE.Mesh(new THREE.PlaneGeometry(46,60),new THREE.MeshStandardMaterial({color:0x7BA05B,roughness:1}));park.rotation.x=-Math.PI/2;park.position.set(-52,0.03,-90);park.receiveShadow=true;scene.add(park);
-  const pond=new THREE.Mesh(new THREE.CircleGeometry(9,28),new THREE.MeshStandardMaterial({color:0x4f93b8,roughness:.3,metalness:.2}));pond.rotation.x=-Math.PI/2;pond.position.set(-52,0.05,-96);scene.add(pond);})();
+(function(){const park=new THREE.Mesh(new THREE.PlaneGeometry(46,60),decal(new THREE.MeshStandardMaterial({color:0x7BA05B,roughness:1}),1));park.rotation.x=-Math.PI/2;park.position.set(-52,0.03,-90);park.receiveShadow=true;scene.add(park);
+  const pond=new THREE.Mesh(new THREE.CircleGeometry(9,28),decal(new THREE.MeshStandardMaterial({color:0x4f93b8,roughness:.3,metalness:.2}),2));pond.rotation.x=-Math.PI/2;pond.position.set(-52,0.05,-96);scene.add(pond);})();
 
 function box(w,h,d,color,rough=.85){return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color,roughness:rough}));}
 function facadeTex(cols,rows,base,win,litc){const c=document.createElement('canvas');c.width=cols*16;c.height=rows*16;const x=c.getContext('2d');x.fillStyle=base;x.fillRect(0,0,c.width,c.height);for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){x.fillStyle=Math.random()<0.34?litc:win;x.fillRect(i*16+3,j*16+3,10,11);}const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t;}
@@ -206,8 +220,23 @@ function bGarage(){const g=new THREE.Group();
   const door=box(6,3.6,0.3,0x8a4a2a);door.position.set(0,1.8,4.55);g.add(door);
   for(let y=0.7;y<3.4;y+=0.6){const s=box(6,0.08,0.34,0x5a2f1a);s.position.set(0,y,4.6);g.add(s);}
   const sign=box(4,0.9,0.2,0xC25A2E);sign.position.set(0,4.3,4.6);g.add(sign);
-  const sg=new THREE.Group();sg.position.set(4,0,7);const deck=box(2.2,0.18,0.5,0xE0A93B);deck.position.y=0.5;sg.add(deck);const stem=box(0.16,1.4,0.16,0x2a2a2e);stem.position.set(1,1.1,0);sg.add(stem);
-  [[-1],[1]].forEach(([wx])=>{const wm=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.18,16),new THREE.MeshStandardMaterial({color:0x1a1a1e}));wm.rotation.z=Math.PI/2;wm.position.set(wx,0.42,0);sg.add(wm);});g.add(sg);return g;}
+  /* a whole parked fleet, not one lonely scooter — a docking rail plus a row of
+     bright decks so the shared-scooter story reads at a glance from the road */
+  const rail=box(12,0.16,0.16,0x8a7a5e);rail.position.set(0,0.9,5.9);g.add(rail);
+  [[-5.75,0xE0A93B],[-3.45,0xC25A2E],[-1.15,0xE8D9B8],[1.15,0x3f7d7d],[3.45,0xE0A93B],[5.75,0xC25A2E]].forEach(([sx,col],i)=>{
+    g.add(scooter(sx,7,col,-0.28+(i%2?0.16:0)));});
+  return g;}
+/* single shared scooter — deck, stem, handlebar, wheels, kickstand */
+function scooter(x,z,col,rot){const sg=new THREE.Group();sg.position.set(x,0,z);sg.rotation.y=rot||0;
+  const deck=box(2.2,0.18,0.5,col);deck.position.y=0.5;deck.castShadow=true;sg.add(deck);
+  const grip=box(2.24,0.06,0.3,0x2a2a2e);grip.position.y=0.6;sg.add(grip);
+  const stem=box(0.16,1.5,0.16,0x2a2a2e);stem.position.set(1,1.15,0);stem.rotation.z=-0.09;sg.add(stem);
+  const bar=box(0.14,0.14,1.5,0x2a2a2e);bar.position.set(0.94,1.86,0);sg.add(bar);
+  [-0.62,0.62].forEach(bz=>{const hg=box(0.18,0.18,0.34,0x1a1a1e);hg.position.set(0.94,1.86,bz);sg.add(hg);});
+  const plate=box(0.1,0.44,0.5,0xF1E8D8);plate.position.set(0.9,1.5,0);sg.add(plate);
+  const stand=box(0.1,0.5,0.08,0x1a1a1e);stand.position.set(-0.5,0.26,0.22);stand.rotation.x=0.4;sg.add(stand);
+  [[-1],[1]].forEach(([wx])=>{const wm=new THREE.Mesh(new THREE.CylinderGeometry(0.42,0.42,0.18,16),new THREE.MeshStandardMaterial({color:0x1a1a1e}));wm.rotation.z=Math.PI/2;wm.position.set(wx,0.42,0);wm.castShadow=true;sg.add(wm);});
+  return sg;}
 function bStudio(){const g=new THREE.Group();
   const b=box(13,6,11,0x2c2622);b.position.y=3;b.castShadow=b.receiveShadow=true;g.add(b);
   const stripe=box(13.1,0.5,11.1,0xC25A2E);stripe.position.y=5.2;g.add(stripe);

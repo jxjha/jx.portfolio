@@ -124,7 +124,7 @@ section{position:relative}
 .facts{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px}
 .facts div{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;opacity:.85}
 .facts span{color:var(--sienna-2)}
-.resume-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:60vh;padding-top:150px}
+.resume-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:40vh;padding-top:20px}
 .resume-cv{display:inline-flex;flex-direction:column;align-items:center;gap:16px;cursor:none}
 /* em-based sizing keeps RESU + me + avatar locked together at every screen size */
 .resume-word{position:relative;font-family:'Anton',sans-serif;font-size:clamp(66px,15vw,238px);line-height:.8;letter-spacing:-.02em;display:inline-flex;align-items:flex-end;flex-wrap:nowrap;white-space:nowrap;text-transform:none}
@@ -141,17 +141,17 @@ section{position:relative}
 .attention{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(17px,2vw,24px);margin-top:14px;opacity:.75}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:70px}.resume-stage{min-height:44vh}.avatar-wrap{right:6%}}
 
-/* about — tagline + lede layout (post-resume-panel) */
-.about-intro{max-width:960px}
-.about-tag{font-family:'Archivo',sans-serif;font-weight:500;font-size:clamp(30px,4.8vw,64px);
-           line-height:1.14;letter-spacing:-.012em;margin:26px 0 34px;color:var(--bone)}
+/* about — left-column intro sitting next to the resume stage */
+.about-intro{max-width:100%}
+.about-tag{font-family:'Archivo',sans-serif;font-weight:500;font-size:clamp(24px,3.2vw,46px);
+           line-height:1.16;letter-spacing:-.012em;margin:22px 0 26px;color:var(--bone)}
 .about-tag .em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--sienna-2);
                letter-spacing:-.01em;padding-right:.04em}
-.about-lede{font-family:'Fraunces',serif;font-size:clamp(17px,1.85vw,23px);line-height:1.55;
-            color:rgba(241,232,216,.86);max-width:62ch;margin-bottom:30px}
-.about-lede .me-name{font-family:'Anton',sans-serif;font-style:normal;font-size:1.08em;
-                     letter-spacing:.01em;color:var(--bone);margin-right:.3em;text-transform:uppercase}
-@media(max-width:600px){.about-tag{margin:20px 0 26px}}
+.about-lede{font-family:'Fraunces',serif;font-size:clamp(15px,1.35vw,19px);line-height:1.6;
+            color:rgba(241,232,216,.86);max-width:52ch;margin-bottom:0}
+.about-lede .me-name{font-family:'Fraunces',serif;font-style:italic;font-weight:500;color:var(--bone)}
+@media(max-width:900px){.about-tag{font-size:clamp(28px,5.4vw,48px);margin:22px 0 24px}}
+@media(max-width:600px){.about-tag{margin:18px 0 22px}}
 
 /* TREE — Been there, done that */
 .tree-wrap{position:relative;padding:20px 0}
@@ -522,29 +522,25 @@ html.intro-on,html.intro-on body{overflow:hidden;height:100%}
       <h2 style="color:var(--bone)">About</h2>
       <span class="sec-num">01</span>
     </div>
-    <div class="about-intro">
-      <span class="label reveal">The person, not the paperwork</span>
-      <p class="about-tag reveal">
-        I convert <span class="em">complex</span> problems into <span class="em">simplified</span> stories.
-      </p>
-      <p class="about-lede reveal">
-        <span class="me-name">Janmesh Jha</span> — a creative generalist working across tech, media, business, and everything in between. I like problems that don't fit tidily inside one discipline, and I like the moment they suddenly do.
-      </p>
-      <div class="facts reveal">
-        <div><span>◆</span> Ulm / Munich</div>
-        <div><span>◆</span> Builder · shooter · listener</div>
-        <div><span>◆</span> Photographer since 2018</div>
+    <div class="about-grid">
+      <div class="about-intro">
+        <span class="label reveal">The person, not the paperwork</span>
+        <p class="about-tag reveal">
+          I convert <span class="em">complex</span> problems into <span class="em">simplified</span> stories.
+        </p>
+        <p class="about-lede reveal">
+          <span class="me-name">I, Janmesh Jha</span> — a creative generalist, into tech, media, business, and everything in between. I like problems that don't sit tidily inside one discipline, and the small, satisfying moment they suddenly do.
+        </p>
+      </div>
+      <div class="resume-stage">
+        <a class="resume-cv reveal" href="assets/CV_JANMESHJHA.pdf" download data-hov>
+          <span class="resume-word" data-parallax="0.05">
+            <span class="resu">RESU</span><span class="me"><span class="mm">m<img class="avatar" src="assets/avatar.png" alt="Janmesh sitting on the letters" onerror="this.classList.add('missing')"></span>e</span>
+          </span>
+          <span class="cv-hint">Download CV ↓</span>
+        </a>
       </div>
     </div>
-    <div class="resume-stage">
-      <a class="resume-cv reveal" href="assets/CV_JANMESHJHA.pdf" download data-hov>
-        <span class="resume-word" data-parallax="0.05">
-          <span class="resu">RESU</span><span class="me"><span class="mm">m<img class="avatar" src="assets/avatar.png" alt="Janmesh sitting on the letters" onerror="this.classList.add('missing')"></span>e</span>
-        </span>
-        <span class="cv-hint">Download CV ↓</span>
-      </a>
-    </div>
-    <div class="attention reveal">…and some things where I give attention.</div>
   </div>
 </section>
 

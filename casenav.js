@@ -5,6 +5,7 @@
    The ring wraps, so there is never a dead end. */
 (function(){
   const ORDER=[
+    {f:'burgir.html',      t:'Burgergrill Meister'},
     {f:'revamp.html',      t:'ReVamp — Smart Wardrobe'},
     {f:'thesis.html',      t:'Expectation Exchange'},
     {f:'skate.html',       t:'Hello Skate Mobility'},

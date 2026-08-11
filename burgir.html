@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Burgergrill Meister · 3D Recipe Trainer · Janmesh Jha</title>
-<meta name="description" content="A gamified 3D learning app that teaches an entire burger menu by assembly, not memorisation. Built for grill colleagues on mini-jobs — 37 recipes, service-shift simulation, spaced review, offline. Live and in use.">
+<meta name="description" content="A 3D learning app that teaches an entire burger menu by having you build each recipe. Made for grill colleagues on part-time shifts. 37 recipes, a service-shift mode, spaced review, works offline. Live and in use.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#1E1411">
 <meta property="og:type" content="article">
@@ -45,7 +45,7 @@ a{color:inherit;text-decoration:none}
 .bar .id{font-family:'Anton',sans-serif;font-size:20px}
 .progress{position:fixed;top:0;left:0;height:3px;background:var(--sienna);width:0;z-index:401}
 
-/* HERO — grill-at-night vibe */
+/* HERO - grill-at-night vibe */
 .rhero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;background:radial-gradient(120% 90% at 72% 30%,var(--char-2) 0%,var(--char) 42%,var(--grill) 100%);color:var(--bone);padding:110px 0 90px;overflow:hidden}
 .rhero .grill{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));pointer-events:none}
 .rhero .grill .bar-line{position:absolute;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,rgba(240,178,72,.5) 0 26px,transparent 26px 60px)}
@@ -66,7 +66,7 @@ a{color:inherit;text-decoration:none}
 .meta-row div{font-family:'Space Mono',monospace;font-size:12px;color:rgba(241,232,216,.9)}
 .meta-row span{display:block;color:var(--sienna-2);margin-bottom:6px;font-size:10px;letter-spacing:.16em}
 
-/* HERO burger — exploded stack silhouette */
+/* HERO burger - exploded stack silhouette */
 .stackart{position:absolute;right:7%;top:50%;width:min(300px,40vw);transform:translateY(-50%);z-index:1;filter:drop-shadow(0 24px 26px rgba(0,0,0,.5))}
 .stackart svg{width:100%;height:auto;display:block}
 @media(max-width:900px){.stackart{position:relative;top:auto;right:auto;transform:none;margin:38px auto 0;width:230px}}
@@ -80,7 +80,7 @@ a{color:inherit;text-decoration:none}
 .body-txt{font-size:16px;line-height:1.75;max-width:700px;color:#4a3b30}.body-txt+.body-txt{margin-top:14px}
 .body-txt b{color:var(--oxblood)}
 
-/* PROBLEM — before / after */
+/* PROBLEM - before / after */
 .ba{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
 @media(max-width:760px){.ba{grid-template-columns:1fr}}
 .ba .col{border-radius:20px;padding:28px 26px}
@@ -95,7 +95,7 @@ a{color:inherit;text-decoration:none}
 .ba .before li::before{content:'✕';position:absolute;left:0;color:var(--ketchup);font-weight:700}
 .ba .after li::before{content:'✓';position:absolute;left:0;color:var(--lettuce);font-weight:700}
 
-/* MECHANIC — three-step loop */
+/* MECHANIC - three-step loop */
 .loop{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:16px}
 .step{padding:26px 22px;position:relative;border-left:1px solid var(--line)}
 .step:first-child{border-left:none}
@@ -108,7 +108,7 @@ a{color:inherit;text-decoration:none}
 .grade i{width:9px;height:9px;border-radius:50%;display:block}
 .grade.g i{background:var(--gold)}.grade.s i{background:#C9C3B4}.grade.b i{background:var(--sienna)}.grade.f i{background:var(--ketchup)}
 
-/* LEARNING — feature cards */
+/* LEARNING - feature cards */
 .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
 .feat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--sienna);border-radius:16px;padding:24px;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .3s}
 .feat:hover{transform:translateY(-5px);background:#fff}
@@ -127,7 +127,7 @@ a{color:inherit;text-decoration:none}
 .shot.tall img{aspect-ratio:auto}
 .shotnote{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--muted);margin-top:16px}
 
-/* CRAFT — split panel */
+/* CRAFT - split panel */
 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;margin-top:14px;align-items:start}
 @media(max-width:860px){.split{grid-template-columns:1fr}}
 .stack{display:flex;flex-direction:column;gap:12px}
@@ -164,7 +164,7 @@ a{color:inherit;text-decoration:none}
 .deal .status.live{background:var(--lettuce);color:var(--ink)}
 .deal .status.warm{background:var(--gold);color:var(--ink)}
 
-/* HONEST — limitations */
+/* HONEST - limitations */
 .notes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
 @media(max-width:640px){.notes{grid-template-columns:1fr}}
 .note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:20px 22px}
@@ -213,9 +213,9 @@ a{color:inherit;text-decoration:none}
     </svg>
   </div>
   <div class="wrap">
-    <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.2em">SIDE PROJECT · 2026 · BUILT WITH CLAUDE CODE · LIVE &amp; IN USE</span></div>
+    <div class="kick reveal"><span class="dot"></span><span class="mono" style="font-size:12px;letter-spacing:.2em">SIDE PROJECT · 2026 · LIVE &amp; IN USE</span></div>
     <h1 class="reveal">BURGERGRILL<br><span class="o">MEISTER</span></h1>
-    <p class="tag reveal">A gamified 3D trainer that teaches a whole burger menu the way you actually learn it on the line — by building each recipe, layer by layer, until your hands know it.</p>
+    <p class="tag reveal">A 3D trainer that teaches a whole burger menu the way you actually learn it on the line: by building each recipe, one layer at a time.</p>
     <div class="hero-badges reveal">
       <a class="b live" href="https://burgir-alpha.vercel.app/" target="_blank" rel="noopener" data-hov>▶ Open the live app</a>
       <span class="b hot">◆ 37 recipes · 51 ingredients</span>
@@ -223,7 +223,7 @@ a{color:inherit;text-decoration:none}
       <span class="b">A 2nd restaurant wants its own</span>
     </div>
     <div class="meta-row reveal">
-      <div><span>ROLE</span>Idea, product &amp; build — solo</div>
+      <div><span>ROLE</span>Idea, product and build (solo)</div>
       <div><span>TYPE</span>3D learning app (LMS)</div>
       <div><span>STACK</span>Three.js · TypeScript · Vite · PWA</div>
       <div><span>STATUS</span>Live on Vercel · unofficial pilot</div>
@@ -235,14 +235,14 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">Why I built it</h2></div>
-    <p class="ch-lead reveal">I work at a burger grill. So do a lot of people on mini-jobs and part-time shifts — a few hours a week, squeezed around studies and other jobs. There is simply no time to sit and memorise thirty-plus recipes before the rush hits.</p>
-    <p class="body-txt reveal">The company already has a learning app. But it's <b>static — a Duolingo-style tap-through with no visual, no build, no feel for the actual burger</b>. You can pass the quiz and still freeze at the line, because reading "patty, tomato, onion, sauce" is nothing like the muscle memory of stacking it. My colleagues were learning the real recipes from laminated cards and whoever happened to be next to them.</p>
+    <p class="ch-lead reveal">I work at a burger grill. So do a lot of people on part-time shifts, a few hours a week squeezed around studies and other jobs. There is barely any time to sit and memorise thirty-plus recipes before the rush hits.</p>
+    <p class="body-txt reveal">The company already has a learning app, but it is <b>a static, tap-through quiz with no visuals and no building</b>. You can pass it and still freeze at the line, because reading "patty, tomato, onion, sauce" is nothing like the muscle memory of stacking it. Most people ended up learning the real recipes from laminated cards and whoever was standing next to them.</p>
     <div class="ba">
       <div class="col before reveal">
         <span class="tagm">The status quo</span>
         <h4>Learn it by reading, then hope it sticks</h4>
         <ul>
-          <li>Static, text-only quiz app — no visuals, no assembly</li>
+          <li>Static, text-only quiz with no visuals or assembly</li>
           <li>Laminated recipe cards + "ask the person next to you"</li>
           <li>Nothing that matches how a burger is physically built</li>
           <li>Limited shift hours leave almost no training window</li>
@@ -266,10 +266,10 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">The core loop</h2></div>
-    <p class="ch-lead reveal">Pick a burger. Build it from a tray of ingredients in a real 3D scene. Crown it with the top bun — and that same gesture that finishes a real burger is what submits and scores it.</p>
+    <p class="ch-lead reveal">Pick a burger. Build it from a tray of ingredients in a real 3D scene. Place the top bun to crown it, and that same gesture that finishes a real burger is what submits and scores the round.</p>
     <div class="loop">
-      <div class="step reveal"><div class="n">01</div><h5>Place, layer by layer</h5><p>Drag ingredients from the tray onto the plate. Each one drops, settles and squishes with light physics — soft cheese and avocado deform, so the stack reads like a real burger, not a diagram.</p></div>
-      <div class="step reveal"><div class="n">02</div><h5>Order that mirrors the line</h5><p>Sauce → salad → patty must be stacked in sequence, but anything above the patty counts in any order — exactly how the burgers are actually assembled. Enforcing a strict topping order would teach something untrue.</p></div>
+      <div class="step reveal"><div class="n">01</div><h5>Place, layer by layer</h5><p>Drag ingredients from the tray onto the plate. Each one drops, settles and squishes with light physics. Soft cheese and avocado deform, so the stack reads like a real burger instead of a flat diagram.</p></div>
+      <div class="step reveal"><div class="n">02</div><h5>Order that mirrors the line</h5><p>Sauce, then salad, then patty must go in that sequence, but anything above the patty counts in any order. That is how the burgers are assembled on the line, so forcing a strict topping order would teach the wrong thing.</p></div>
       <div class="step reveal"><div class="n">03</div><h5>Crown ends the round</h5><p>There's no Submit button. You place the top bun like any other layer; the lid drops, the burger turns for a beat so you see what you built, then it's graded against the canonical recipe.</p></div>
     </div>
     <div class="grade-row reveal">
@@ -284,15 +284,15 @@ a{color:inherit;text-decoration:none}
 <!-- 03 LEARNING SCIENCE -->
 <section class="chapter">
   <div class="wrap">
-    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">It's a trainer, not a toy</h2></div>
-    <p class="ch-lead reveal">The fun is the surface. Underneath, every mechanic is pointed at one thing: durable recall under pressure, the kind you need when a ticket lands and there's no card to check.</p>
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">Where the learning happens</h2></div>
+    <p class="ch-lead reveal">The game part is the surface. Every mechanic underneath is aimed at one thing: remembering the recipe when a ticket lands and there is no card to check.</p>
     <div class="feats">
-      <div class="feat reveal"><div class="icn">SHIFT</div><h4>Service Mode</h4><p>A shift simulation. Tickets arrive one at a time showing only the burger name — you build from memory with the full tray, no recipe card. Five per shift, weighted toward what you're weak on. Deliberately <b>not timed</b>: speed pressure teaches panic, not recall.</p></div>
-      <div class="feat reveal"><div class="icn">3×</div><h4>Mastery, not completion</h4><p>A recipe counts as <b>Mastered</b> only after three Gold builds. One lucky correct build isn't evidence someone learned it — so completion can't be faked.</p></div>
-      <div class="feat reveal"><div class="icn">↺</div><h4>Spaced review</h4><p>A "Needs practice" queue surfaces the weakest and least-recently-built recipes first, pulling trainees back to slipping material instead of only marching forward through the menu.</p></div>
-      <div class="feat reveal"><div class="icn">1·2·3</div><h4>Three difficulty modes</h4><p><b>Guided</b> — checklist visible, short tray. <b>Standard</b> — full tray, recipe hidden (1.25× XP). <b>Hard</b> — exact stacking order, recipe hidden (1.6× XP). Progression is built into the difficulty, not gated behind locks.</p></div>
-      <div class="feat reveal"><div class="icn">DASH</div><h4>Trainer dashboard</h4><p>Completion by category, gold counts, and <b>trouble spots</b> — which ingredients are most often forgotten or wrongly added. That's the signal a shift lead actually needs to coach against.</p></div>
-      <div class="feat reveal"><div class="icn">OPEN</div><h4>Every recipe, from day one</h4><p>No sequential unlock. A cook needs to look up whatever was <em>just</em> ordered, so all 37 burgers are open from the start. Motivation comes from mastery and the review queue, not from grinding to unlock the next card.</p></div>
+      <div class="feat reveal"><div class="icn">SHIFT</div><h4>Service Mode</h4><p>A shift simulation. Tickets arrive one at a time showing only the burger name, and you build it from memory with the full tray and no recipe card. Five per shift, weighted toward the recipes you keep getting wrong. It is deliberately <b>untimed</b>, because rushing trains panic rather than memory.</p></div>
+      <div class="feat reveal"><div class="icn">3×</div><h4>Three golds to master</h4><p>A recipe only counts as <b>Mastered</b> after three Gold builds. One lucky correct build does not prove anyone learned it, so the green check has to be earned properly.</p></div>
+      <div class="feat reveal"><div class="icn">↺</div><h4>Spaced review</h4><p>A "Needs practice" queue puts the weakest and least recently built recipes first, so people get pulled back to what they are forgetting instead of only moving forward through the menu.</p></div>
+      <div class="feat reveal"><div class="icn">1·2·3</div><h4>Three difficulty modes</h4><p><b>Guided</b> keeps the checklist visible with a short tray. <b>Standard</b> hides the recipe and gives the full tray (1.25× XP). <b>Hard</b> also requires the exact stacking order (1.6× XP). You progress by turning the difficulty up, not by unlocking locked cards.</p></div>
+      <div class="feat reveal"><div class="icn">DASH</div><h4>Trainer dashboard</h4><p>Completion by category, gold counts, and <b>trouble spots</b>: the ingredients most often forgotten or wrongly added. That is the part a shift lead can actually coach against.</p></div>
+      <div class="feat reveal"><div class="icn">OPEN</div><h4>Every recipe, from day one</h4><p>There is no sequential unlock. A cook needs to look up whatever was <em>just</em> ordered, so all 37 burgers are open from the start. Motivation comes from mastery and the review queue instead of grinding to unlock the next card.</p></div>
     </div>
   </div>
 </section>
@@ -301,10 +301,10 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">See it built</h2></div>
-    <p class="ch-lead reveal">Stylised 3D, not photoreal — soft, rounded, brightly lit, closer to Duolingo than to food photography. The whole job of the art is that <em>every ingredient is identifiable at a glance</em>: silhouette beats surface detail.</p>
+    <p class="ch-lead reveal">Stylised 3D rather than photoreal: soft, rounded and brightly lit, closer to a friendly mobile game than to food photography. The whole job of the art is that <em>every ingredient is identifiable at a glance</em>, so silhouette matters more than surface detail.</p>
     <div class="shots">
       <div class="shot reveal">
-        <img src="assets/burgir/preview-desktop.png" alt="Desktop view of the 3D burger builder — an exploded stack mid-assembly on a plate" loading="lazy">
+        <img src="assets/burgir/preview-desktop.png" alt="Desktop view of the 3D burger builder, an exploded stack mid-assembly on a plate" loading="lazy">
         <span class="cap">Desktop · side panels, full 49-ingredient tray, the stack mid-crown</span>
       </div>
       <div class="shot tall reveal">
@@ -320,15 +320,15 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">05</span><h2 class="ch-title">The craft under the hood</h2></div>
-    <p class="ch-lead reveal">A training tool earns trust in the details. The decisions that don't show up in a screenshot are the ones that make it usable on a real shift.</p>
+    <p class="ch-lead reveal">The decisions that never show up in a screenshot are the ones that make it usable on a real shift.</p>
     <div class="split">
       <div>
-        <p class="body-txt reveal">The whole menu is <b>data, not code</b> — recipes and ingredients live in JSON, because the menu changes seasonally and updating it should never mean touching game logic. Every 3D shape comes from a shared, cached rounded-primitive library, so tall builds stay cheap to render and nothing gets re-tessellated per placement.</p>
-        <p class="body-txt reveal">And because a training tool is only as good as who can use it, it's <b>fully bilingual and accessible</b>: German by default, English on a one-tap toggle, real buttons with ARIA labels throughout, 44px touch targets, ingredient names always shown as text next to colour, and captions on every sound so nothing is audio-only.</p>
+        <p class="body-txt reveal">The whole menu lives in JSON as <b>data instead of code</b>. The menu changes seasonally, so updating it should never mean touching game logic. Every 3D shape comes from a shared, cached library of rounded primitives, so tall builds stay cheap to render.</p>
+        <p class="body-txt reveal">It is also <b>fully bilingual and accessible</b>: German by default with a one-tap English toggle, real buttons with ARIA labels throughout, 44px touch targets, ingredient names shown as text next to every colour, and captions on every sound so nothing is audio-only.</p>
       </div>
       <div class="stack">
         <div class="tool reveal"><div class="b">DE / EN</div><div><h5>Fully bilingual</h5><p>Every ingredient, recipe, grade and badge translated. Defaults to German; remembers your choice.</p></div></div>
-        <div class="tool reveal"><div class="b">JSON</div><div><h5>Menu as data</h5><p>37 recipes + 51 ingredients in JSON. A seasonal menu change is a data edit, not a code change.</p></div></div>
+        <div class="tool reveal"><div class="b">JSON</div><div><h5>Menu as data</h5><p>37 recipes and 51 ingredients in JSON. A seasonal menu update is just a data edit.</p></div></div>
         <div class="tool reveal"><div class="b">PWA</div><div><h5>Installable &amp; offline</h5><p>Web-app manifest + service worker. Installs to a phone, works with no connection after first load.</p></div></div>
         <div class="tool reveal"><div class="b">A11Y</div><div><h5>Accessible by default</h5><p>Keyboard navigable, ARIA live regions, visible focus, colour never used alone. Sound has captions.</p></div></div>
       </div>
@@ -337,7 +337,7 @@ a{color:inherit;text-decoration:none}
       <span class="lbl">What's in the build today</span>
       <h3>All five categories, shipped and verified in-browser.</h3>
       <div class="counts">
-        <div class="count"><div class="big">37</div><div class="cl">Burgers — 14 beef, 3 smash, 6 chicken, 6 veggie, 8 vegan</div></div>
+        <div class="count"><div class="big">37</div><div class="cl">Burgers: 14 beef, 3 smash, 6 chicken, 6 veggie, 8 vegan</div></div>
         <div class="count"><div class="big">51</div><div class="cl">Ingredients in the shared library</div></div>
         <div class="count"><div class="big">2</div><div class="cl">Languages, full UI parity</div></div>
         <div class="count"><div class="big">12</div><div class="cl">Badges across the progression</div></div>
@@ -350,13 +350,13 @@ a{color:inherit;text-decoration:none}
 <section class="chapter">
   <div class="wrap">
     <div class="ch-head"><span class="ch-num">06</span><h2 class="ch-title">It left my laptop</h2></div>
-    <p class="ch-lead reveal">This isn't a demo I show off in a folder. It's live, and colleagues from the kitchen and service actually reach for it — the strongest signal a learning tool can get.</p>
+    <p class="ch-lead reveal">It is live, and colleagues from the kitchen and service reach for it on their own. That is the part I am proudest of.</p>
     <div class="moneybox">
       <div class="money-l reveal">
         <div class="lbl">Where it stands · unofficial pilot</div>
-        <h3>Built for a real problem, at a real grill, being used by real colleagues.</h3>
-        <p>It started as a fix for my own team: people on <b>mini-jobs and part-time shifts</b> who needed to get recipe-fluent fast, without the training hours the schedule doesn't give them. It's <b>not an official company tool</b> — it's a grassroots pilot that spread by being useful.</p>
-        <p>Word travelled. <b>Another restaurant now wants a version of their own</b>, tuned to their menu — which is exactly why the menu was built as swappable data from day one.</p>
+        <h3>Built for an actual problem at the grill, and used by the people it was built for.</h3>
+        <p>It started as a fix for my own team, people on <b>part-time shifts</b> who needed to learn the recipes quickly without the training hours the schedule never gives them. It is <b>not an official company tool</b>, just something that spread because it was useful.</p>
+        <p>Word got around, and <b>another restaurant now wants a version of their own</b> tuned to their menu. That is exactly why the menu was built as swappable data from the start.</p>
       </div>
       <div class="deals">
         <div class="deal reveal">
@@ -366,12 +366,12 @@ a{color:inherit;text-decoration:none}
         </div>
         <div class="deal reveal">
           <div class="n">→</div>
-          <div><h5>A second restaurant</h5><p>Interested in their own menu-tuned version. Data-driven design makes that a reskin, not a rebuild.</p></div>
+          <div><h5>A second restaurant</h5><p>Interested in their own menu-tuned version. Because the menu is data, that is closer to a reskin than a rebuild.</p></div>
           <div class="status warm">INTERESTED</div>
         </div>
         <div class="deal reveal" style="grid-template-columns:48px 1fr">
           <div class="n" style="color:var(--muted);opacity:.7">◷</div>
-          <div><h5>Next: a multi-trainee backend</h5><p>Progress is per-device today. Real shared reporting for shift leads is the planned Stage 3 step.</p></div>
+          <div><h5>Next: a multi-trainee backend</h5><p>Progress is per-device today. Shared reporting for shift leads is the planned next step.</p></div>
         </div>
       </div>
     </div>
@@ -381,13 +381,13 @@ a{color:inherit;text-decoration:none}
 <!-- 07 HONEST -->
 <section class="chapter">
   <div class="wrap">
-    <div class="ch-head"><span class="ch-num">07</span><h2 class="ch-title">What it isn't — yet</h2></div>
-    <p class="ch-lead reveal">A training tool that oversells itself is a liability. So the limitations are stated plainly, in the app and here.</p>
+    <div class="ch-head"><span class="ch-num">07</span><h2 class="ch-title">What it doesn't do yet</h2></div>
+    <p class="ch-lead reveal">A training tool that oversells itself is worse than useless, so the limits are stated plainly, both in the app and here.</p>
     <div class="notes">
-      <div class="note reveal"><h5>Single device, single user</h5><p>Progress lives in local storage. True multi-trainee reporting needs a backend — that's the next real step, not a shortcut I skipped.</p></div>
-      <div class="note reveal"><h5>Recipes need verifying</h5><p>The menu was seeded from public marketing copy, which can omit a base ingredient or simplify order. It carries a clear "validate against in-store recipe cards before real training use" flag.</p></div>
-      <div class="note reveal"><h5>Brand-safe by intent</h5><p>It uses a real chain's recipe names for an internal-training prototype. Any public or commercial release would need the brand's permission — noted from the start, not discovered late.</p></div>
-      <div class="note reveal"><h5>Allergen data left out on purpose</h5><p>No allergen tags — inventing them would be dangerous in a training tool. Only the dietary category (Meat / Vegetarian / Vegan), which is factual.</p></div>
+      <div class="note reveal"><h5>Single device, single user</h5><p>Progress lives in local storage on one device. Proper multi-trainee reporting needs a backend, and that is the next step on the roadmap.</p></div>
+      <div class="note reveal"><h5>Recipes need verifying</h5><p>The menu was seeded from the public menu site, which can omit a base ingredient or simplify the order. It carries a clear "validate against in-store recipe cards before real training use" flag.</p></div>
+      <div class="note reveal"><h5>Brand-safe by intent</h5><p>It uses a real chain's recipe names for an internal training prototype. Any public or commercial release would need the brand's permission, which is flagged from the start.</p></div>
+      <div class="note reveal"><h5>Allergen data left out on purpose</h5><p>There are no allergen tags, because inventing them would be dangerous in a training tool. Only the dietary category (Meat, Vegetarian, Vegan), which is factual.</p></div>
     </div>
   </div>
 </section>

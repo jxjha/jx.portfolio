@@ -730,6 +730,7 @@ gsap.utils.toArray('.float').forEach(el=>{const d=parseFloat(el.dataset.depth);g
    move down the list. Marks are stroke-only and inherit colour. */
 const SVG=(b)=>`<svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${b}</svg>`;
 const MARKS={
+  burger:SVG(`<path d="M26 44c0-13 15-22 34-22s34 9 34 22c0 4-3 6-9 6H35c-6 0-9-2-9-6Z"/><path d="M24 60h72"/><path d="M28 74c-6 0-8-2-8-6h80c0 4-2 6-8 6-4 8-18 14-32 14s-28-6-32-14Z"/><path d="M20 60c2-4 6-4 9-1s6 3 9 0 6-4 9-1 6 3 9 0 6-4 9-1 6 3 9 0 6-4 9-1 5 3 8 1"/><circle cx="52" cy="38" r="1.6" fill="currentColor" stroke="none"/><circle cx="66" cy="34" r="1.6" fill="currentColor" stroke="none"/><circle cx="76" cy="40" r="1.6" fill="currentColor" stroke="none"/>`),
   hanger:SVG(`<path d="M60 24c0-4.5 3.6-7.4 7.4-5.6 3.4 1.6 2.6 6.3-1.6 7.2-3 .6-5.8 2-5.8 5.6"/><path d="M60 31 24 58h72L60 31Z"/><path d="M31 58c-1 20 6 34 29 34s30-14 29-34"/><path d="M45 70h30"/>`),
   exchange:SVG(`<circle cx="30" cy="60" r="14"/><circle cx="90" cy="60" r="14"/><path d="M44 53c12-9 20-9 32 0"/><path d="M70 53l6-1-1 6"/><path d="M76 67c-12 9-20 9-32 0"/><path d="M50 67l-6 1 1-6"/>`),
   scooter:SVG(`<circle cx="30" cy="88" r="12"/><circle cx="92" cy="88" r="12"/><path d="M30 88h48l12-46"/><path d="M78 40h22"/><path d="M14 74h14M10 88h10"/>`),
@@ -745,6 +746,11 @@ const MARKS={
    narrow layout shows under the title, `d` says what the case study is, and
    `inside` names the three things a reader actually gets out of it. */
 const PROJECTS=[
+ {href:'burgir.html',    t:'Burgergrill Meister',       m:'Side project · 2026 · live', mark:'burger',
+  s:'A gamified 3D app that teaches a whole burger menu by building it, layer by layer.',
+  d:'Built for my own grill colleagues on mini-jobs: a 3D trainer where you assemble each of 37 recipes, get graded, and drill weak spots — live, and already in use. A second restaurant wants one too.',
+  inside:['Build-to-learn 3D core loop','Service Mode + spaced review','37 recipes · live on Vercel'],
+  go:'Open the case study', tags:['Three.js','PWA','Live','EdTech']},
  {href:'revamp.html',    t:'ReVamp — Smart Wardrobe',  m:'Product · 2022–23',      mark:'hanger',
   s:'A smart-wardrobe concept taken from blank page to business case.',
   d:'The whole product pipeline walked end to end — how one everyday frustration became personas, a business model, a ranked backlog and a buildable MVP.',

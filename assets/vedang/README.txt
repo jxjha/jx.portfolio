@@ -1,24 +1,30 @@
-Vedang Yoga — screenshot slots
-==============================
+Vedang Yog Studio — case-study screenshots
+==========================================
 
-vedang.html already shows the REAL site via a live embed (an <iframe> of
-https://vedangyoga.in), so the case study works without these images.
+These images are used by ../../vedang.html (the case study).
 
-These optional screenshots make the "The elements" section richer. Drop in
-files with these exact names and they replace the placeholder tiles
-automatically (each <img> falls back to a placeholder if the file is missing):
+The case study also shows the REAL site live via an <iframe> of
+https://vedangyoga.in, so it works even if these images are absent.
 
-  shot-hero.png      → the landing / hero (first screen of vedangyoga.in)
-  shot-offering.png  → the section that explains what's offered
-  shot-contact.png   → the get-in-touch / enquiry area
-  shot-mobile.png    → the site on a phone (a tall phone-width screenshot)
+Files
+-----
+  shot-hero.jpg        landing / hero (breathing orb + WhatsApp CTA)
+  shot-schedule.jpg    the daily schedule ("Nine batches, every day")
+  shot-instructor.jpg  founder Purvi Soni — portrait + credentials
+  shot-mobile.jpg      the site on a phone (shown in a phone frame)
+  preview.jpg          1200x630-ish social/OG card (og:image)
+  shot-gallery.jpg     studio gallery (spare, not currently placed)
+  shot-pricing.jpg     pricing plans (spare, not currently placed)
 
-Also nice to add (used for link previews when the page is shared):
-  preview.png        → a wide 1200x630 hero shot for social/OG cards
+How these were made
+-------------------
+Captured with headless Chromium straight from the live Vedang Yog Studio
+source (github.com/jxjha/vedang), rendered locally — the vedangyoga.in
+site itself was NOT modified. To refresh them, re-run a Playwright
+screenshot pass against that repo's index.html.
 
-Tips
-----
-- Landscape shots read best at roughly 16:10 (e.g. 1600x1000).
-- shot-mobile.png can be a tall phone screenshot; it's cropped to fit.
-- Keep files reasonably light (compress PNGs, or use JPGs renamed to .png
-  is NOT needed — .png is expected by the <img> src).
+Each <img> falls back to a small filename placeholder if the file is
+missing, so dropping in newer/higher-fidelity shots (same names) just
+works. Note the live-site fonts (Cormorant Garamond / Manrope) load from
+Google Fonts, so a local capture without network shows a serif fallback;
+capture with fonts available for a pixel-perfect match.

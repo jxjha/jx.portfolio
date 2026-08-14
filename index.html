@@ -740,7 +740,8 @@ const MARKS={
   radar:SVG(`<circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="25"/><circle cx="60" cy="60" r="12"/><path d="M60 22v76M22 60h76" stroke-dasharray="3 6"/><circle cx="76" cy="44" r="3.4" fill="currentColor" stroke="none"/><circle cx="43" cy="72" r="3.4" fill="currentColor" stroke="none"/><circle cx="82" cy="76" r="3.4" fill="currentColor" stroke="none"/>`),
   growth:SVG(`<path d="M20 98V22M20 98h80"/><path d="M20 92c22-2 36-8 46-24s18-26 34-32"/><circle cx="100" cy="36" r="4.5" fill="currentColor" stroke="none"/><path d="M34 98v-6M52 98v-6M70 98v-6M88 98v-6"/>`),
   reel:SVG(`<rect x="18" y="34" width="84" height="52" rx="6"/><path d="M18 46h84M18 74h84"/><path d="M30 34v52M90 34v52" opacity=".5"/><path d="M52 50l20 10-20 10z" fill="currentColor" stroke="none"/>`),
-  bioscope:SVG(`<path d="M26 44h68a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H26a6 6 0 0 1-6-6V50a6 6 0 0 1 6-6Z"/><circle cx="42" cy="63" r="8"/><circle cx="60" cy="63" r="8"/><circle cx="78" cy="63" r="8"/><path d="M32 44V36h56v8"/><path d="M20 58h-7M13 58v-9l-6-4"/><circle cx="7" cy="45" r="4"/><path d="M34 88l-8 16M86 88l8 16"/>`)
+  bioscope:SVG(`<path d="M26 44h68a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H26a6 6 0 0 1-6-6V50a6 6 0 0 1 6-6Z"/><circle cx="42" cy="63" r="8"/><circle cx="60" cy="63" r="8"/><circle cx="78" cy="63" r="8"/><path d="M32 44V36h56v8"/><path d="M20 58h-7M13 58v-9l-6-4"/><circle cx="7" cy="45" r="4"/><path d="M34 88l-8 16M86 88l8 16"/>`),
+  lotus:SVG(`<path d="M60 40c-6 12-6 30 0 46 6-16 6-34 0-46Z"/><path d="M60 86c-9-8-23-11-35-5 7 14 23 18 35 5Z"/><path d="M60 86c9-8 23-11 35-5-7 14-23 18-35 5Z"/><path d="M60 86c-6-12-19-22-33-22-2 16 12 29 33 22Z"/><path d="M60 86c6-12 19-22 33-22 2 16-12 29-33 22Z"/><path d="M22 90c12 6 64 6 76 0"/>`)
 };
 /* Each entry carries three levels of promise: `s` is the one-line summary the
    narrow layout shows under the title, `d` says what the case study is, and
@@ -751,6 +752,11 @@ const PROJECTS=[
   d:'Built for my own grill colleagues on part-time shifts: a 3D trainer where you assemble each of 37 recipes, get graded, and drill your weak spots. Live and already in use, and a second restaurant wants one too.',
   inside:['Build-to-learn 3D core loop','Service Mode and spaced review','37 recipes, live on Vercel'],
   go:'Open the case study', tags:['Three.js','PWA','Live','EdTech']},
+ {href:'vedang.html',    t:'Vedang Yog Studio',         m:'Client website · live', mark:'lotus',
+  s:'A real, bilingual website for a yoga studio in Bhuj — live on its own domain.',
+  d:'Freelance client work, shipped end to end: a calm, bilingual (English + Gujarati) site for a yoga studio in Bhuj, designed and built with Claude and delivered live to vedangyoga.in. The only piece here someone else decided was good enough to ship.',
+  inside:['Real, paid client work','Bilingual, WhatsApp-first, static','Designed & built with Claude'],
+  go:'Open the case study', tags:['Client work','Live','Bilingual','Built with Claude']},
  {href:'revamp.html',    t:'ReVamp — Smart Wardrobe',  m:'Product · 2022–23',      mark:'hanger',
   s:'A smart-wardrobe concept taken from blank page to business case.',
   d:'The whole product pipeline walked end to end — how one everyday frustration became personas, a business model, a ranked backlog and a buildable MVP.',

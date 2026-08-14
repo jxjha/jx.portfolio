@@ -6,6 +6,7 @@
 (function(){
   const ORDER=[
     {f:'burgir.html',      t:'Burgergrill Meister'},
+    {f:'vedang.html',      t:'Vedang Yoga'},
     {f:'revamp.html',      t:'ReVamp — Smart Wardrobe'},
     {f:'thesis.html',      t:'Expectation Exchange'},
     {f:'skate.html',       t:'Hello Skate Mobility'},

@@ -8,7 +8,7 @@ Visa Status: Job Seeker Residence Permit, § 20 (1) AufenthG
 
 ## PROFILE
 
-Product and digital transformation professional with 2.5+ years across Bosch Rexroth AG's Global HQ and a seed-stage start-up: stakeholder management, Power BI and SAP Analytics Cloud reporting, and process design. Built the Expectation Exchange Model, a change management framework grounded in 21 diagnosed process gaps and formally acknowledged at Director level. Seeking a permanent role in Germany in Product Manager, Digital Transformation Manager, or Business Analyst.
+Product and digital transformation professional with 2.5+ years across Bosch Rexroth AG’s Global HQ and a seed-stage start-up: stakeholder management, Power BI and SAP Analytics Cloud reporting, and process design. Built the Expectation Exchange Model, a change management framework grounded in 21 diagnosed process gaps and formally acknowledged at Director level. Seeking a permanent role in Germany in Product Manager, Digital Transformation Manager, or Business Analyst.
 
 ## PROFESSIONAL EXPERIENCE
 
@@ -20,7 +20,7 @@ Product and digital transformation professional with 2.5+ years across Bosch Rex
 - Qualtrics customer satisfaction surveys that raised response rate by 10%, and Google Analytics tool-usage mapping that produced 4 UX recommendations, alongside ongoing business support to the SDM Director.
 
 ### Bosch Rexroth AG / Hochschule Harz — Ulm, Germany
-**Master's Thesis, International Collaboration Platform** · Sep 2024 – Feb 2025 · Grade 1.3
+**Master’s Thesis, International Collaboration Platform** · Sep 2024 – Feb 2025 · Grade 1.3
 
 - Ran a mixed-methods study (surveys plus interviews with Country Sales Heads and Regional Directors) to map HQ-to-country collaboration across 80+ countries.
 - Root-cause analysis surfaced 21 critical process gaps: unclear escalation paths, missing feedback loops, inconsistent knowledge transfer.
@@ -35,7 +35,7 @@ Product and digital transformation professional with 2.5+ years across Bosch Rex
 - Improved internal sales web apps: turned stakeholder interviews into UX requirements (wireframes, mockups, user flows), driving a 17% rise in usability and engagement.
 
 ### Hello Skate Mobility Pvt. Ltd. — Ahmedabad, India
-**Founder's Associate (Product, Operations & GTM)** · Jul 2021 – Jul 2022
+**Founder’s Associate (Product, Operations & GTM)** · Jul 2021 – Jul 2022
 
 - Shaped the product roadmap with the founder using JTBD, funnel and cohort analysis, and wrote PRDs with defined success metrics, validating UX and messaging through A/B tests.
 - Ran cross-functional delivery across Engineering, Marketing and Operations in JIRA and Confluence, and tracked B2B partnership and campus deal pipelines in Microsoft Dynamics 365.

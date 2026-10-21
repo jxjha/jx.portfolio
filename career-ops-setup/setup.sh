@@ -77,14 +77,76 @@ echo "Step 4/4: Running health check..."
 echo ""
 npm run doctor 2>&1 || true
 
+# 7. Install web UI dependencies
+echo "Step 5/5: Installing web UI..."
+cd "$TARGET_DIR/web" && npm install 2>&1 || {
+  echo "WARNING: Web UI install failed. CLI still works."
+}
+
+# 8. Create desktop launcher folder
+DESKTOP_DIR=""
+if [ -d "$HOME/Desktop" ]; then
+  DESKTOP_DIR="$HOME/Desktop"
+elif [ -d "$HOME/Schreibtisch" ]; then
+  DESKTOP_DIR="$HOME/Schreibtisch"
+fi
+
+if [ -n "$DESKTOP_DIR" ]; then
+  LAUNCHER_DIR="$DESKTOP_DIR/career-ops"
+  mkdir -p "$LAUNCHER_DIR"
+
+  cat > "$LAUNCHER_DIR/Start career-ops.command" << 'LAUNCHER'
+#!/usr/bin/env bash
+cd "$HOME/career-ops"
+echo ""
+echo "Starting career-ops web UI..."
+echo "Opening http://localhost:3000 ..."
+echo ""
+npm run ui &
+sleep 3
+open "http://localhost:3000" 2>/dev/null || xdg-open "http://localhost:3000" 2>/dev/null || echo "Open http://localhost:3000 in your browser"
+wait
+LAUNCHER
+  chmod +x "$LAUNCHER_DIR/Start career-ops.command"
+
+  cat > "$LAUNCHER_DIR/Start career-ops.bat" << 'BATFILE'
+@echo off
+title career-ops
+cd /d "%USERPROFILE%\career-ops"
+echo Starting career-ops web UI...
+echo Opening http://localhost:3000 ...
+start http://localhost:3000
+npm run ui
+BATFILE
+
+  cat > "$LAUNCHER_DIR/Start CLI.command" << 'CLILAUNCHER'
+#!/usr/bin/env bash
+cd "$HOME/career-ops"
+echo "Starting career-ops CLI..."
+echo "Paste any job URL to evaluate it."
+echo "Type /career-ops for all commands."
+echo ""
+claude
+CLILAUNCHER
+  chmod +x "$LAUNCHER_DIR/Start CLI.command"
+
+  echo ""
+  echo "Desktop launcher created at: $LAUNCHER_DIR"
+fi
+
 echo ""
 echo "=== Setup complete! ==="
 echo ""
-echo "To start using career-ops:"
+echo "Two ways to use career-ops:"
 echo ""
-echo "  cd $TARGET_DIR"
-echo "  claude"
+echo "  1. WEB UI (browser dashboard):"
+echo "     cd $TARGET_DIR && npm run ui"
+echo "     Then open http://localhost:3000"
 echo ""
-echo "Then paste any job URL or description to evaluate it."
-echo "Type /career-ops to see all available commands."
+echo "  2. CLI (paste jobs directly):"
+echo "     cd $TARGET_DIR && claude"
 echo ""
+if [ -n "$DESKTOP_DIR" ]; then
+  echo "  Or use the launchers on your Desktop/career-ops folder."
+  echo ""
+fi
